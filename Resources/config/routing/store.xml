@@ -8,4 +8,12 @@
         <default key="_controller">VespolinaStoreBundle:Store:index</default>
         <requirement key="_method">GET</requirement>
     </route>
+
+
+    <route id="vespolina_store_products" pattern="/products/{slug}">
+        <default key="_controller">VespolinaStoreBundle:Store:index</default>
+        <requirement key="_method">GET</requirement>
+    </route>
 </routes>
+
+

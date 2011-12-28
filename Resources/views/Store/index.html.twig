@@ -1,10 +1,8 @@
 {% extends "VespolinaStoreBundle::layout.html.twig" %}
 
 {% block content %}
-<h1>Vespolina</h1>
-<h2>Symfony2 based ecommerce platform</h2>
 
-Catalogue with some products
+    {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomy': productTaxonomy} %}
 
     {% render "VespolinaStoreBundle:Store:list" with {'max': 3} %}
 
