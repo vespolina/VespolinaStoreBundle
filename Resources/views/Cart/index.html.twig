@@ -1,0 +1,28 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+    <ul class="breadcrumb">
+      <li><a href="/">Home</a> <span class="divider">/</span></li>
+      <li class="active">My Cart</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+<table>
+    {% for cartItem in cart.items %}
+    <tr>
+        <td>{{ cartItem.quantity }}</td>
+        <td>{{ cartItem.description }}</td>
+    </tr>
+    {% else %}
+    <tr>
+       <td>Your cart is empty.</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+
+
+{% endblock %}

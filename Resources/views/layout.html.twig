@@ -11,11 +11,19 @@
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <ul class="nav secondary-nav">
+        <li class="dropdown">
+            <a href="{{ url('vespolina_store_cart_overview') }}">My Cart</a>
+        </li>
+      </ul>
     </div>
   </div>
+
 </div>
 
 <div class="container">
+
+
         <!-- Tray -->
         <div style="display: none;" id="tray" class="box">
                 <p class="f-left box">
@@ -33,6 +41,13 @@
 
     <div id="content" class="box">
 
+        {% block navigation %}
+            <ul class="breadcrumb">
+              <li><a href="#">Home</a> <span class="divider">/</span></li>
+              <li class="active">You are here</li>
+            </ul>
+        {% endblock %}
+
     {% block content %}
         No content.
     {% endblock %}
@@ -46,6 +61,6 @@
         <p class="f-left">Developed by <a href="http://github.com/vespolina/vespolina-sandbox">vespolina team</a></p>
         <p class="f-right">&copy; 2012 <a href="#">Vespolina</a>, All Rights Reserved &reg;</p>
     </div> <!-- /footer -->
-</div>
+</  div>
 {% endblock %}
 
