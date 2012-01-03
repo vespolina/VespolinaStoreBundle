@@ -1,0 +1,3 @@
+store_homepage:
+    pattern:  /
+    defaults: { _controller: StoreBundle:Default:index }

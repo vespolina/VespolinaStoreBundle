@@ -1,0 +1,15 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+    <ul class="breadcrumb">
+      <li><a href="#">Home</a> <span class="divider">/</span></li>
+      <li class="active">Products Overview</li>
+    </ul>
+{% endblock %}
+{% block content %}
+
+    {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomy': productTaxonomy} %}
+
+    {% render "VespolinaStoreBundle:Store:list" with {'max': 3} %}
+
+{% endblock %}
