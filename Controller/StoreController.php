@@ -24,15 +24,13 @@ class StoreController extends Controller
 
     protected function getDefaultProductTaxonomy()
     {
-        $taxonomyManager = $this->get('vespolina_taxonomy.taxonomy_manager');
+        $taxonomyManager = $this->get('vespolina.taxonomy_manager');
 
-        $productTaxonomy = $taxonomyManager->createTaxonomy('products_default', 'tags');
-        $dressesTerm = $productTaxonomy->createTerm('dresses', 'Women dresses');
-        $productTaxonomy->addTerm($dressesTerm);
+        $productTaxonomy = $taxonomyManager->findTaxonomyById('products');
 
-        $shoesTerm = $productTaxonomy->createTerm('shoes', 'Shoes');
-        $productTaxonomy->addTerm($shoesTerm);
+        if (!$productTaxonomy) {
 
+        }
         return $productTaxonomy;
     }
 }
