@@ -9,9 +9,7 @@ class StoreController extends Controller
     public function indexAction()
     {
 
-        $productTaxonomy = $this->getDefaultProductTaxonomy();
-
-        return $this->render('VespolinaStoreBundle:Store:index.html.twig', array('productTaxonomy' => $productTaxonomy));
+        return $this->render('VespolinaStoreBundle:Store:index.html.twig');
     }
 
     public function listAction()
@@ -22,15 +20,5 @@ class StoreController extends Controller
     }
 
 
-    protected function getDefaultProductTaxonomy()
-    {
-        $taxonomyManager = $this->get('vespolina.taxonomy_manager');
 
-        $productTaxonomy = $taxonomyManager->findTaxonomyById('products');
-
-        if (!$productTaxonomy) {
-
-        }
-        return $productTaxonomy;
-    }
 }

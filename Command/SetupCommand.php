@@ -34,7 +34,7 @@ class SetupCommand extends ContainerAwareCommand
 
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
-        $this->setupProducts($input, $output);
+        //$this->setupProducts($input, $output);
 
 
         $output->writeln('Finished setting up a demo store for country "' . $this->country . '" for type "' . $this->type . '"');
