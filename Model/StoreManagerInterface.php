@@ -5,12 +5,12 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Vespolina\StoreBundle\Document;
+namespace Vespolina\StoreBundle\Model;
 
-use Vespolina\StoreBundle\Model\Store as AbstractStore;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-abstract class BaseStore extends AbstractStore
+interface StoreManagerInterface
 {
+
 }

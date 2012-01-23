@@ -19,11 +19,17 @@ class VespolinaStoreExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $processor = new Processor();
+        $configuration = new Configuration();
 
-        foreach (array() as $basename) {
-            $loader->load(sprintf('%s.xml', $basename));
+        $config = $processor->processConfiguration($configuration, $configs);
+
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
+            throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
         }
+        $loader->load(sprintf('%s.xml', $config['db_driver']));
 
     }
 

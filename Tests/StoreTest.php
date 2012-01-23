@@ -33,4 +33,14 @@ class StoreTest extends WebTestCase
 
         $this->assertNotNull($store);
     }
+
+    public function testStoreManager()
+    {
+
+        $storeManager = $this->getKernel()->getContainer()->get('vespolina.store_manager');
+        $store = $storeManager->createStore('default_store', 'My first shop');
+        $store->setSalesChannel('first_shop_web');
+        $storeManager->updateStore($store);
+
+    }
 }
