@@ -31,7 +31,6 @@ interface StoreInterface
      */
     public function getSalesChannel();
 
-
     public function setName($name);
 
     public function setSalesChannel($salesChannel);

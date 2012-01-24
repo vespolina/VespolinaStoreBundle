@@ -32,12 +32,13 @@ class SetupCommand extends ContainerAwareCommand
         $this->country = $input->getOption('country', 'be');
         $this->type = $input->getOption('type', 'band');
 
+        $store = $this->setupStore($input, $output);
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
         //$this->setupProducts($input, $output);
 
 
-        $output->writeln('Finished setting up a demo store for country "' . $this->country . '" for type "' . $this->type . '"');
+        $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
     }
 
     protected function setupCustomerTaxonomy($input, $output){
@@ -49,6 +50,12 @@ class SetupCommand extends ContainerAwareCommand
         $termFixtures[] = array('code' => 'bronze', 'name' => 'Bronze');
         $termFixtures[] = array('code' => 'silver', 'name' => 'Silver');
         $termFixtures[] = array('code' => 'gold', 'name' => 'Gold');
+
+        foreach($termFixtures as $termFixture) {
+
+            $aTerm = $taxonomyManager->createTerm($termFixture['code'], $termFixture['name']);
+            $aTaxonomy->addTerm($aTerm);
+        }
 
         $taxonomyManager->updateTaxonomy($aTaxonomy, true);
 
@@ -96,11 +103,13 @@ class SetupCommand extends ContainerAwareCommand
                 $termFixtures[] = array('code' => 'shoes', 'name' => 'Shoes');
 
                 break;
+            default:
+                return;
 
         }
         foreach($termFixtures as $termFixture) {
 
-            $aTerm = $aTaxonomy->createTerm($termFixture['code'], $termFixture['name']);
+            $aTerm = $taxonomyManager->createTerm($termFixture['code'], $termFixture['name']);
             $aTaxonomy->addTerm($aTerm);
         }
 
@@ -109,5 +118,17 @@ class SetupCommand extends ContainerAwareCommand
         $output->writeln('Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
 
         return $aTaxonomy;
+    }
+
+    protected function setupStore($input, $output)
+    {
+        $storeManager = $this->getContainer()->get('vespolina.store_manager');
+
+        $store = $storeManager->createStore('default_store', 'Vespolina demo shop');
+        $store->setSalesChannel('default_store_web');
+        $storeManager->updateStore($store);
+
+        $output->writeln('Setup a default store configuration' );
+        return $store;
     }
 }

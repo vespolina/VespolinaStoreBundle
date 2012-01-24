@@ -17,13 +17,13 @@ use Vespolina\StoreBundle\Model\StoreManagerInterface;
  */
 class StoreManager implements StoreManagerInterface {
 
+    protected $currentStore;
     protected $storeClass;
 
     public function __construct($storeClass) {
 
         $this->storeClass = $storeClass;
     }
-
 
     public function createStore($id, $name)
     {
@@ -33,5 +33,16 @@ class StoreManager implements StoreManagerInterface {
         $store->setId($id);
         $store->setName($name);
         return $store;
+    }
+
+    public function getCurrentStore()
+    {
+        return $this->currentStore;
+    }
+
+
+    public function setCurrentStore(StoreInterface $currentStore)
+    {
+        $this->currentStore = $currentStore;
     }
 }
