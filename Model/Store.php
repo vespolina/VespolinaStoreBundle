@@ -15,7 +15,10 @@ use Vespolina\StoreBundle\Model\StoreInterface;
  */
 abstract class Store implements StoreInterface
 {
+    protected $id;
     protected $name;
+    protected $salesChannel;
+
 
 
     public function __construct()
@@ -23,14 +26,31 @@ abstract class Store implements StoreInterface
 
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @inheritdoc
      */
     public function getName()
     {
-
         return $this->name;
+    }
+
+    public function setId($id)
+    {
+
+        $this->id = $id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSalesChannel()
+    {
+        return $this->salesChannel;
     }
 
     /**
@@ -42,4 +62,12 @@ abstract class Store implements StoreInterface
         $this->name = $name;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function setSalesChannel($salesChannel)
+    {
+
+        $this->salesChannel = $salesChannel;
+    }
 }

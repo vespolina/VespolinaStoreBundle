@@ -8,7 +8,7 @@
 {% endblock %}
 {% block content %}
 
-    {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomy': productTaxonomy} %}
+    {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomyName': 'products'} %}
 
     {% render "VespolinaStoreBundle:Store:list" with {'max': 3} %}
 
