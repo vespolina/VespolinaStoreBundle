@@ -20,6 +20,7 @@ interface StoreManagerInterface
      */
      function getCurrentStore();
 
+
     /**
      * Set the current store
      *

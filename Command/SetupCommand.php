@@ -35,7 +35,7 @@ class SetupCommand extends ContainerAwareCommand
         $store = $this->setupStore($input, $output);
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
-        //$this->setupProducts($input, $output);
+        $this->setupProducts($input, $output);
 
 
         $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
@@ -47,13 +47,13 @@ class SetupCommand extends ContainerAwareCommand
         $aTaxonomy = $taxonomyManager->createTaxonomy('customers', 'tags');
         $termFixtures = array();
 
-        $termFixtures[] = array('code' => 'bronze', 'name' => 'Bronze');
-        $termFixtures[] = array('code' => 'silver', 'name' => 'Silver');
-        $termFixtures[] = array('code' => 'gold', 'name' => 'Gold');
+        $termFixtures[] = array('path' => 'bronze', 'name' => 'Bronze');
+        $termFixtures[] = array('path' => 'silver', 'name' => 'Silver');
+        $termFixtures[] = array('path' => 'gold', 'name' => 'Gold');
 
         foreach($termFixtures as $termFixture) {
 
-            $aTerm = $taxonomyManager->createTerm($termFixture['code'], $termFixture['name']);
+            $aTerm = $taxonomyManager->createTerm($termFixture['path'], $termFixture['name']);
             $aTaxonomy->addTerm($aTerm);
         }
 
@@ -93,14 +93,14 @@ class SetupCommand extends ContainerAwareCommand
             case 'band':
 
                 $termFixtures = array();
-                $termFixtures[] = array('code' => 'downloadable-tracks', 'name' => 'Downloadable tracks');
+                $termFixtures[] = array('path' => 'downloadable-tracks', 'name' => 'Downloadable tracks');
                 break;
 
             case 'fashion':
 
-                $termFixtures[] = array('code' => 'dresses', 'name' => 'Dresses');
-                $termFixtures[] = array('code' => 'pants', 'name' => 'Pants');
-                $termFixtures[] = array('code' => 'shoes', 'name' => 'Shoes');
+                $termFixtures[] = array('path' => 'dresses', 'name' => 'Dresses');
+                $termFixtures[] = array('path' => 'pants', 'name' => 'Pants');
+                $termFixtures[] = array('path' => 'shoes', 'name' => 'Shoes');
 
                 break;
             default:
@@ -109,7 +109,7 @@ class SetupCommand extends ContainerAwareCommand
         }
         foreach($termFixtures as $termFixture) {
 
-            $aTerm = $taxonomyManager->createTerm($termFixture['code'], $termFixture['name']);
+            $aTerm = $taxonomyManager->createTerm($termFixture['path'], $termFixture['name']);
             $aTaxonomy->addTerm($aTerm);
         }
 
@@ -124,7 +124,7 @@ class SetupCommand extends ContainerAwareCommand
     {
         $storeManager = $this->getContainer()->get('vespolina.store_manager');
 
-        $store = $storeManager->createStore('default_store', 'Vespolina demo shop');
+        $store = $storeManager->createStore('default_store', 'Vespolina ' . ucfirst($this->type) . ' Shop');
         $store->setSalesChannel('default_store_web');
         $storeManager->updateStore($store);
 

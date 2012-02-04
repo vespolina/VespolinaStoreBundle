@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('default_store')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('multi_store')->cannotBeOverwritten()->end()
             ->end();
 
         return $treeBuilder;

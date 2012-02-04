@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class RequestListener
 {
     protected $container;
-    protected $store;
 
     public function __construct(Container $container)
     {
@@ -28,12 +27,14 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
 
-        //Used for determining
+        //Used to determine the requested store in a multi store environment
         $host = $event->getRequest()->getHttpHost();
-        //$storeManager = $this->container('vespolina.store_manager');
-        //$this->store = $storeManager->findStoreByHost($host);
 
+        $storeManager = $this->container->get('vespolina.store_manager');
+        $store = $storeManager->loadCurrentStore($host);
 
+        //Register store as a global Twig variable
+        $this->container->get('twig')->addGlobal('store', $store);
     }
 
 }

@@ -36,7 +36,6 @@ abstract class Store implements StoreInterface
      */
     public function getName()
     {
-
         return $this->name;
     }
 

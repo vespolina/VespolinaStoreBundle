@@ -1,6 +1,6 @@
 <?php
 
-namespace Vespolina\OrderBundle\Tests\Service;
+namespace Vespolina\StoreBundle\Tests\Service;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Vespolina\StoreBundle\Model\Store;
