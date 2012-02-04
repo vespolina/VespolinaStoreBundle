@@ -21,8 +21,18 @@ interface StoreInterface
      */
     public function getName();
 
-    
-    
+    /**
+     * Retrieve the sales channel of the store
+     * A sales channel is typically in a sales order
+     * to identify what the source was of the purchase
+     *
+     * @abstract
+     *
+     */
+    public function getSalesChannel();
+
     public function setName($name);
+
+    public function setSalesChannel($salesChannel);
 
 }
