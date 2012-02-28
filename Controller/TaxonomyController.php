@@ -19,7 +19,7 @@ class TaxonomyController extends Controller
 
     protected function getTaxonomy($taxonomyName)
     {
-        $taxonomyManager = $this->get('vespolina.taxonomy_manager');
+        $taxonomyManager = $this->get('vespolina.taxonomy.taxonomy_manager');
 
         $taxonomy = $taxonomyManager->findTaxonomyById('products');
 
