@@ -2,14 +2,13 @@
 
 {% block body %}
 
-<div class="topbar">
-  <div class="fill">
+<div class="navbar">
+  <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">{{ store ? store.name : "" }}</a>
+      <a class="brand" href="#">{{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
       </ul>
       <ul class="nav secondary-nav">
         <li class="dropdown">
@@ -23,21 +22,7 @@
 
 <div class="container">
 
-
-        <!-- Tray -->
-        <div style="display: none;" id="tray" class="box">
-                <p class="f-left box">
-                        <!-- Switcher -->
-                        <span class="f-left" id="switcher">
-                          <a href="#" rel="1col" class="styleswitch ico-col1" title="Display one column"><img src="{{ asset('bundles/cordovacrown/images/switcher-1col.gif') }}" alt="1 Column" /></a>
-                          <a href="#" rel="2col" class="styleswitch ico-col2" title="Display two columns"><img src="{{ asset('bundles/cordovacrown/images/switcher-2col.gif') }}" alt="2 Columns" /></a>
-                        </span>
-                        <strong></strong>
-                </p>
-                <p class="f-right">User: <strong>Administrator</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong><a href="" id="logout">Log out</a></strong></p>
-        </div> <!--  /tray -->
-
-        <hr class="noscreen">
+    <hr class="noscreen">
 
     <div id="content" class="box">
 

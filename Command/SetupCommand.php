@@ -2,6 +2,7 @@
 
 namespace Vespolina\StoreBundle\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,24 +20,25 @@ class SetupCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('vespolina:setup')
+            ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
-            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country')
-            ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type')
+            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
+            ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->country = $input->getOption('country', 'be');
-        $this->type = $input->getOption('type', 'band');
+        $this->country = $input->getOption('country');
+        $this->type = $input->getOption('type');
 
         $store = $this->setupStore($input, $output);
+
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
-        $this->setupProducts($input, $output);
 
+        $this->setupProducts($productTaxonomy, $input, $output);
 
         $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
     }
@@ -63,9 +65,11 @@ class SetupCommand extends ContainerAwareCommand
         return $aTaxonomy;
     }
 
-    protected function setupProducts($input, $output)
+    protected function setupProducts($productTaxonomy, $input, $output)
     {
         $productCount = 10;
+        $productTaxonomyTerms = $productTaxonomy->getTerms();
+        $keys = $productTaxonomyTerms->getKeys();
 
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
@@ -73,6 +77,19 @@ class SetupCommand extends ContainerAwareCommand
 
             $aProduct = $productManager->createProduct();
             $aProduct->setName('product ' . $i);
+            $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
+
+            //Set some prices
+            $pricing = array();
+            $pricing['unitPrice'] = rand(2,80);
+            $aProduct->setPricing($pricing);
+
+            //Attach it to a random taxonomy term
+            $index = rand(0, $productTaxonomyTerms->count()-1);
+
+            $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
+            $aProduct->addTerm($aRandomTerm);
+
             $productManager->updateProduct($aProduct, true);
         }
 
@@ -93,7 +110,15 @@ class SetupCommand extends ContainerAwareCommand
             case 'band':
 
                 $termFixtures = array();
+                $termFixtures[] = array('path' => 'clothing', 'name' => 'Clothing');
                 $termFixtures[] = array('path' => 'downloadable-tracks', 'name' => 'Downloadable tracks');
+                break;
+
+            case 'beverages':
+
+                $termFixtures = array();
+                $termFixtures[] = array('path' => 'beers', 'name' => 'Beer');
+                $termFixtures[] = array('path' => 'wine',  'name' => 'Wine');
                 break;
 
             case 'fashion':
@@ -131,4 +156,10 @@ class SetupCommand extends ContainerAwareCommand
         $output->writeln('Setup a default store configuration' );
         return $store;
     }
+
+    protected function slugify($text)
+    {
+        return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim($text)))));
+    }
+
 }

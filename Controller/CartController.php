@@ -14,6 +14,16 @@ class CartController extends Controller
         return $this->render('VespolinaStoreBundle:Cart:index.html.twig', array('cart' => $cart));
     }
 
+    public function addToCartAction($productId)
+    {
+        $cartManager = $this->get('vespolina.cart_manager');
+
+        $cart = $this->getCart();
+        $product = $this->getProduct($productId);
+        $cartItem = $cartManager->createItem($product );
+
+        return $this->redirect('VespolinaStoreBundle:Cart:index');
+    }
 
     protected function getCart()
     {
@@ -32,6 +42,16 @@ class CartController extends Controller
         }
 
         return $cart;
+
+    }
+
+    protected function getProduct($id)
+    {
+
+        $productManager = $this->get('vespolina.product_manager');
+        $product = $productManager->findProductById($id);
+
+        return $product;
 
     }
 }

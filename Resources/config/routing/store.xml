@@ -14,11 +14,21 @@
         <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="vespolina_store_product_detail" pattern="/product_detail/{slug}">
+        <default key="_controller">VespolinaStoreBundle:Product:detail</default>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <route id="vespolina_store_products" pattern="/products/{slug}">
         <default key="_controller">VespolinaStoreBundle:Store:index</default>
         <requirement key="_method">GET</requirement>
     </route>
+
+    <route id="vespolina_store_add_to_cart" pattern="/cart/add/{productId}">
+        <default key="_controller">VespolinaStoreBundle:Cart:addToCart</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
 </routes>
 
 
