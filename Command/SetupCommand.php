@@ -23,6 +23,7 @@ class SetupCommand extends ContainerAwareCommand
             ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
             ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
+            ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', 'or')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
     }
@@ -30,15 +31,20 @@ class SetupCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->country = $input->getOption('country');
+        $this->country = strtoupper($input->getOption('country'));
         $this->type = $input->getOption('type');
-
-        $store = $this->setupStore($input, $output);
+        $this->state = strtoupper($input->getOption('state'));
 
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
 
-        $this->setupProducts($productTaxonomy, $input, $output);
+        //Setup taxation based on country
+        $taxSchema = $this->setupTaxation($input, $output);
+
+        $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
+
+        $store = $this->setupStore($input, $output);
+
 
         $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
     }
@@ -61,12 +67,13 @@ class SetupCommand extends ContainerAwareCommand
 
         $taxonomyManager->updateTaxonomy($aTaxonomy, true);
 
-        $output->writeln('Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
+        $output->writeln('- Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
         return $aTaxonomy;
     }
 
-    protected function setupProducts($productTaxonomy, $input, $output)
+    protected function setupProducts($productTaxonomy, $taxSchema, $input, $output)
     {
+        $defaultTaxRate = $taxSchema['defaultTaxRate'];
         $productCount = 10;
         $productTaxonomyTerms = $productTaxonomy->getTerms();
         $keys = $productTaxonomyTerms->getKeys();
@@ -82,10 +89,20 @@ class SetupCommand extends ContainerAwareCommand
             //Set some prices
             $pricing = array();
             $pricing['unitPrice'] = rand(2,80);
+
+            if ($defaultTaxRate) {
+
+                $pricing['unitPriceTax'] = $pricing['unitPrice'] / 100 * $defaultTaxRate;
+                $pricing['unitPriceTotal'] = $pricing['unitPrice'] + $pricing['unitPriceTax'];
+
+            } else {
+                $pricing['unitPriceTotal'] = $pricing['unitPrice'];
+            }
+
             $aProduct->setPricing($pricing);
 
             //Attach it to a random taxonomy term
-            $index = rand(0, $productTaxonomyTerms->count()-1);
+            $index = rand(0, $productTaxonomyTerms->count() - 1);
 
             $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
             $aProduct->addTerm($aRandomTerm);
@@ -93,7 +110,7 @@ class SetupCommand extends ContainerAwareCommand
             $productManager->updateProduct($aProduct, true);
         }
 
-        $output->writeln('Created ' . $productCount . ' products.' );
+        $output->writeln('- Created ' . $productCount . ' sample products.' );
     }
 
 
@@ -140,20 +157,64 @@ class SetupCommand extends ContainerAwareCommand
 
         $taxonomyManager->updateTaxonomy($aTaxonomy, true);
 
-        $output->writeln('Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
+        $output->writeln('- Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
 
         return $aTaxonomy;
+    }
+
+    protected function setupTaxation($input, $output)
+    {
+
+        $defaultTaxRate = 0;
+        $fallbackTaxRate = 0;
+        $taxationManager = $this->getContainer()->get('vespolina.taxation_manager');
+        $taxSchema = $taxationManager->loadTaxSchema($this->country);
+
+        $taxSchema['defaultTaxRate']  = 0;
+
+        if ($taxSchema['zones']) {
+
+            foreach($taxSchema['zones'] as $taxZone) {
+
+                $taxationManager->updateTaxZone($taxZone, true);
+
+                if ($taxZone->getCountry() == $this->country &&
+                    $taxZone->getState() == $this->state) {
+
+                    $defaultTaxRate = $taxZone->getDefaultRate();
+                }
+
+                if (!$fallbackTaxRate) {
+
+                    $fallbackTaxRate = $taxZone->getDefaultRate();
+                }
+            }
+
+            if (!$defaultTaxRate) {
+
+                $defaultTaxRate = $fallbackTaxRate;
+            }
+
+            $taxSchema['defaultTaxRate'] = $defaultTaxRate;
+
+            $output->writeln('- Setup ' . count($taxSchema['zones']) . ' tax zone(s) with default tax rate ' . $defaultTaxRate . '%');
+
+        } else {
+
+            $output->writeln('No taxation schema exists for country ' . $this->country);
+        }
+
+        return $taxSchema;
     }
 
     protected function setupStore($input, $output)
     {
         $storeManager = $this->getContainer()->get('vespolina.store_manager');
-
         $store = $storeManager->createStore('default_store', 'Vespolina ' . ucfirst($this->type) . ' Shop');
         $store->setSalesChannel('default_store_web');
         $storeManager->updateStore($store);
 
-        $output->writeln('Setup a default store configuration' );
+        $output->writeln('- Setup a default store configuration' );
         return $store;
     }
 
