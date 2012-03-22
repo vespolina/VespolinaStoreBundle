@@ -86,22 +86,34 @@ class SetupCommand extends ContainerAwareCommand
             $aProduct->setName('product ' . $i);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
 
-            //Set some prices
+            /** Set up for each product following pricing elements
+             *  - netUnitPrice : unit price without tax
+             *  - unitPriceMSRP: manufacturer suggested retail price without tax
+             *  - unitPriceTax : tax over the net unit price (based on the default tax rate)
+             *  - unitPriceTotal: final price a customer pays ( net unit price + tax )
+             *  - unitMSRPTotal: manufacturer suggested retail price with tax
+             **/
             $pricing = array();
-            $pricing['unitPrice'] = rand(2,80);
+            $pricing['netUnitPrice'] = rand(2,80);
+
+            //Set Manufacturer Suggested Retail Price to +10 % of the net unit price
+            $pricing['unitPriceMSRP'] = $pricing['netUnitPrice'] * 1.1;
 
             if ($defaultTaxRate) {
 
-                $pricing['unitPriceTax'] = $pricing['unitPrice'] / 100 * $defaultTaxRate;
-                $pricing['unitPriceTotal'] = $pricing['unitPrice'] + $pricing['unitPriceTax'];
+                $pricing['unitPriceTax'] = $pricing['netUnitPrice'] / 100 * $defaultTaxRate;
+                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP']/ 100 * $defaultTaxRate;
+                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'] + $pricing['unitPriceTax'];
 
             } else {
-                $pricing['unitPriceTotal'] = $pricing['unitPrice'];
+
+                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
+                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
             }
 
             $aProduct->setPricing($pricing);
 
-            //Attach it to a random taxonomy term
+            //Attach it to a random taxonomy term (= product category)
             $index = rand(0, $productTaxonomyTerms->count() - 1);
 
             $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
@@ -175,7 +187,6 @@ class SetupCommand extends ContainerAwareCommand
         if ($taxSchema['zones']) {
 
             foreach($taxSchema['zones'] as $taxZone) {
-
                 $taxationManager->updateTaxZone($taxZone, true);
 
                 if ($taxZone->getCountry() == $this->country &&
@@ -212,9 +223,18 @@ class SetupCommand extends ContainerAwareCommand
         $storeManager = $this->getContainer()->get('vespolina.store_manager');
         $store = $storeManager->createStore('default_store', 'Vespolina ' . ucfirst($this->type) . ' Shop');
         $store->setSalesChannel('default_store_web');
+        $currency = '';
+
+        //Default currency
+        switch ($this->country) {
+            case 'US': $currency = 'USD'; break;
+            default: $currency = 'EUR'; break;
+        }
+        $store->setDefaultCurrency($currency);
+
         $storeManager->updateStore($store);
 
-        $output->writeln('- Setup a default store configuration' );
+        $output->writeln('- Setup a default store configuration with default currency ' . $currency );
         return $store;
     }
 

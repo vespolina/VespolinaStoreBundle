@@ -8,6 +8,7 @@
 
         <field name="id" fieldName="id" type="string" id="true"/>
         <field name="name" fieldName="name" type="string"/>
+        <field name="defaultCurrency" fieldName="defaultCurrency" type="string" />
         <field name="salesChannel" fieldName="salesChannel" type="string" />
 
     </mapped-superclass>

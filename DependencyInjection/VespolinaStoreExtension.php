@@ -11,6 +11,7 @@ namespace Vespolina\StoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -31,6 +32,9 @@ class VespolinaStoreExtension extends Extension
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
+        $definition = new Definition('Vespolina\StoreBundle\Twig\StoreTwigExtension');
+        $definition->addTag('twig.extension');
+        $container->setDefinition('store_twig_extension', $definition);
     }
 
     public function getNamespace()

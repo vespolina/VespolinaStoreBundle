@@ -6,7 +6,6 @@
 
             {% set add_to_cart_url = url('vespolina_store_add_to_cart', { 'productId': product.id }) %}
             {% set product_url = url('vespolina_store_product_detail', { 'slug': product.slug }) %}
-            {% set product_pricing =  product.getPricing %}
 
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
@@ -20,7 +19,8 @@
                    <div>
                        <a class="btn" href="{{ add_to_cart_url}}">Buy</a>
                         <span class="v-product-price">
-                            {{product_pricing['unitPrice']}} ;
+                            {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+
                         </span>
                    </div>
                 </div>

@@ -16,6 +16,7 @@ use Vespolina\StoreBundle\Model\StoreInterface;
 abstract class Store implements StoreInterface
 {
     protected $id;
+    protected $defaultCurrency;
     protected $name;
     protected $salesChannel;
 
@@ -69,5 +70,15 @@ abstract class Store implements StoreInterface
     {
 
         $this->salesChannel = $salesChannel;
+    }
+
+    public function setDefaultCurrency($defaultCurrency)
+    {
+        $this->defaultCurrency = $defaultCurrency;
+    }
+
+    public function getDefaultCurrency()
+    {
+        return $this->defaultCurrency;
     }
 }
