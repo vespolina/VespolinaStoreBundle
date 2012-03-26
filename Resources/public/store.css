@@ -1,0 +1,6 @@
+.v-product-tile { border-radius: 8px; border:1px solid #dddddd; padding:10px; margin-bottom:10px}
+.v-product-name { color: black; font-size: 1em }
+.v-product-unit-price-msrp-total{ color: #aaaaaa; float: right; font-size: 1.1em ; padding-left: 0.5em; text-decoration:line-through}
+.v-product-unit-price-total {
+    border-radius: 2px; background-color: #2D6987; color: #ffffff; float: right; font-size: 1.2em; padding: 2px 4px 2px 4px; }
+.btn{ padding: 2px 8px 4px;}

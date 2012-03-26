@@ -1,0 +1,10 @@
+{% set product_pricing =  product.getPricing %}
+
+
+<span class="v-product-unit-price-msrp-total">
+{{ product_pricing['unitPriceMSRPTotal'] | price_format() }}
+</span>
+
+<span class="v-product-unit-price-total">
+{{ product_pricing['unitPriceTotal'] | price_format(store.defaultCurrency) }}
+</span>

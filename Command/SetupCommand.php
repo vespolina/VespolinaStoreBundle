@@ -2,6 +2,7 @@
 
 namespace Vespolina\StoreBundle\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,23 +20,30 @@ class SetupCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('vespolina:setup')
+            ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
-            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country')
-            ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type')
+            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
+            ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', 'or')
+            ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->country = $input->getOption('country', 'be');
-        $this->type = $input->getOption('type', 'band');
+        $this->country = strtoupper($input->getOption('country'));
+        $this->type = $input->getOption('type');
+        $this->state = strtoupper($input->getOption('state'));
 
-        $store = $this->setupStore($input, $output);
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
-        $this->setupProducts($input, $output);
+
+        //Setup taxation based on country
+        $taxSchema = $this->setupTaxation($input, $output);
+
+        $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
+
+        $store = $this->setupStore($input, $output);
 
 
         $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
@@ -59,13 +67,16 @@ class SetupCommand extends ContainerAwareCommand
 
         $taxonomyManager->updateTaxonomy($aTaxonomy, true);
 
-        $output->writeln('Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
+        $output->writeln('- Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
         return $aTaxonomy;
     }
 
-    protected function setupProducts($input, $output)
+    protected function setupProducts($productTaxonomy, $taxSchema, $input, $output)
     {
+        $defaultTaxRate = $taxSchema['defaultTaxRate'];
         $productCount = 10;
+        $productTaxonomyTerms = $productTaxonomy->getTerms();
+        $keys = $productTaxonomyTerms->getKeys();
 
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
@@ -73,10 +84,45 @@ class SetupCommand extends ContainerAwareCommand
 
             $aProduct = $productManager->createProduct();
             $aProduct->setName('product ' . $i);
+            $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
+
+            /** Set up for each product following pricing elements
+             *  - netUnitPrice : unit price without tax
+             *  - unitPriceMSRP: manufacturer suggested retail price without tax
+             *  - unitPriceTax : tax over the net unit price (based on the default tax rate)
+             *  - unitPriceTotal: final price a customer pays ( net unit price + tax )
+             *  - unitMSRPTotal: manufacturer suggested retail price with tax
+             **/
+            $pricing = array();
+            $pricing['netUnitPrice'] = rand(2,80);
+
+            //Set Manufacturer Suggested Retail Price to +10 % of the net unit price
+            $pricing['unitPriceMSRP'] = $pricing['netUnitPrice'] * 1.1;
+
+            if ($defaultTaxRate) {
+
+                $pricing['unitPriceTax'] = $pricing['netUnitPrice'] / 100 * $defaultTaxRate;
+                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP']/ 100 * $defaultTaxRate;
+                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'] + $pricing['unitPriceTax'];
+
+            } else {
+
+                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
+                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
+            }
+
+            $aProduct->setPricing($pricing);
+
+            //Attach it to a random taxonomy term (= product category)
+            $index = rand(0, $productTaxonomyTerms->count() - 1);
+
+            $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
+            $aProduct->addTerm($aRandomTerm);
+
             $productManager->updateProduct($aProduct, true);
         }
 
-        $output->writeln('Created ' . $productCount . ' products.' );
+        $output->writeln('- Created ' . $productCount . ' sample products.' );
     }
 
 
@@ -93,7 +139,15 @@ class SetupCommand extends ContainerAwareCommand
             case 'band':
 
                 $termFixtures = array();
+                $termFixtures[] = array('path' => 'clothing', 'name' => 'Clothing');
                 $termFixtures[] = array('path' => 'downloadable-tracks', 'name' => 'Downloadable tracks');
+                break;
+
+            case 'beverages':
+
+                $termFixtures = array();
+                $termFixtures[] = array('path' => 'beers', 'name' => 'Beer');
+                $termFixtures[] = array('path' => 'wine',  'name' => 'Wine');
                 break;
 
             case 'fashion':
@@ -115,20 +169,78 @@ class SetupCommand extends ContainerAwareCommand
 
         $taxonomyManager->updateTaxonomy($aTaxonomy, true);
 
-        $output->writeln('Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
+        $output->writeln('- Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
 
         return $aTaxonomy;
+    }
+
+    protected function setupTaxation($input, $output)
+    {
+
+        $defaultTaxRate = 0;
+        $fallbackTaxRate = 0;
+        $taxationManager = $this->getContainer()->get('vespolina.taxation_manager');
+        $taxSchema = $taxationManager->loadTaxSchema($this->country);
+
+        $taxSchema['defaultTaxRate']  = 0;
+
+        if ($taxSchema['zones']) {
+
+            foreach($taxSchema['zones'] as $taxZone) {
+                $taxationManager->updateTaxZone($taxZone, true);
+
+                if ($taxZone->getCountry() == $this->country &&
+                    $taxZone->getState() == $this->state) {
+
+                    $defaultTaxRate = $taxZone->getDefaultRate();
+                }
+
+                if (!$fallbackTaxRate) {
+
+                    $fallbackTaxRate = $taxZone->getDefaultRate();
+                }
+            }
+
+            if (!$defaultTaxRate) {
+
+                $defaultTaxRate = $fallbackTaxRate;
+            }
+
+            $taxSchema['defaultTaxRate'] = $defaultTaxRate;
+
+            $output->writeln('- Setup ' . count($taxSchema['zones']) . ' tax zone(s) with default tax rate ' . $defaultTaxRate . '%');
+
+        } else {
+
+            $output->writeln('No taxation schema exists for country ' . $this->country);
+        }
+
+        return $taxSchema;
     }
 
     protected function setupStore($input, $output)
     {
         $storeManager = $this->getContainer()->get('vespolina.store_manager');
-
         $store = $storeManager->createStore('default_store', 'Vespolina ' . ucfirst($this->type) . ' Shop');
         $store->setSalesChannel('default_store_web');
+        $currency = '';
+
+        //Default currency
+        switch ($this->country) {
+            case 'US': $currency = 'USD'; break;
+            default: $currency = 'EUR'; break;
+        }
+        $store->setDefaultCurrency($currency);
+
         $storeManager->updateStore($store);
 
-        $output->writeln('Setup a default store configuration' );
+        $output->writeln('- Setup a default store configuration with default currency ' . $currency );
         return $store;
     }
+
+    protected function slugify($text)
+    {
+        return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim($text)))));
+    }
+
 }
