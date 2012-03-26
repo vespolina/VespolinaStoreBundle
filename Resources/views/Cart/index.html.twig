@@ -8,21 +8,6 @@
 {% endblock %}
 
 {% block content %}
-
-<table>
-    {% for cartItem in cart.items %}
-    <tr>
-        <td>{{ cartItem.quantity }}</td>
-        <td>{{ cartItem.description }}</td>
-    </tr>
-    {% else %}
-    <tr>
-       <td>Your cart is empty.</td>
-    </tr>
-
-    {% endfor %}
-</table>
-
-
-
+{% include "VespolinaCartBundle:Partials:cart.html.twig" with {'cart': cart} %}
 {% endblock %}
+
