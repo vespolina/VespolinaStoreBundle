@@ -7,12 +7,12 @@
     <div class="container">
       <a class="brand" href="#">{{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="#about">About</a></li>
       </ul>
       <ul class="nav secondary-nav">
         <li class="dropdown">
-            <a href="{{ url('vespolina_store_cart_overview') }}">My Cart</a>
+            <a href="{{ path('vespolina_cart_show') }}">My Cart</a>
         </li>
       </ul>
     </div>
@@ -28,7 +28,7 @@
 
         {% block navigation %}
             <ul class="breadcrumb">
-              <li><a href="#">Home</a> <span class="divider">/</span></li>
+              <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
               <li class="active">You are here</li>
             </ul>
         {% endblock %}
@@ -44,8 +44,8 @@
     <!-- Footer -->
     <div id="footer" class="box">
         <p class="f-left">Developed by <a href="http://github.com/vespolina/vespolina-sandbox">vespolina team</a></p>
-        <p class="f-right">&copy; 2012 <a href="#">Vespolina</a>, All Rights Reserved &reg;</p>
+        <p class="f-right">Copyright &copy; 2012 <a href="#">Vespolina</a>, All Rights Reserved</p>
     </div> <!-- /footer -->
-</  div>
+</div>
 {% endblock %}
 
