@@ -3,26 +3,24 @@
         <h4>List of Products</h4>
         <div class="row">
         {% for product in products %}
-
-            {% set add_to_cart_url = url('vespolina_store_add_to_cart', { 'productId': product.id }) %}
-            {% set product_url = url('vespolina_store_product_detail', { 'slug': product.slug }) %}
-
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
-                    <a href="{{ product_url }}">
+                    <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
                     <img class="thumbs" src="/images/no-product-image.jpg"/>
                     </a>
                 </div>
                 <div class="caption">
-                    <span class="v-product-name"><a href="{{ product_url }}">
-                   {{ product.name }}</a></span>
-                   <div>
-                       <a class="btn" href="{{ add_to_cart_url}}">Buy</a>
+                    <span class="v-product-name">
+                        <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                            {{ product.name }}
+                        </a>
+                    </span>
+                    <div>
+                        <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">Add to Cart</a>
                         <span class="v-product-price">
                             {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
-
                         </span>
-                   </div>
+                    </div>
                 </div>
             </div>
         {% else %}
