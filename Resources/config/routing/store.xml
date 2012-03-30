@@ -4,11 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="vespolina_store_cart_overview" pattern="/cart">
-        <default key="_controller">VespolinaStoreBundle:Cart:index</default>
-        <requirement key="_method">GET</requirement>
-    </route>
-
     <route id="vespolina_store_start" pattern="/">
         <default key="_controller">VespolinaStoreBundle:Store:index</default>
         <requirement key="_method">GET</requirement>
@@ -23,12 +18,6 @@
         <default key="_controller">VespolinaStoreBundle:Store:index</default>
         <requirement key="_method">GET</requirement>
     </route>
-
-    <route id="vespolina_store_add_to_cart" pattern="/cart/add/{productId}">
-        <default key="_controller">VespolinaStoreBundle:Cart:addToCart</default>
-        <requirement key="_method">GET</requirement>
-    </route>
-
 </routes>
 
 
