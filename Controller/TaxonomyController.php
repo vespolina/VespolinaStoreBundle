@@ -10,7 +10,6 @@ class TaxonomyController extends Controller
 
     public function listTermsAction($taxonomyName)
     {
-
         $taxonomy = $this->getTaxonomy($taxonomyName);
         $terms = $taxonomy->getTerms();
         return $this->render('VespolinaStoreBundle:Taxonomy:listTerms.html.twig', array('terms' => $terms));
@@ -21,10 +20,10 @@ class TaxonomyController extends Controller
     {
         $taxonomyManager = $this->get('vespolina.taxonomy.taxonomy_manager');
 
-        $taxonomy = $taxonomyManager->findTaxonomyById('products');
+        $taxonomy = $taxonomyManager->findTaxonomyById($taxonomyName);
 
         if (!$taxonomy) {
-
+            throw new \Exception("Taxonomy '{$taxonomyName}' was not found.");
         }
         return $taxonomy;
     }
