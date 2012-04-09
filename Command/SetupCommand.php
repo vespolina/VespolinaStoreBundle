@@ -42,6 +42,7 @@ class SetupCommand extends ContainerAwareCommand
         $taxSchema = $this->setupTaxation($input, $output);
 
         $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
+        $this->setupCustomers($customerTaxonomy, $input, $output);
 
         $store = $this->setupStore($input, $output);
 
@@ -49,7 +50,27 @@ class SetupCommand extends ContainerAwareCommand
         $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
     }
 
-    protected function setupCustomerTaxonomy($input, $output){
+    protected function setupCustomers($customerTaxonomy, $input, $output) {
+
+        $customerCount = 10;
+        $partnerManager = $this->getContainer()->get('vespolina_partner.partner_manager');
+
+        for ($i = 0; $i < $customerCount; $i++) {
+
+            $aCustomer = $partnerManager->createPartner();
+            $aCustomer->setName('customer ' . $i);
+
+            $anAddress = $partnerManager->createPartnerAddress();
+            $anAddress->setCountry($this->country);
+            $aCustomer->addAddress($anAddress);
+
+
+            $partnerManager->updatePartner($aCustomer, true);
+        }
+        $output->writeln('- Created ' . $customerCount . ' customers.' );
+    }
+
+    protected function setupCustomerTaxonomy($input, $output) {
 
         $taxonomyManager = $this->getContainer()->get('vespolina.taxonomy_manager');
         $aTaxonomy = $taxonomyManager->createTaxonomy('customers', 'tags');

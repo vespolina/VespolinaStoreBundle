@@ -5,7 +5,7 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">{{ store ? store.name : "Undefined store" }}</a>
+      <a class="brand" href="{{ path('homepage') }}">{{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
         <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -43,8 +43,7 @@
 
     <!-- Footer -->
     <div id="footer" class="box">
-        <p class="f-left">Developed by <a href="http://github.com/vespolina/vespolina-sandbox">vespolina team</a></p>
-        <p class="f-right">Copyright &copy; 2012 <a href="#">Vespolina</a>, All Rights Reserved</p>
+        <p class="f-right">Copyright &copy; 2012 <a href="http://www.vespolina.org">Vespolina Project</a>, All Rights Reserved</p>
     </div> <!-- /footer -->
 </div>
 {% endblock %}
