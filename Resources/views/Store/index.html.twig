@@ -10,6 +10,6 @@
 
     {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomyName': 'products'} %}
 
-    {% render "VespolinaStoreBundle:Store:list" with {'max': 3} %}
+    {% render "VespolinaStoreBundle:Store:list" with {'taxonomyName': 'products', 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
 
 {% endblock %}
