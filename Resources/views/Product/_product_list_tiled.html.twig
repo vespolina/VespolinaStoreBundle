@@ -2,11 +2,11 @@
     <div class="span12 offset1">
         <h4>List of Products</h4>
         <div class="row">
-        {% for product in products %}
+            {% for product in products %}
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
                     <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
-                    <img class="thumbs" src="/images/no-product-image.jpg"/>
+                        <img class="thumbs" src="/images/no-product-image.jpg"/>
                     </a>
                 </div>
                 <div class="caption">
@@ -23,9 +23,9 @@
                     </div>
                 </div>
             </div>
-        {% else %}
+            {% else %}
             No products loaded.
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
 </div>

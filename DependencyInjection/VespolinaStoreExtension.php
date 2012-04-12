@@ -32,6 +32,10 @@ class VespolinaStoreExtension extends Extension
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
+        if (isset($config['stores'])) {
+            $this->configureStores($config['stores'], $container);
+        }
+
         $definition = new Definition('Vespolina\StoreBundle\Twig\StoreTwigExtension');
         $definition->addTag('twig.extension');
         $container->setDefinition('store_twig_extension', $definition);
@@ -40,5 +44,10 @@ class VespolinaStoreExtension extends Extension
     public function getNamespace()
     {
         return 'http://www.vespolina-org/schema/dic/vespolina-store-v1';
+    }
+
+    protected function configureStores(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('vespolina.store.stores_configurations', $config);
     }
 }

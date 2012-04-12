@@ -29,11 +29,33 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('default_store')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode('multi_store')->cannotBeOverwritten()->end()
             ->end();
+        $this->addStoresSection($rootNode);
+
+
 
         return $treeBuilder;
+    }
+
+    protected function addStoresSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('stores')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                    ->children()
+                        ->booleanNode('default')->end()
+                        ->scalarNode('id')->end()
+                        ->scalarNode('display_name')->end()
+                        ->scalarNode('legal_name')->end()
+                        ->scalarNode('sales_channel')->end()
+                        ->scalarNode('default_product_view')->end()
+                        ->scalarNode('operational_mode')->end()
+                        ->scalarNode('default_currency')->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
 

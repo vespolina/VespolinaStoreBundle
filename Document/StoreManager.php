@@ -24,14 +24,14 @@ class StoreManager extends BaseStoreManager
     protected $dm;
     protected $primaryIdentifier;
 
-    public function __construct(DocumentManager $dm, $storeClass)
+    public function __construct(DocumentManager $dm, $storeClass, $storesConfigurations)
     {
         $this->dm = $dm;
 
         $this->storeClass = $storeClass;
         $this->storeRepo = $this->dm->getRepository($storeClass);
 
-        parent::__construct($storeClass);
+        parent::__construct($storeClass, $storesConfigurations);
     }
 
     /**

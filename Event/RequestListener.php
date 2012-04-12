@@ -31,7 +31,7 @@ class RequestListener
         $host = $event->getRequest()->getHttpHost();
 
         $storeManager = $this->container->get('vespolina.store_manager');
-        $store = $storeManager->loadCurrentStore($host);
+        $store = $storeManager->loadStore($host);
 
         //Register store as a global Twig variable
         $this->container->get('twig')->addGlobal('store', $store);

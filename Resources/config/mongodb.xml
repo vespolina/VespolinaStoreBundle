@@ -7,11 +7,13 @@
     <parameters>
         <parameter key="vespolina.store.store_manager.class">Vespolina\StoreBundle\Document\StoreManager</parameter>
         <parameter key="vespolina.store.model.store.class">Vespolina\StoreBundle\Document\Store</parameter>
+        <parameter key="vespolina.store.stores_configurations">null</parameter>         <!-- Should be set in the Store Extension -->
     </parameters>
     <services>
         <service id="vespolina.store.store_manager" class="%vespolina.store.store_manager.class%">
             <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
             <argument>%vespolina.store.model.store.class%</argument>
+            <argument>%vespolina.store.stores_configurations%</argument>
         </service>
         
         <service id="vespolina.store.listener.request" class="Vespolina\StoreBundle\Event\RequestListener">

@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="vespolina_store_start" pattern="/">
-        <default key="_controller">VespolinaStoreBundle:Store:index</default>
+        <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
         <default key="taxonomyTerm">all</default>
         <requirement key="_method">GET</requirement>
     </route>
@@ -16,7 +16,7 @@
     </route>
 
     <route id="vespolina_store_products" pattern="/products/{taxonomyTerm}">
-        <default key="_controller">VespolinaStoreBundle:Store:index</default>
+        <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
         <requirement key="_method">GET</requirement>
     </route>
 </routes>

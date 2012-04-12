@@ -6,19 +6,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class StoreController extends Controller
 {
+
+    protected $store;
+
     public function indexAction($taxonomyTerm)
     {
 
         return $this->render('VespolinaStoreBundle:Store:index.html.twig', array('taxonomyTerm' => $taxonomyTerm));
     }
 
-    public function listAction($taxonomyTerm)
+    /**
+     * Displays a store zone which typically consists of a product list, taxonomy terms and some CMS content
+     *
+     * @param $taxonomyTerm
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function zoneDetailAction($taxonomyTerm)
     {
 
         $products = $this->findProducts($taxonomyTerm);
 
-        return $this->render('VespolinaStoreBundle:Store:list.html.twig', array('products' => $products));
+        return $this->render('VespolinaStoreBundle:Store:zoneDetail.html.twig',
+            array('products' => $products,
+                  'taxonomyTerm' => $taxonomyTerm));
     }
+
 
     protected function findProducts($taxonomyTerm)
     {
@@ -35,5 +47,14 @@ class StoreController extends Controller
         return $products;
     }
 
+    protected function getStore()
+    {
+        if (!$this->store) {
+
+            $this-> store = $this->get('vespolina.store_manager')->getCurrentStore();
+        }
+
+        return $this->store;
+    }
 
 }

@@ -19,38 +19,63 @@ abstract class StoreManager implements StoreManagerInterface {
 
     protected $currentStore;
     protected $storeClass;
+    protected $stores;
+    protected $storesConfigurations;
 
-    public function __construct($storeClass) {
+    public function __construct($storeClass, $storesConfigurations) {
 
         $this->storeClass = $storeClass;
+        $this->storesConfigurations = $storesConfigurations;
+
     }
 
-    public function createStore($id, $name)
+    public function createStore($id, $displayName)
     {
 
         $baseClass = $this->storeClass;
         $store = new $baseClass;
         $store->setId($id);
-        $store->setName($name);
+        $store->setDisplayName($displayName);
+
         return $store;
     }
 
     abstract function findStoreById($id);
 
-    public function loadCurrentStore($host)
+    public function loadStore($host)
     {
 
+        if (!$this->stores) {
+
+            $this->loadStoresConfigurations();
+        }
+
         if (!$this->currentStore) {
-
-            $multiStoreActive = false;
-
-            if( !$multiStoreActive ) {
-
-                $this->currentStore = $this->findStoreById('default_store');
-            }
+            //err
         }
 
         return $this->currentStore;
+    }
+
+    public function loadStoresConfigurations($storeId = null, $hostURI = null)
+    {
+        foreach ($this->storesConfigurations as $storeConfiguration) {
+
+            if (null == $storeId || (null != $storeId && $storeId == $storeConfiguration['id'])) {
+
+                $store = $this->createStore($storeConfiguration['id'], $storeConfiguration['display_name']);
+
+                $store->setOperationalMode($storeConfiguration['operational_mode']);
+                $store->setSalesChannel($storeConfiguration['sales_channel']);
+
+                $this->stores[$storeConfiguration['id']] = $store;
+
+                if ($storeConfiguration['default']) {
+
+                    $this->currentStore = $store;
+                }
+            }
+        }
     }
 
     public function getCurrentStore()

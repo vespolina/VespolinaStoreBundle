@@ -17,12 +17,12 @@ abstract class Store implements StoreInterface
 {
     protected $id;
     protected $defaultCurrency;
-    protected $name;
+    protected $displayName;
+    protected $legalName;
+    protected $operationalMode;
     protected $salesChannel;
 
-
-
-    public function __construct()
+     public function __construct()
     {
 
     }
@@ -37,7 +37,7 @@ abstract class Store implements StoreInterface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->getDisplayName();
     }
 
     public function setId($id)
@@ -57,15 +57,6 @@ abstract class Store implements StoreInterface
     /**
      * @inheritdoc
      */
-    public function setName($name)
-    {
-
-        $this->name = $name;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function setSalesChannel($salesChannel)
     {
 
@@ -80,5 +71,35 @@ abstract class Store implements StoreInterface
     public function getDefaultCurrency()
     {
         return $this->defaultCurrency;
+    }
+
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
+    }
+
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
+    public function setLegalName($legalName)
+    {
+        $this->legalName = $legalName;
+    }
+
+    public function getLegalName()
+    {
+        return $this->legalName;
+    }
+
+    public function setOperationalMode($operationalMode)
+    {
+        $this->operationalMode = $operationalMode;
+    }
+
+    public function getOperationalMode()
+    {
+        return $this->operationalMode;
     }
 }

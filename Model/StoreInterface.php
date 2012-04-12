@@ -14,12 +14,14 @@ interface StoreInterface
 {
 
     /**
-     * Get the store name
+     * Get the store display name
      *
      * @abstract
      * @return string
      */
-    public function getName();
+    function getDisplayName();
+
+    function getLegalName();
 
     /**
      * Retrieve the sales channel of the store
@@ -29,10 +31,14 @@ interface StoreInterface
      * @abstract
      *
      */
-    public function getSalesChannel();
+    function getSalesChannel();
 
-    public function setName($name);
+    function setDisplayName($displayName);
 
-    public function setSalesChannel($salesChannel);
+    function setLegalName($legalName);
+
+    function setSalesChannel($salesChannel);
+
+    function setOperationalMode($operationalMode);
 
 }
