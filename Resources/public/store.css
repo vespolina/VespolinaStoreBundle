@@ -4,3 +4,6 @@
 .v-product-unit-price-total {
     border-radius: 2px; background-color: #2D6987; color: #ffffff; float: right; font-size: 1.2em; padding: 2px 4px 2px 4px; }
 .btn{ padding: 2px 8px 4px;}
+
+
+.v-daily-deal-product .thumbnail img { display: block;   margin-left: auto;   margin-right: auto; }

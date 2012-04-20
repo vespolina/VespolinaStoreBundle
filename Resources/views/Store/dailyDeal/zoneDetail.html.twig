@@ -1,0 +1,37 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+<ul class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li class="active">Deal of the Day</li>
+</ul>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="span8 offset2 v-daily-deal-product">
+            <div class="thumbnail">
+                <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                    <img class="thumbs" src="/images/no-product-image.jpg"/>
+                </a>
+            </div>
+            <div class="caption">
+                            <span class="v-product-name">
+                                <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                                    {{ product.name }}
+                                </a>
+                            </span>
+                <div>
+                    <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">I'll take one!</a>
+                                <span class="v-product-price">
+                                    {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+                                </span>
+                </div>
+            </div>
+            <div>
+
+            </div>
+
+    </div>
+</div>
+{% endblock %}
+

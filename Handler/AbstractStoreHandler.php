@@ -27,10 +27,6 @@ abstract class AbstractStoreHandler extends ContainerAware implements StoreHandl
         return $storeZone;
     }
 
-    public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
-    {
-        return $templating->renderResponse('VespolinaStoreBundle:Store:zoneDetail.html.twig', $context);
-    }
 
     protected function findProducts($taxonomyTerm)
     {

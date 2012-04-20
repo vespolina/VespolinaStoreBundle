@@ -26,4 +26,9 @@ class StandardStoreHandler extends AbstractStoreHandler
 
         return $this->findProducts($context['taxonomyTerm']);
     }
+
+    public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
+    {
+        return $templating->renderResponse('VespolinaStoreBundle:Store:standard:zoneDetail.html.twig', $context);
+    }
 }

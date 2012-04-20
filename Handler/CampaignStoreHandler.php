@@ -24,4 +24,9 @@ class CampaignStoreHandler extends AbstractStoreHandler
     {
 
     }
+
+    public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
+    {
+        return $templating->renderResponse('VespolinaStoreBundle:Store/campaign:zoneDetail.html.twig', $context);
+    }
 }

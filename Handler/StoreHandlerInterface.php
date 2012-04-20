@@ -14,7 +14,7 @@ use Vespolina\StoreBundle\Model\StoreZoneInterface;
 interface StoreHandlerInterface
 {
     /**
-     * Which operational mode does this handler covers (eg. standard, daily_deal, ...)
+     * Which operational mode does this handler covers (eg. standard, dailyDeal, ...)
      * @abstract
      */
     function getOperationalMode();
