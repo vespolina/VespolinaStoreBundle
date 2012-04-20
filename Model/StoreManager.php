@@ -57,23 +57,20 @@ abstract class StoreManager implements StoreManagerInterface {
         return $this->currentStore;
     }
 
-    public function loadStoresConfigurations($storeId = null, $hostURI = null)
+    public function loadStoresConfigurations()
     {
-        foreach ($this->storesConfigurations as $storeConfiguration) {
+        foreach ($this->storesConfigurations as $storeID => $storeConfiguration) {
 
-            if (null == $storeId || (null != $storeId && $storeId == $storeConfiguration['id'])) {
+            $store = $this->createStore($storeID, $storeConfiguration['display_name']);
 
-                $store = $this->createStore($storeConfiguration['id'], $storeConfiguration['display_name']);
+            $store->setOperationalMode($storeConfiguration['operational_mode']);
+            $store->setSalesChannel($storeConfiguration['sales_channel']);
 
-                $store->setOperationalMode($storeConfiguration['operational_mode']);
-                $store->setSalesChannel($storeConfiguration['sales_channel']);
+            $this->stores[$storeID] = $store;
 
-                $this->stores[$storeConfiguration['id']] = $store;
+            if ($storeConfiguration['default']) {
 
-                if ($storeConfiguration['default']) {
-
-                    $this->currentStore = $store;
-                }
+                $this->currentStore = $store;
             }
         }
     }

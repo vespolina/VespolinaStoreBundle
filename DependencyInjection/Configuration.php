@@ -13,7 +13,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
- * @author Richard Shank <develop@zestic.com>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -25,38 +24,32 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('vespolina_store');
+        $rootNode = $treeBuilder->root('vespolina_Store');
         $rootNode
             ->children()
-                ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
             ->end();
         $this->addStoresSection($rootNode);
-
-
-
         return $treeBuilder;
     }
 
     protected function addStoresSection(ArrayNodeDefinition $node)
     {
-        $node
-            ->children()
-                ->arrayNode('stores')
-                    ->requiresAtLeastOneElement()
-                    ->prototype('array')
+        $node->children()
+            ->arrayNode('stores')
+                ->useAttributeAsKey('id')
+                ->prototype('array')
                     ->children()
-                        ->booleanNode('default')->end()
-                        ->scalarNode('id')->end()
                         ->scalarNode('display_name')->end()
+                        ->scalarNode('default')->end()
                         ->scalarNode('legal_name')->end()
                         ->scalarNode('sales_channel')->end()
-                        ->scalarNode('default_product_view')->end()
                         ->scalarNode('operational_mode')->end()
-                        ->scalarNode('default_currency')->end()
-                    ->end()
-                ->end()
-            ->end();
+                        ->scalarNode('default_product_view')->end()
+
+            ->end()
+            ->end()
+        ->end();
+
     }
-
-
 }

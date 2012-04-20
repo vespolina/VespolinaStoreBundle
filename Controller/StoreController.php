@@ -2,12 +2,14 @@
 
 namespace Vespolina\StoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-class StoreController extends Controller
+class StoreController extends ContainerAware
 {
 
     protected $store;
+    protected $activeStoreHandler;
+    protected $storeHandlers;
 
     public function indexAction($taxonomyTerm)
     {
@@ -24,37 +26,57 @@ class StoreController extends Controller
     public function zoneDetailAction($taxonomyTerm)
     {
 
-        $products = $this->findProducts($taxonomyTerm);
+        $context = array('taxonomyTerm' => $taxonomyTerm);
 
-        return $this->render('VespolinaStoreBundle:Store:zoneDetail.html.twig',
-            array('products' => $products,
-                  'taxonomyTerm' => $taxonomyTerm));
+        $storeHandler = $this->getStoreHandler();
+
+        //Resolve the store zone using the request
+        $storeZone = $storeHandler->resolveStoreZone($context);
+
+        //Get a product pager for the products in this store zone
+        $context['products'] = $storeHandler->getZoneProducts($storeZone, $context);
+
+        return $storeHandler->renderStoreZone($storeZone, $this->container->get('templating'), $context);
     }
 
 
-    protected function findProducts($taxonomyTerm)
+    public function addStoreHandler($storeHandler)
     {
+        $this->storeHandlers[$storeHandler->getOperationalMode()] = $storeHandler;
+    }
 
-        $criteria = array();
+    protected function getEngine()
+    {
+        return 'twig';
+    }
 
-        //Add product categorisation as criteria if different from 'all'
-        if (null !== $taxonomyTerm && $taxonomyTerm != 'all') {
-            $criteria['terms.slug'] = $taxonomyTerm;
+    protected function getStoreHandler()
+    {
+        if (!$this->activeStoreHandler) {
+
+            $operationalMode = $this->getStore()->getOperationalMode();
+
+            if (!$operationalMode) {
+                $operationalMode = 'standard';  //Always fall back to the standard handler
+            }
+            $this->activeStoreHandler = $this->storeHandlers[$operationalMode];
         }
 
-        $products = $this->get('vespolina.product_manager')->findBy($criteria);
-
-        return $products;
+        return $this->activeStoreHandler;
     }
 
     protected function getStore()
     {
         if (!$this->store) {
 
-            $this-> store = $this->get('vespolina.store_manager')->getCurrentStore();
+            $this-> store = $this->container->get('vespolina.store_manager')->getCurrentStore();
         }
 
         return $this->store;
     }
 
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        return $this->container->get('templating')->renderResponse($view, $parameters, $response);
+    }
 }

@@ -44,10 +44,9 @@ class SetupCommand extends ContainerAwareCommand
         $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
         $this->setupCustomers($customerTaxonomy, $input, $output);
 
-        $store = $this->setupStore($input, $output);
+        $stores = $this->setupStores($input, $output);
 
-
-        $output->writeln('Finished setting up demo store "' . $store->getName() . '" for country "' . $this->country . '" with type "' . $this->type . '"');
+        $output->writeln('Finished setting up stores for country "' . $this->country . '" with type "' . $this->type . '"');
     }
 
     protected function setupCustomers($customerTaxonomy, $input, $output) {
@@ -239,24 +238,30 @@ class SetupCommand extends ContainerAwareCommand
         return $taxSchema;
     }
 
-    protected function setupStore($input, $output)
+    protected function setupStores($input, $output)
     {
         $storeManager = $this->getContainer()->get('vespolina.store_manager');
-        $store = $storeManager->createStore('default_store', 'Vespolina ' . ucfirst($this->type) . ' Shop');
-        $store->setSalesChannel('default_store_web');
-        $currency = '';
 
-        //Default currency
-        switch ($this->country) {
-            case 'US': $currency = 'USD'; break;
-            default: $currency = 'EUR'; break;
+        //Load stores configurations (for now get that from vespolina.yml)
+        $stores = $storeManager->loadStoresConfigurations();
+
+        foreach($stores as $store) {
+
+            if (!$store->getDefaultCurrency()) {
+               //Default currency
+                switch ($this->country) {
+                    case 'US': $currency = 'USD'; break;
+                    default: $currency = 'EUR'; break;
+                }
+                $store->setDefaultCurrency($currency);
+            }
+
+            $storeManager->updateStore($store);
+
         }
-        $store->setDefaultCurrency($currency);
 
-        $storeManager->updateStore($store);
-
-        $output->writeln('- Setup a default store configuration with default currency ' . $currency );
-        return $store;
+        $output->writeln('- Setup ' . count($stores) . 'store(s)');
+        return $stores;
     }
 
     protected function slugify($text)
