@@ -8,6 +8,7 @@
 
 namespace Vespolina\StoreBundle\Model;
 
+use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
@@ -15,16 +16,23 @@ use Vespolina\StoreBundle\Model\StoreZoneInterface;
  */
 class StoreZone implements StoreZoneInterface
 {
-    protected $name;
+    protected $displayName;
     protected $taxonomyName;
+    protected $store;
+
     /**
      * Name of this zone
      *
      * @return mixed
      */
-    function getName()
+    function getDisplayName()
     {
-        return $this->name;
+        return $this->displayName;
+    }
+
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
     }
 
     /**
@@ -37,13 +45,18 @@ class StoreZone implements StoreZoneInterface
         return $this->taxonomyName;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
     public function setTaxonomyName($taxonomyName)
     {
         $this->taxonomyName = $taxonomyName;
+    }
+
+    public function setStore(StoreInterface $store)
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
     }
 }

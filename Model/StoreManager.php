@@ -64,6 +64,7 @@ abstract class StoreManager implements StoreManagerInterface {
             $store = $this->createStore($storeID, $storeConfiguration['display_name']);
             $store->setOperationalMode($storeConfiguration['operational_mode']);
             $store->setSalesChannel($storeConfiguration['sales_channel']);
+            $store->setDefaultProductView($storeConfiguration['default_product_view']);
 
             $this->stores[$storeID] = $store;
 
@@ -72,6 +73,8 @@ abstract class StoreManager implements StoreManagerInterface {
                 $this->currentStore = $store;
             }
         }
+
+        return $this->stores;
     }
 
     public function getCurrentStore()

@@ -7,12 +7,15 @@
  */
 namespace Vespolina\StoreBundle\Document;
 
-use Vespolina\StoreBundle\Model\Store as AbstractStore;
+use Vespolina\StoreBundle\Document\BaseStoreZone;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-abstract class BaseStore extends AbstractStore
+class StoreZone extends BaseStoreZone
 {
-    protected $id;
+
+    public function __construct()
+    {
+    }
 
 }

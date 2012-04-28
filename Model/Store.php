@@ -21,6 +21,7 @@ abstract class Store implements StoreInterface
     protected $legalName;
     protected $operationalMode;
     protected $salesChannel;
+    protected $defaultProductView;
 
      public function __construct()
     {
@@ -102,4 +103,16 @@ abstract class Store implements StoreInterface
     {
         return $this->operationalMode;
     }
+
+    public function setDefaultProductView($defaultProductView)
+    {
+        $this->defaultProductView = $defaultProductView;
+    }
+
+    public function getDefaultProductView()
+    {
+        return $this->defaultProductView;
+    }
+
+
 }

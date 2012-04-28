@@ -7,6 +7,8 @@
  */
 namespace Vespolina\StoreBundle\Model;
 
+use Vespolina\StoreBundle\Model\StoreInterface;
+
 /**
  * A store zone represents a way to group related products together with associated news, CMS content, you name it.
  * Each store zone can potentially has its own taxonomy, product view layout and individual settings
@@ -21,7 +23,9 @@ interface StoreZoneInterface
      * @abstract
      * @return mixed
      */
-    function getName();
+    function getDisplayName();
+
+    function setDisplayName($displayName);
 
     /**
      * Name of the taxonomy associated with this zone
@@ -31,7 +35,10 @@ interface StoreZoneInterface
      */
     function getTaxonomyName();
 
+    function getStore();
 
     function setTaxonomyName($taxonomyName);
+
+    function setStore(StoreInterface $store);
 
 }

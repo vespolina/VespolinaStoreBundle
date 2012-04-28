@@ -12,12 +12,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 use Vespolina\StoreBundle\Handler\StoreHandlerInterface;
+use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 use Vespolina\StoreBundle\Model\StoreZone;
 
 
 abstract class AbstractStoreHandler extends ContainerAware implements StoreHandlerInterface
 {
+    protected $store;
+
+    public function getStore()
+    {
+        return $this->store;
+    }
+
+    public function setStore(StoreInterface $store)
+    {
+        $this->store = $store;
+    }
 
     public function resolveStoreZone(array $context) {
 
@@ -26,6 +38,7 @@ abstract class AbstractStoreHandler extends ContainerAware implements StoreHandl
 
         return $storeZone;
     }
+
 
 
     protected function findProducts($taxonomyTerm)

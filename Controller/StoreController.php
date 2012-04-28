@@ -56,10 +56,13 @@ class StoreController extends ContainerAware
 
             $operationalMode = $this->getStore()->getOperationalMode();
 
+
             if (!$operationalMode) {
                 $operationalMode = 'standard';  //Always fall back to the standard handler
             }
             $this->activeStoreHandler = $this->storeHandlers[$operationalMode];
+
+            $this->activeStoreHandler->setStore($this->getStore());
         }
 
         return $this->activeStoreHandler;

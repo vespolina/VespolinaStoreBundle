@@ -29,6 +29,9 @@ class StandardStoreHandler extends AbstractStoreHandler
 
     public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
     {
-        return $templating->renderResponse('VespolinaStoreBundle:Store:standard:zoneDetail.html.twig', $context);
+
+        $context = array_merge(array('product_view' => $this->getStore()->getDefaultProductView()), $context);
+
+        return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }
 }

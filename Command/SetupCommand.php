@@ -44,7 +44,11 @@ class SetupCommand extends ContainerAwareCommand
         $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
         $this->setupCustomers($customerTaxonomy, $input, $output);
 
+        //Setup on or multiple stores
         $stores = $this->setupStores($input, $output);
+
+        //For each store set up a (default) store zone
+        $storeZones = $this->setupStoreZones($stores, $input, $output);
 
         $output->writeln('Finished setting up stores for country "' . $this->country . '" with type "' . $this->type . '"');
     }
@@ -260,9 +264,30 @@ class SetupCommand extends ContainerAwareCommand
 
         }
 
-        $output->writeln('- Setup ' . count($stores) . 'store(s)');
+        $output->writeln('- Setup ' . count($stores) . ' store(s)');
         return $stores;
     }
+
+    protected function setupStoreZones($stores, $input, $output)
+    {
+        $storeZones = array();
+        $storeZoneManager = $this->getContainer()->get('vespolina.store_zone_manager');
+
+        foreach ($stores as $store) {
+
+            //Setup store zones
+            $storeZone = $storeZoneManager->createStoreZone($store);
+            $storeZone->setTaxonomyName('products');
+
+            $storeZoneManager->updateStoreZone($storeZone);
+            $storeZones[] = $storeZone;
+        }
+
+        $output->writeln('- Setup ' . count($storeZones) . ' store zone(s)');
+
+        return $storeZones;
+    }
+
 
     protected function slugify($text)
     {

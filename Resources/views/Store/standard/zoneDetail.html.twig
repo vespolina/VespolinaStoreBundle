@@ -10,7 +10,7 @@
 
 {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'taxonomyName': 'products'} %}
 
-{% include "VespolinaStoreBundle:Product:_product_list_tiled.html.twig" with {'taxonomyName': 'products', 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
+{% include "VespolinaStoreBundle:Product:_product_list_" ~ product_view|default('tiled') ~ ".html.twig" with {'taxonomyName': 'products', 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
 
 {% endblock %}
 

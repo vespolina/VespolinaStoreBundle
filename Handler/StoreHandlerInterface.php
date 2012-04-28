@@ -33,6 +33,6 @@ interface StoreHandlerInterface
      * @param array $context
      * @return mixed
      */
-    function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context);
+    function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array());
 
 }

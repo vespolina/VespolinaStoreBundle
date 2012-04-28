@@ -21,7 +21,7 @@
                                 </a>
                             </span>
                 <div>
-                    <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">I'll take one!</a>
+                    <a class="btn btn-large" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">I'll take one!</a>
                                 <span class="v-product-price">
                                     {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
                                 </span>
