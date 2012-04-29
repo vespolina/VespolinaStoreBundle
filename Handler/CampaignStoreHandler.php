@@ -20,7 +20,7 @@ class CampaignStoreHandler extends AbstractStoreHandler
         return 'campaign';
     }
 
-    public function getZoneProducts(StoreZoneInterface $storeZone, array $context)
+    public function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context)
     {
 
     }

@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Vespolina\StoreBundle\Handler\AbstractStoreHandler;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
-class StandardStoreHandler extends AbstractStoreHandler
+class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Component\DependencyInjection\ContainerAwareInterface
 {
 
     public function getOperationalMode()
@@ -21,7 +21,7 @@ class StandardStoreHandler extends AbstractStoreHandler
         return 'standard';
     }
 
-    public function getZoneProducts(StoreZoneInterface $storeZone, array $context)
+    public function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context)
     {
 
         return $this->findProducts($context['taxonomyTerm']);
@@ -31,6 +31,15 @@ class StandardStoreHandler extends AbstractStoreHandler
     {
 
         $context = array_merge(array('product_view' => $this->getStore()->getDefaultProductView()), $context);
+
+        //Get products in this store zone as a doctrine query
+        $productsQuery = $this->getZoneProducts($storeZone, true, $context);
+
+        $context['productsPagination'] =  $this->container->get('knp_paginator')->paginate(
+            $productsQuery,
+            $this->container->get('request')->query->get('page', 1),
+            10);
+
 
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }

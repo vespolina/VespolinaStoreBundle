@@ -1,8 +1,7 @@
-<h4>List of Products</h4>
 <div class="v-product-list-large">
     <table>
 
-    {% for product in products %}
+    {% for product in productsPagination %}
         <tr>
             <td class="v-product-name">
                 <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
@@ -16,5 +15,9 @@
     {% endfor %}
 
     </table>
-
+    <div class="row">
+        <div class="navigation">
+            {{ productsPagination.render()|raw }}
+        </div>
+    </div>
 </div>

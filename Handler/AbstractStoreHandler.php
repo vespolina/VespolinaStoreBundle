@@ -17,7 +17,7 @@ use Vespolina\StoreBundle\Model\StoreZoneInterface;
 use Vespolina\StoreBundle\Model\StoreZone;
 
 
-abstract class AbstractStoreHandler extends ContainerAware implements StoreHandlerInterface
+abstract class AbstractStoreHandler extends ContainerAware
 {
     protected $store;
 
@@ -50,9 +50,13 @@ abstract class AbstractStoreHandler extends ContainerAware implements StoreHandl
             $criteria['terms.slug'] = $taxonomyTerm;
         }
 
-        $products = $this->container->get('vespolina.product_manager')->findBy($criteria);
+        //$productsQuery = $this->container->get('vespolina.product_manager')->findBy($criteria);
+        //Todo: products query should come in through the product manager and work for both ORM and ODM
 
-        return $products;
+        $dm = $this->container->get('doctrine.odm.mongodb.default_document_manager');
+        $productsQuery = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product')->getQuery();
+
+        return $productsQuery;
     }
 
 

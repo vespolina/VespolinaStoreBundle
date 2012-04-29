@@ -33,9 +33,6 @@ class StoreController extends ContainerAware
         //Resolve the store zone using the request
         $storeZone = $storeHandler->resolveStoreZone($context);
 
-        //Get a product pager for the products in this store zone
-        $context['products'] = $storeHandler->getZoneProducts($storeZone, $context);
-
         return $storeHandler->renderStoreZone($storeZone, $this->container->get('templating'), $context);
     }
 
@@ -55,7 +52,6 @@ class StoreController extends ContainerAware
         if (!$this->activeStoreHandler) {
 
             $operationalMode = $this->getStore()->getOperationalMode();
-
 
             if (!$operationalMode) {
                 $operationalMode = 'standard';  //Always fall back to the standard handler

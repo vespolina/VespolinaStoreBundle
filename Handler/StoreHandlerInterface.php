@@ -23,7 +23,7 @@ interface StoreHandlerInterface
      * Determines for a given zone which products should be displayed
      * @abstract
      */
-    function getZoneProducts(StoreZoneInterface $storeZone, array $context);
+    function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context);
 
     /**
      * Render the store zone for the given context

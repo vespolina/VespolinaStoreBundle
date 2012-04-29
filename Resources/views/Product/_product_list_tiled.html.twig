@@ -1,8 +1,7 @@
 <div class="row">
     <div class="span12 offset1">
-        <h4>List of Products</h4>
         <div class="row">
-            {% for product in products %}
+            {% for product in productsPagination %}
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
                     <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
@@ -26,6 +25,11 @@
             {% else %}
             No products loaded.
             {% endfor %}
+        </div>
+        <div class="row">
+            <div class="navigation">
+                {{ productsPagination.render()|raw }}
+            </div>
         </div>
     </div>
 </div>
