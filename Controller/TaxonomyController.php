@@ -2,11 +2,10 @@
 
 namespace Vespolina\StoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Vespolina\StoreBundle\Controller\AbstractController;
 
-class TaxonomyController extends Controller
+class TaxonomyController extends AbstractController
 {
-
 
     public function listTermsAction($taxonomyName)
     {
@@ -19,7 +18,7 @@ class TaxonomyController extends Controller
 
     protected function getTaxonomy($taxonomyName)
     {
-        $taxonomyManager = $this->get('vespolina.taxonomy.taxonomy_manager');
+        $taxonomyManager = $this->container->get('vespolina.taxonomy.taxonomy_manager');
 
         $taxonomy = $taxonomyManager->findTaxonomyById('products');
 

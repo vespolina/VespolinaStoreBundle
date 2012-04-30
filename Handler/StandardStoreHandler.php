@@ -35,10 +35,12 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
         //Get products in this store zone as a doctrine query
         $productsQuery = $this->getZoneProducts($storeZone, true, $context);
 
+        $productsPerPage = 50;
+
         $context['productsPagination'] =  $this->container->get('knp_paginator')->paginate(
             $productsQuery,
             $this->container->get('request')->query->get('page', 1),
-            10);
+            $productsPerPage);
 
 
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);

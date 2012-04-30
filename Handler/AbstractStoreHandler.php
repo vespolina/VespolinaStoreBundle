@@ -39,24 +39,21 @@ abstract class AbstractStoreHandler extends ContainerAware
         return $storeZone;
     }
 
-
-
     protected function findProducts($taxonomyTerm)
     {
         $criteria = array();
+        //Todo: products query should come in through the product manager and work for both ORM and ODM
+        $dm = $this->container->get('doctrine.odm.mongodb.default_document_manager');
+        $qb = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product');
+        $qb->sort('name', 'ASC');
 
         //Add product categorisation as criteria if different from 'all'
         if (null !== $taxonomyTerm && $taxonomyTerm != 'all') {
-            $criteria['terms.slug'] = $taxonomyTerm;
+
+            $qb->field('terms.slug')->equals($taxonomyTerm);
         }
 
-        //$productsQuery = $this->container->get('vespolina.product_manager')->findBy($criteria);
-        //Todo: products query should come in through the product manager and work for both ORM and ODM
-
-        $dm = $this->container->get('doctrine.odm.mongodb.default_document_manager');
-        $productsQuery = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product')->getQuery();
-
-        return $productsQuery;
+        return $qb->getQuery();
     }
 
 
