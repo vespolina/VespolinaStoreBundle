@@ -1,0 +1,21 @@
+<div class = "v-taxonomy-below-eachother">
+    <ul class="nav nav-list">
+        <li class="nav-header">
+            Category
+        </li>
+        {% for term in terms %}
+            {% if term.path == currentTaxonomyTerm %}
+                {% set css = 'active'%}
+            {% else %}
+                {% set css = ''%}
+            {% endif %}
+        <li class="{{ css }}">
+         <a href="{{ url('vespolina_store_products', { 'taxonomyTerm': term.path }) }}">
+            <div>{{ term.name }}</div>
+        </a>
+        </li>
+        {% else %}
+
+        {% endfor %}
+    </ul>
+</div>

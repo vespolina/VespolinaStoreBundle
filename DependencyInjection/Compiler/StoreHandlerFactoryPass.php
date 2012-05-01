@@ -15,9 +15,5 @@ class StoreHandlerFactoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $factory = $container->getDefinition('vespolina.store.store_controller');
-        foreach ($container->findTaggedServiceIds('vespolina.store.store_handler') as $id => $attr) {
-            $factory->addMethodCall('addStoreHandler', array(new Reference($id)));
-        }
     }
 }

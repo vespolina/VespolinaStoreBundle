@@ -30,7 +30,12 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
     public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
     {
 
-        $context = array_merge(array('product_view' => $this->getStore()->getDefaultProductView()), $context);
+        $defaults = array('productView' => $this->getStore()->getDefaultProductView(),
+                          'taxonomyName' => $storeZone->getTaxonomyName(),
+                          'taxonomyRenderType' => 'belowEachOther',
+                          'productsPerPage' => 20);
+
+        $context = array_merge($defaults, $context);
 
         //Get products in this store zone as a doctrine query
         $productsQuery = $this->getZoneProducts($storeZone, true, $context);
@@ -38,7 +43,7 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
         $context['productsPagination'] =  $this->container->get('knp_paginator')->paginate(
             $productsQuery,
             $this->container->get('request')->query->get('page', 1),
-            10);
+            $context['productsPerPage']);
 
 
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
