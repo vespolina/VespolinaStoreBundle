@@ -1,0 +1,41 @@
+<div class="v-product-list-large">
+    <table>
+
+    {% for product in productsPagination %}
+        <tr>
+            <td>
+                <div class="v-product-list-item">
+                    <span class="v-product-thumbnail">
+                        <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                            <img class="thumbs" src="/images/no-product-image.jpg"/>
+                        </a>
+                    </span>
+                    <span class="v-product-detail">
+                        <div class="v-product-description">
+                            <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                                {{ product.name }}
+                            </a>
+                        </div>
+                        <div class="v-product-order">
+                            <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">Add to Cart</a>
+                            <span class="v-product-price">
+                                {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+                            </span>
+                        </div>
+                    </span>
+
+                </div>
+            </td>
+        </tr>
+
+    {% else %}
+    No products loaded.
+    {% endfor %}
+
+    </table>
+    <div class="row">
+        <div class="navigation">
+            {{ productsPagination.render()|raw }}
+        </div>
+    </div>
+</div>
