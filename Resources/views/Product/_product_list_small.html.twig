@@ -1,4 +1,4 @@
-<div class="v-product-list-large">
+<div class="v-product-list-small">
     <table>
 
     {% for product in productsPagination %}
@@ -11,15 +11,18 @@
                         </a>
                     </span>
                     <span class="v-product-detail">
-                        <div class="v-product-description">
+                        <div class="v-product-title">
                             <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
                                 {{ product.name }}
                             </a>
                         </div>
+                        <div class="v-product-short-description">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tortor mi, ornare a imperdiet consequat, venenatis id dolor. Pellentesque et tempus mauris. Nunc lacinia, orci sit amet ullamcorper posuere, orci neque tincidunt tellus, nec tristique lectus sapien at ante.
+                        </div>
                         <div class="v-product-order">
-                            <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">Add to Cart</a>
                             <span class="v-product-price">
                                 {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+                                <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">Add to Cart</a>
                             </span>
                         </div>
                     </span>
