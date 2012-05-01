@@ -15,16 +15,16 @@
                 </a>
             </div>
             <div class="caption">
-                            <span class="v-product-name">
-                                <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
-                                    {{ product.name }}
-                                </a>
-                            </span>
+                <span class="v-product-name">
+                    <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                        {{ product.name }}
+                    </a>
+                </span>
                 <div>
                     <a class="btn btn-large" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">I'll take one!</a>
-                                <span class="v-product-price">
-                                    {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
-                                </span>
+                        <span class="v-product-price">
+                            {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+                        </span>
                 </div>
             </div>
             <div>

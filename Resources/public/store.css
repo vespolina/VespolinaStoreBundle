@@ -7,3 +7,10 @@
 
 
 .v-daily-deal-product .thumbnail img { display: block;   margin-left: auto;   margin-right: auto; }
+
+.v-product-list-small .v-product-list-item { width: 50em;}
+.v-product-list-small .v-product-list-item { border-radius: 2px; padding: 2px 4px 2px 4px; }
+.v-product-list-small .v-product-list-item .v-product-thumbnail{ float: left;}
+.v-product-list-small .v-product-list-item .v-product-detail{  }
+
+.v-taxonomy-below-eachother { width: 10em; float: left; margin-right: 0.5em}

@@ -2,31 +2,35 @@
 
 namespace Vespolina\StoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Vespolina\StoreBundle\Controller\AbstractController;
 
-class TaxonomyController extends Controller
+class TaxonomyController extends AbstractController
 {
+    protected $taxonomyManager;
 
-
-    public function listTermsAction($taxonomyName)
+    public function listTermsAction($taxonomyName, $currentTaxonomyTerm, $renderType)
     {
-
+        $addAllTerm = true;
         $taxonomy = $this->getTaxonomy($taxonomyName);
-        $terms = $taxonomy->getTerms();
-        return $this->render('VespolinaStoreBundle:Taxonomy:listTerms.html.twig', array('terms' => $terms));
+        $terms = $taxonomy->getTerms()->toArray();
+
+        if ($addAllTerm) {
+
+            $allTerm = $this->taxonomyManager->createTerm('all');
+            $allTerm->setPath('all');
+            array_unshift($terms, $allTerm);
+        }
+
+        return $this->render('VespolinaStoreBundle:Taxonomy:listTerms' . $renderType . '.html.twig', array('terms' => $terms, 'currentTaxonomyTerm' => $currentTaxonomyTerm));
     }
 
 
     protected function getTaxonomy($taxonomyName)
     {
-        $taxonomyManager = $this->get('vespolina.taxonomy.taxonomy_manager');
+        $this->taxonomyManager = $this->container->get('vespolina.taxonomy.taxonomy_manager');
 
-        $taxonomy = $taxonomyManager->findTaxonomyById('products');
+        return $taxonomy = $this->taxonomyManager->findTaxonomyById('products');
 
-        if (!$taxonomy) {
-
-        }
-        return $taxonomy;
     }
 
 }
