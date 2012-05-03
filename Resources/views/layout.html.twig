@@ -20,28 +20,46 @@
 
 </div>
 
+
+
 <div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="offset9 span3">
 
-    <hr class="noscreen">
+            {% block cart_quick_inspection %}
+                {% render "VespolinaStoreBundle:Cart:quickInspection" %}
+            {% endblock %}
 
-    <div id="content" class="box">
-
-        {% block navigation %}
-            <ul class="breadcrumb">
-              <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
-              <li class="active">You are here</li>
-            </ul>
-        {% endblock %}
-
-    {% block content %}
-        No content.
-    {% endblock %}
-
+            </div>
+        </div>
     </div>
 
-    <hr class="noscreen" />
+    <div class="row-fluid">
+        <div class="span2">
+            {% block product_taxonomy %}
+            {% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'currentTaxonomyTerm': taxonomyTerm,
+                                                              'taxonomyName': taxonomyName,
+                                                              'renderType': taxonomyRenderType } %}
+            {% endblock %}
+        </div>
+        <div class="span10">
+            <div id="content" class="box">
 
-    <!-- Footer -->
+                {% block navigation %}
+                <ul class="breadcrumb">
+                    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+                    <li class="active">You are here</li>
+                </ul>
+                {% endblock %}
+
+                {% block content %}
+                No content.
+                {% endblock %}
+            </div>
+       </div>
+    </div>
+   <!-- Footer -->
     <div id="footer" class="box">
         <p class="f-right">Copyright &copy; 2O11 - 2012 <a href="http://www.vespolina.org">Vespolina Project</a>, All Rights Reserved</p>
     </div> <!-- /footer -->
