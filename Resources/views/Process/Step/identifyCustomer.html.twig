@@ -1,0 +1,25 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+<ul class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li>Checkout<span class="divider">/</span></li>
+    <li class="active">Login</li>
+</ul>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span6">
+        <h3>I am already a customer</h3>
+        Please login
+    </div>
+    <div class="span6">
+        <h3>I want to become a customer</h3>
+        Full out this form below
+    </div>
+</div>
+{% endblock %}
+

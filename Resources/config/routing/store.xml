@@ -19,6 +19,11 @@
         <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="vespolina_store_cart_checkout" pattern="/checkout">
+        <default key="_controller">VespolinaStoreBundle:Checkout:checkout</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
 </routes>
 
 
