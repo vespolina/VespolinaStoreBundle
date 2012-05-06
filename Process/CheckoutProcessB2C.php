@@ -43,7 +43,8 @@ class CheckoutProcessB2C extends AbstractProcess
                 //Execute step 1
                 return $this->executeProcessStep('identify_customer');
 
-            case 'partner_identified':
+
+            case 'customer_identified':
 
                 //Execute step 2
                 return $this->executeProcessStep('determine_fulfillment');
@@ -51,12 +52,13 @@ class CheckoutProcessB2C extends AbstractProcess
         }
     }
 
+
+
     public function getClassMap()
     {
         return array(
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
-
         );
     }
 

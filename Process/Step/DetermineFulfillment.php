@@ -13,13 +13,13 @@ use Vespolina\StoreBundle\Process\AbstractProcessStep;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class IdentifyCustomer extends AbstractProcessStep
+class DetermineFulfillment extends AbstractProcessStep
 {
     protected $process;
 
     public function init()
     {
-        $this->setName('identify customer');
+        $this->setName('delivery');
     }
 
     public function execute($context)
@@ -29,11 +29,10 @@ class IdentifyCustomer extends AbstractProcessStep
 
         if (!$customerIdentified) {
 
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\IdentifyCustomerController');
+            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\DetermineFulfillmentController');
             $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();
-
         } else {
 
             return true;    //Todo encapsulate return value

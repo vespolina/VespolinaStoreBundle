@@ -15,6 +15,7 @@ use Vespolina\StoreBundle\Process\ProcessInterface;
  */
 abstract class AbstractProcessStep implements ProcessStepInterface
 {
+    protected $name;
     protected $process;
 
     public function __construct(ProcessInterface $process)
@@ -22,11 +23,26 @@ abstract class AbstractProcessStep implements ProcessStepInterface
         $this->process = $process;
     }
 
+    public function getProcess()
+    {
+        return $this->process;
+    }
+
     protected function getController($class)
     {
         $controller = new $class($this);
 
         return $controller;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 
 }

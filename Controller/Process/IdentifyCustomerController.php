@@ -9,8 +9,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
     public function executeAction()
     {
         // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
-
-        return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig', array('processStep' => $this->processStep));
+        return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig', array('currentProcessStep' => $this->processStep));
     }
 
     protected function getCart($cartId = null)

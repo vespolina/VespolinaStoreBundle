@@ -31,6 +31,7 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
         $baseClass = $this->getProcessClass($name);
 
         $process = new $baseClass($this->container);
+        $process->setId(uniqid());
 
         return $process;
     }

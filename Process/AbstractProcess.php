@@ -18,6 +18,8 @@ abstract class AbstractProcess implements ProcessInterface
     protected $classMap;
     protected $container;
     protected $context;
+    protected $id;
+    protected $processSteps;
 
     public function __construct($container)
     {
@@ -28,12 +30,15 @@ abstract class AbstractProcess implements ProcessInterface
     {
 
         $this->classMap = $this->getClassMap();
+        $this->loadProcessSteps();
     }
 
     public function executeProcessStep($name) {
 
 
         $processStep = $this->getProcessStep($name);
+
+
 
         if ($processStep) {
 
@@ -46,14 +51,51 @@ abstract class AbstractProcess implements ProcessInterface
         return $this->container;
     }
 
+    public function getProcessSteps()
+    {
+        if (!$this->processSteps) {
+
+            $this->loadProcessSteps();
+        }
+
+        return $this->processSteps;
+    }
+
+    protected function loadProcessSteps()
+    {
+
+        foreach($this->getClassMap() as $processStepClass) {
+
+            $processStep = new $processStepClass($this);
+            $processStep->init();
+
+            $this->processSteps[] = $processStep;
+
+        }
+    }
+
     protected function getProcessStep($name) {
 
-        $class = $this->classMap[$name];
-        $processStep = new $class($this);
+        foreach($this->processSteps as $processStep) {
+
+            if ($processStep->getName() == $name ) {
+
+                return $processStep;
+            }
+        }
 
         return $processStep;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
 
 }
