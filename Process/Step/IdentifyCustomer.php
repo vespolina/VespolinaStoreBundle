@@ -19,9 +19,14 @@ class IdentifyCustomer extends AbstractProcessStep
 
     public function init()
     {
-        $this->setName('identify customer');
+        $this->setDisplayName('identify customer');
+        $this->setName('identify_customer');
     }
 
+    public function complete()
+    {
+
+    }
     public function execute($context)
     {
 
@@ -30,6 +35,7 @@ class IdentifyCustomer extends AbstractProcessStep
         if (!$customerIdentified) {
 
             $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\IdentifyCustomerController');
+            $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();

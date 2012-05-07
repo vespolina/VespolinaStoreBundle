@@ -19,7 +19,8 @@ class DetermineFulfillment extends AbstractProcessStep
 
     public function init()
     {
-        $this->setName('delivery');
+        $this->setDisplayName('delivery');
+        $this->setName('determine_fulfillment');
     }
 
     public function execute($context)
@@ -51,6 +52,10 @@ class DetermineFulfillment extends AbstractProcessStep
         }
     }
 
+    public function getName()
+    {
+        return 'determine_fulfillment';
+    }
 
 
 }

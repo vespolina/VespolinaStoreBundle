@@ -15,4 +15,6 @@ interface ProcessStepInterface
 
     function execute($context);
 
+    function getDisplayName();
+
 }

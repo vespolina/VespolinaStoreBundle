@@ -17,13 +17,12 @@ class CheckoutController extends AbstractController
 
         if (!$checkoutProcess) {
 
-            $checkoutProcess = $processManager->createProcess('checkout_b2c');
-
+            $checkoutProcess = $processManager->createProcess('checkout_b2c', $processOwner);
         }
 
         $checkoutProcess->init();
-
         $processResult = $checkoutProcess->execute();
+
 
         if ($processResult) {
 

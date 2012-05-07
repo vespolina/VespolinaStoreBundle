@@ -9,7 +9,7 @@ class AbstractProcessStepController extends AbstractController
 {
     protected $processStep;
 
-    public function __construct(ProcessStepInterface $processStep)
+    public function setProcessStep(ProcessStepInterface $processStep)
     {
         $this->processStep = $processStep;
     }
@@ -17,5 +17,15 @@ class AbstractProcessStepController extends AbstractController
     public function getProcessStep()
     {
         return $this->processStep;
+    }
+
+    protected function getCurrentProcessStepByProcessId($processId)
+    {
+        $processManager = $this->container->get('vespolina.process_manager');
+        $process = $processManager->findProcessById($processId);
+        if ($process) {
+
+            return $process->getCurrentProcessStep();
+        }
     }
 }

@@ -33,26 +33,39 @@ class CheckoutProcessB2C extends AbstractProcess
         $this->context = array('state' => 'initial');
     }
 
+    public function completeProcessStep(ProcessStepInterface $processStep){
+
+        switch($processStep->getName()) {
+
+            case 'identify_customer':
+                $this->context['state'] = 'customer_identified';
+                break;
+        }
+    }
+
     public function execute()
     {
 
+        $currentProcessStep = $this->getCurrentProcessStep();
+        return $currentProcessStep->execute($this);
+    }
+
+    public function getCurrentProcessStep()
+    {
         switch($this->context['state']) {
 
             case 'initial':
 
                 //Execute step 1
-                return $this->executeProcessStep('identify_customer');
-
+                return $this->getProcessStepByName('identify_customer');
 
             case 'customer_identified':
 
                 //Execute step 2
-                return $this->executeProcessStep('determine_fulfillment');
+                return $this->getProcessStepByName('determine_fulfillment');
 
         }
     }
-
-
 
     public function getClassMap()
     {
@@ -60,6 +73,11 @@ class CheckoutProcessB2C extends AbstractProcess
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
         );
+    }
+
+    public function getName()
+    {
+        return 'checkout_b2c';
     }
 
 }

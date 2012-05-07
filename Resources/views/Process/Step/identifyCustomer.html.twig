@@ -14,12 +14,22 @@
 <div class="row-fluid">
     <div class="span6">
         <h3>I am already a customer</h3>
-        Please login
+        <a class="btn btn-primary" href="{{ path('vespolina_store_cart_checkout') }}">Login</a>
+
     </div>
     <div class="span6">
-        <h3>I want to become a customer</h3>
-        Full out this form below
+        <h3>I'm not yet a customer</h3>
+
+        <p>Full out this form below</p>
+
+        <form action="{{ path('vespolina_store_checkout_create_customer', { 'processId': currentProcessStep.process.id })}}" method="post" {{ form_enctype(createCustomerForm) }}>
+        {{ form_widget(createCustomerForm) }}
+            <input type="submit" class="btn" />
+        </form>
+
     </div>
+</div>
+<div class="row-fluid">
 </div>
 {% endblock %}
 
