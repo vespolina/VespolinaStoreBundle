@@ -13,20 +13,16 @@ use Vespolina\StoreBundle\Process\AbstractProcessStep;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class IdentifyCustomer extends AbstractProcessStep
+class SelectPaymentMethod extends AbstractProcessStep
 {
     protected $process;
 
     public function init()
     {
-        $this->setDisplayName('identify customer');
-        $this->setName('identify_customer');
+        $this->setDisplayName('payment method');
+        $this->setName('select_payment_method');
     }
 
-    public function complete()
-    {
-
-    }
     public function execute($context)
     {
 
@@ -34,17 +30,32 @@ class IdentifyCustomer extends AbstractProcessStep
 
         if (!$customerIdentified) {
 
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\IdentifyCustomerController');
+            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\PaymentMethodController');
             $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();
-
         } else {
 
             return true;    //Todo encapsulate return value
         }
 
+    }
+
+    public function executeProcessStep($name) {
+
+
+        $processStep = $this->getProcessStep($name);
+
+        if ($processStep) {
+
+            return $processStep->execute();
+        }
+    }
+
+    public function getName()
+    {
+        return 'select_payment_method';
     }
 
 

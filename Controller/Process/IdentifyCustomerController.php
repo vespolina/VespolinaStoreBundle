@@ -4,7 +4,7 @@ namespace Vespolina\StoreBundle\Controller\Process;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Vespolina\PartnerBundle\Form\Type\CustomerQuickCreate;
+use Vespolina\StoreBundle\Form\Type\Process\CustomerQuickCreate;
 use Vespolina\StoreBundle\Controller\Process\AbstractProcessStepController;
 
 class IdentifyCustomerController extends AbstractProcessStepController
@@ -23,22 +23,22 @@ class IdentifyCustomerController extends AbstractProcessStepController
     public function createCustomerAction(Request $request, $processId)
     {
 
-       $createCustomerForm = $this->createCustomerQuickCreateForm();
+        $createCustomerForm = $this->createCustomerQuickCreateForm();
+        $processManager = $this->container->get('vespolina.process_manager');
 
-       if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
 
             $createCustomerForm->bindRequest($request);
 
             if ($createCustomerForm->isValid()) {
 
-                $processStep = $this->getCurrentProcessStepByProcessId($processId);
-                $process = $processStep->getProcess();
+                $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
+                $process = $this->processStep->getProcess();
 
-                //Signal process step that it's completed
-                $process->completeProcessStep($processStep);
-
-                $processManager = $this->container->get('vespolina.process_manager');
+                //Signal enclosing process step that we are done here
+                $process->completeProcessStep($this->processStep);
                 $processManager->updateProcess($process);
+
 
                 return $process->execute();
 

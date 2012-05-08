@@ -6,9 +6,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process;
+namespace Vespolina\StoreBundle\Process\Scenario;
 
 use Vespolina\StoreBundle\Process\AbstractProcess;
+use Vespolina\StoreBundle\Process\ProcessStepInterface;
+
 
 /**
  * This process models a commonly used checkout process which consists of following steps:
@@ -36,22 +38,34 @@ class CheckoutProcessB2C extends AbstractProcess
     public function completeProcessStep(ProcessStepInterface $processStep){
 
         switch($processStep->getName()) {
-
             case 'identify_customer':
-                $this->context['state'] = 'customer_identified';
+
+                $this->context['state'] = 'determine_fulfillment';
                 break;
+
+            case 'determine_fulfillment':
+
+                $this->context['state'] = 'choose_payment_method';
+                break;
+
+            case 'choose_payment_method':
+
+                $this->context['state'] = 'payment_method_determined';
+                break;
+
         }
     }
 
     public function execute()
     {
-
         $currentProcessStep = $this->getCurrentProcessStep();
+
         return $currentProcessStep->execute($this);
     }
 
     public function getCurrentProcessStep()
     {
+
         switch($this->context['state']) {
 
             case 'initial':
@@ -60,9 +74,24 @@ class CheckoutProcessB2C extends AbstractProcess
                 return $this->getProcessStepByName('identify_customer');
 
             case 'customer_identified':
+            case 'determine_fulfillment':
 
                 //Execute step 2
                 return $this->getProcessStepByName('determine_fulfillment');
+
+            case 'fulfillment_determined':
+            case 'choose_payment_method':
+
+                //Execute step 3
+                return $this->getProcessStepByName('choose_payment_method');
+
+            case 'payment_method_determined':
+
+                //Execute step 4
+                return $this->getProcessStepByName('review');
+
+            default:
+                die('error' . $this->context['state']);
 
         }
     }
@@ -72,6 +101,7 @@ class CheckoutProcessB2C extends AbstractProcess
         return array(
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
+            'choose_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',
         );
     }
 

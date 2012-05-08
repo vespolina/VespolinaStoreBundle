@@ -42,6 +42,7 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
         $baseClass = $this->getProcessClass($name);
         $process = new $baseClass($this->container, $context);
+        $process->setId($context['id']);
         $process->init();
 
         return $process;
@@ -77,7 +78,7 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
     protected function getClassMap()
     {
         return array(
-            'checkout_b2c' =>  'Vespolina\StoreBundle\Process\CheckoutProcessB2C'
+            'checkout_b2c' =>  'Vespolina\StoreBundle\Process\Scenario\CheckoutProcessB2C'
         );
     }
 
@@ -85,6 +86,8 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
     {
         //For now we persist only the context into the session
         $processes = $this->session->get('processes', array());
+
+        print_r($processes);
 
         $processes[$process->getName()] = $process->getContext();
 

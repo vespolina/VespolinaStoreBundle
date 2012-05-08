@@ -31,6 +31,7 @@ class DetermineFulfillment extends AbstractProcessStep
         if (!$customerIdentified) {
 
             $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\DetermineFulfillmentController');
+            $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();

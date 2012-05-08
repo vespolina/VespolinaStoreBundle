@@ -14,7 +14,7 @@ class AbstractProcessStepController extends AbstractController
         $this->processStep = $processStep;
     }
 
-    public function getProcessStep()
+    public function getProcessStep(Request $request, $processId)
     {
         return $this->processStep;
     }
