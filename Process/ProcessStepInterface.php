@@ -13,8 +13,8 @@ namespace Vespolina\StoreBundle\Process;
 interface ProcessStepInterface
 {
 
+    function init($firstTime = false);
     function execute($context);
-
     function getDisplayName();
 
 }

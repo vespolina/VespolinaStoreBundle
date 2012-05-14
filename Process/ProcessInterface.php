@@ -13,11 +13,11 @@ namespace Vespolina\StoreBundle\Process;
 interface ProcessInterface
 {
 
-
     function execute();
-
     function executeProcessStep($name);
-
+    function getInitialState();
     function getClassMap();
-
+    function getCurrentProcessStep();
+    function getState();
+    function init($firstTime = false);
 }

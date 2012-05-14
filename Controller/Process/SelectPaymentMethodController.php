@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Vespolina\StoreBundle\Controller\Process\AbstractProcessStepController;
 use Vespolina\StoreBundle\Form\Type\Process\SelectPaymentMethod;
 
-class SelectPaymentController extends AbstractProcessStepController
+class SelectPaymentMethodController extends AbstractProcessStepController
 {
     public function executeAction()
     {

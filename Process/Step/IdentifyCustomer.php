@@ -17,10 +17,9 @@ class IdentifyCustomer extends AbstractProcessStep
 {
     protected $process;
 
-    public function init()
+    public function init($firstTime = false)
     {
         $this->setDisplayName('identify customer');
-        $this->setName('identify_customer');
     }
 
     public function complete()
@@ -45,6 +44,11 @@ class IdentifyCustomer extends AbstractProcessStep
             return true;    //Todo encapsulate return value
         }
 
+    }
+
+    public function getName()
+    {
+        return 'identify_customer';
     }
 
 

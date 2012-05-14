@@ -29,10 +29,9 @@ class CheckoutProcessB2C extends AbstractProcess
 
     protected $context;
 
-    public function __construct($container)
+    public function __construct($container, $context = array())
     {
-        parent::__construct($container);
-        $this->context = array('state' => 'initial');
+        parent::__construct($container, $context);
     }
 
     public function completeProcessStep(ProcessStepInterface $processStep){
@@ -40,59 +39,46 @@ class CheckoutProcessB2C extends AbstractProcess
         switch($processStep->getName()) {
             case 'identify_customer':
 
-                $this->context['state'] = 'determine_fulfillment';
+                $this->setState('determine_fulfillment');
                 break;
 
             case 'determine_fulfillment':
 
-                $this->context['state'] = 'choose_payment_method';
+                $this->setState('select_payment_method');
                 break;
 
-            case 'choose_payment_method':
+            case 'select_payment_method':
 
-                $this->context['state'] = 'payment_method_determined';
+                $this->setState('review_checkout');
+                break;
+
+            case 'review_checkout':
+
+                $this->setState('execute_payment');
+                break;
+
+            case 'execute_payment':
+
+                $this->setState('complete');
+                break;
+
+            case 'complete':
+
+                $this->setState('finished');
                 break;
 
         }
     }
 
-    public function execute()
-    {
-        $currentProcessStep = $this->getCurrentProcessStep();
 
-        return $currentProcessStep->execute($this);
-    }
 
     public function getCurrentProcessStep()
     {
 
-        switch($this->context['state']) {
+        //This is a simple case in which a state maps to a process step name, but it could be more dynamic
+        if ($this->getState() != 'finished') {
 
-            case 'initial':
-
-                //Execute step 1
-                return $this->getProcessStepByName('identify_customer');
-
-            case 'customer_identified':
-            case 'determine_fulfillment':
-
-                //Execute step 2
-                return $this->getProcessStepByName('determine_fulfillment');
-
-            case 'fulfillment_determined':
-            case 'choose_payment_method':
-
-                //Execute step 3
-                return $this->getProcessStepByName('choose_payment_method');
-
-            case 'payment_method_determined':
-
-                //Execute step 4
-                return $this->getProcessStepByName('review');
-
-            default:
-                die('error' . $this->context['state']);
-
+            return $this->getProcessStepByName($this->getState());
         }
     }
 
@@ -101,8 +87,17 @@ class CheckoutProcessB2C extends AbstractProcess
         return array(
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
-            'choose_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',
+            'select_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',
+            'review_checkout'        => 'Vespolina\StoreBundle\Process\Step\ReviewCheckout',
+            'execute_payment'        => 'Vespolina\StoreBundle\Process\Step\ExecutePayment',
+            'complete_checkout'      => 'Vespolina\StoreBundle\Process\Step\CompleteCheckout',
+
         );
+    }
+
+    public function getInitialState()
+    {
+        return 'identify_customer';
     }
 
     public function getName()

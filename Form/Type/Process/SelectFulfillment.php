@@ -25,7 +25,7 @@ class SelectFulfillment extends AbstractType
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('availability', 'choice', array(
+        $builder->add('fulfillment', 'choice', array(
             'choices'   => $this->fulfillmentChoices,
             'expanded'  => true,
             'multiple'  => false,

@@ -18,11 +18,20 @@ class CheckoutController extends AbstractController
         if (!$checkoutProcess) {
 
             $checkoutProcess = $processManager->createProcess('checkout_b2c', $processOwner);
+            $checkoutProcess->init(true);   //initialize with first time set to true
+
+            $context = $checkoutProcess->getContext();
+            $context['cart'] = $this->getCart();
+            $processResult = $checkoutProcess->execute();
+
+
+            //Persist (in session)
+            $processManager->updateProcess($checkoutProcess);
+
+        } else{
+
+            $checkoutProcess->init();
         }
-
-        $checkoutProcess->init();
-        $processResult = $checkoutProcess->execute();
-
 
         if ($processResult) {
 
@@ -31,8 +40,15 @@ class CheckoutController extends AbstractController
 
         //If we get here then there was a serious error
         throw new \Exception('Checkout failed - internal error');
-        //return $this->render('VespolinaStoreBundle:Cart:quickInspection.html.twig', array('cart' => $cart, 'totalPrice' => $totalPrice ));
     }
 
+    protected function getCart($cartId = null)
+    {
+        if ($cartId) {
+            return $this->container->get('vespolina.cart_manager')->findCartById($cartId);
+        } else {
+            return $this->container->get('vespolina.cart_manager')->getActiveCart();
+        }
+    }
 
 }

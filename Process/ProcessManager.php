@@ -33,8 +33,6 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
         $process = new $baseClass($this->container);
         $process->setId(uniqid());
 
-        $this->updateProcess($process);
-
         return $process;
     }
 
@@ -42,8 +40,9 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
         $baseClass = $this->getProcessClass($name);
         $process = new $baseClass($this->container, $context);
-        $process->setId($context['id']);
-        $process->init();
+        $process->setId($context->get('id'));
+
+        $process->init(false);
 
         return $process;
     }
@@ -55,9 +54,8 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
         //For now we just use the session
 
         $processes = $this->session->get('processes', array());
-
         foreach($processes as $processName => $processContext) {
-            if ($processContext['id'] == $processId) {
+            if ($processContext->get('id') == $processId) {
 
                 return $this->loadProcessFromContext($processName, $processContext);
             }
@@ -87,12 +85,8 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
         //For now we persist only the context into the session
         $processes = $this->session->get('processes', array());
 
-        print_r($processes);
-
         $processes[$process->getName()] = $process->getContext();
-
         $this->session->set('processes', $processes);
-    //    die('all ok');
     }
 
      public function getProcessClass($name) {

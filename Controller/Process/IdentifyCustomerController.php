@@ -33,7 +33,9 @@ class IdentifyCustomerController extends AbstractProcessStepController
             if ($createCustomerForm->isValid()) {
 
                 $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
+
                 $process = $this->processStep->getProcess();
+
 
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);

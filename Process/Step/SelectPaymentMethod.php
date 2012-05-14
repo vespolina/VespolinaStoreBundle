@@ -17,10 +17,9 @@ class SelectPaymentMethod extends AbstractProcessStep
 {
     protected $process;
 
-    public function init()
+    public function init($firstTime = false)
     {
         $this->setDisplayName('payment method');
-        $this->setName('select_payment_method');
     }
 
     public function execute($context)
@@ -30,7 +29,7 @@ class SelectPaymentMethod extends AbstractProcessStep
 
         if (!$customerIdentified) {
 
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\PaymentMethodController');
+            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\SelectPaymentMethodController');
             $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
