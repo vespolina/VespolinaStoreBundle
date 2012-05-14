@@ -38,7 +38,7 @@ class AbstractController extends ContainerAware
 
     public function render($view, array $parameters = array(), Response $response = null)
     {
-        return $this->container->get('templating')->renderResponse($view, $parameters, $response);
+       return ($this->container->get('templating')->renderResponse($view, $parameters, $response));
     }
 
     protected function getEngine()
