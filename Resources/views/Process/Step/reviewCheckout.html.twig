@@ -1,0 +1,24 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+<ul class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li>Checkout<span class="divider">/</span></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+{% render "VespolinaStoreBundle:Process:processNavigator" with {'currentProcessStep': currentProcessStep } %}
+
+Review your cart
+
+{% include "VespolinaCartBundle:Partials:cart.html.twig" with {'cart': cart, 'mode': 'review' } %}
+
+<br/>
+
+<a class = "btn" href="{{path('vespolina_store_checkout_review', { 'processId': currentProcessStep.process.id })}}">Pay</a>
+
+
+{% endblock %}
+

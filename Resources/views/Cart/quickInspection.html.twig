@@ -5,7 +5,12 @@
         <b>{{ cart.items.count }}</b> item(s)
     <a class="btn btn-success" href="{{ path('vespolina_cart_show') }}">
         Show Cart
-    </a>    {% else %}
+    </a>
+    <a class="" href="{{ path('vespolina_store_cart_checkout') }}">
+        Checkout
+    </a>
+
+    {% else %}
     {% endif %}
 
 </div>
