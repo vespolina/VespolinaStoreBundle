@@ -12,21 +12,6 @@ namespace Vespolina\StoreBundle\Model;
  */
 interface StoreManagerInterface
 {
-    /**
-     * Retrieve the current (active) store instance
-     *
-     * @abstract
-     *
-     */
-     function getCurrentStore();
 
-
-    /**
-     * Set the current store
-     *
-     * @abstract
-     * @param StoreInterface $store
-     */
-    function setCurrentStore(StoreInterface $store);
 
 }

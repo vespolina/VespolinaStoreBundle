@@ -27,11 +27,8 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
 
-        //Used to determine the requested store in a multi store environment
-        $host = $event->getRequest()->getHttpHost();
-
-        $storeManager = $this->container->get('vespolina.store_manager');
-        $store = $storeManager->loadStore($host);
+        $storeResolver = $this->container->get('vespolina.store.store_resolver');
+        $store = $storeResolver->resolveStore($event->getRequest());
 
         //Register store as a global Twig variable
         $this->container->get('twig')->addGlobal('store', $store);

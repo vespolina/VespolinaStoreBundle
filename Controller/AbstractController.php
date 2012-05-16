@@ -30,7 +30,7 @@ class AbstractController extends ContainerAware
     {
         if (!$this->store) {
 
-            $this-> store = $this->container->get('vespolina.store_manager')->getCurrentStore();
+            $this-> store = $this->container->get('vespolina.store.store_resolver')->getStore();
         }
 
         return $this->store;

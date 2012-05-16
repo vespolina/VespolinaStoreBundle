@@ -17,7 +17,6 @@ use Vespolina\StoreBundle\Model\StoreManagerInterface;
  */
 abstract class StoreManager implements StoreManagerInterface {
 
-    protected $currentStore;
     protected $storeClass;
     protected $stores;
     protected $storesConfigurations;
@@ -42,21 +41,6 @@ abstract class StoreManager implements StoreManagerInterface {
 
     abstract function findStoreById($id);
 
-    public function loadStore($host)
-    {
-
-        if (!$this->stores) {
-
-            $this->loadStoresConfigurations();
-        }
-
-        if (!$this->currentStore) {
-            //err
-        }
-
-        return $this->currentStore;
-    }
-
     public function loadStoresConfigurations()
     {
         foreach ($this->storesConfigurations as $storeID => $storeConfiguration) {
@@ -68,23 +52,8 @@ abstract class StoreManager implements StoreManagerInterface {
 
             $this->stores[$storeID] = $store;
 
-            if ($storeConfiguration['default']) {
-
-                $this->currentStore = $store;
-            }
         }
 
         return $this->stores;
-    }
-
-    public function getCurrentStore()
-    {
-        return $this->currentStore;
-    }
-
-
-    public function setCurrentStore(StoreInterface $currentStore)
-    {
-        $this->currentStore = $currentStore;
     }
 }
