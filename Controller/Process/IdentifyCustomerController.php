@@ -2,6 +2,10 @@
 
 namespace Vespolina\StoreBundle\Controller\Process;
 
+use Symfony\Component\Validator\Exception\ValidatorException;
+
+use Vespolina\PartnerBundle\Form\QuickCustomerType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Vespolina\StoreBundle\Form\Type\Process\CustomerQuickCreate;
@@ -25,18 +29,33 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
         $createCustomerForm = $this->createCustomerQuickCreateForm();
         $processManager = $this->container->get('vespolina.process_manager');
+        $partnerManager = $this->container->get('vespolina.partner_manager');
 
         if ($request->getMethod() == 'POST') {
 
             $createCustomerForm->bindRequest($request);
-
+            
+            // retrieve process
+            $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
+            $process = $this->processStep->getProcess();
+            
             if ($createCustomerForm->isValid()) {
-
-                $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
-
-                $process = $this->processStep->getProcess();
-
-
+                
+                $partnerAddressForm = $createCustomerForm->get('address');
+                $partnerDetailsForm = $createCustomerForm->get('personalDetails');
+                // get address and personal details forms
+                // FIXME: seems wrong?
+                $partnerAddress = $partnerAddressForm->getData();
+                $partnerDetails = $partnerDetailsForm->getData();
+                
+                $partner = $createCustomerForm->getData();
+                
+                $partner->addAddress($partnerAddress);
+                $partner->setPersonalDetails($partnerDetails);
+                $partner->setName($partnerManager->generatePartnerName($partnerDetails));
+                
+                $this->container->get('vespolina.partner_manager')->updatePartner($partner);
+                
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);
                 $processManager->updateProcess($process);
@@ -46,6 +65,10 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
             }
         }
+        
+        return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
+                    array('currentProcessStep' => $this->processStep,
+                          'createCustomerForm' => $createCustomerForm->createView()));
 
     }
 
@@ -53,7 +76,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
     {
         $partnerManager = $this->container->get('vespolina.partner_manager');
         $customer = $partnerManager->createPartner();
-        $createCustomerForm = $this->container->get('form.factory')->create(new CustomerQuickCreate(), $customer, array());
+        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer, array());
 
         return $createCustomerForm;
     }
