@@ -20,6 +20,9 @@ class DetermineFulfillmentController extends AbstractProcessStepController
 
     public function fulfillmentSelectedAction(Request $request, $processId)
     {
+        $this->loadProcess($processId);
+
+
         $selectFulfillmentForm = $this->createSelectFulfillmentForm();
         $processManager = $this->container->get('vespolina.process_manager');
 
@@ -52,10 +55,34 @@ class DetermineFulfillmentController extends AbstractProcessStepController
 
     protected function getFulfillmentChoices()
     {
-        return
-            array('fedex' => 'Fedex fast delivery',
-                  'dhl' => 'DHL overnight delivery',
-                  'collect' => 'Collect the package yourself');
+
+        // Use the fulfillment method resolver to get back a list of supported fulfillment methods
+        $fulfillmentMethodResolver = $this->container->get('vespolina.fulfillment.fulfillment_method_resolver');
+        $cart = $this->processStep->getContext()->get('cart');
+
+        //Collect all cartable items from the cart
+        $cartableItems = array();
+        $fulfillmentChoices = array();
+
+        foreach($cart->getItems() as $cartItem) {
+            $cartableItems[] = $cartItem->getCartableItem();
+        }
+
+        $fulfillmentMethods = $fulfillmentMethodResolver->resolveFulfillmentMethods($cartableItems, null);
+
+        foreach($fulfillmentMethods as $fulfillmentMethod) {
+
+            $fulfillmentChoices[$fulfillmentMethod->getName()] = $fulfillmentMethod->getDescription();
+        }
+
+        return $fulfillmentChoices;
+    }
+
+    protected function loadProcess($processId) {
+
+        if (!$this->processStep) {
+            $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
+        }
     }
 
 }

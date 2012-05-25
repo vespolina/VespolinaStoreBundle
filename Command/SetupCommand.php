@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vespolina\PartnerBundle\Model\Partner;
 
 class SetupCommand extends ContainerAwareCommand
 {
@@ -23,7 +24,7 @@ class SetupCommand extends ContainerAwareCommand
             ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
             ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
-            ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', 'or')
+            ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', '')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
     }
@@ -60,7 +61,7 @@ class SetupCommand extends ContainerAwareCommand
 
         for ($i = 0; $i < $customerCount; $i++) {
 
-            $aCustomer = $partnerManager->createPartner();
+            $aCustomer = $partnerManager->createPartner(Partner::ROLE_CUSTOMER, Partner::INDIVIDUAL);
             $aCustomer->setName('customer ' . $i);
 
             $anAddress = $partnerManager->createPartnerAddress();
@@ -205,7 +206,6 @@ class SetupCommand extends ContainerAwareCommand
         $fallbackTaxRate = 0;
         $taxationManager = $this->getContainer()->get('vespolina.taxation_manager');
         $taxSchema = $taxationManager->loadTaxSchema($this->country);
-
         $taxSchema['defaultTaxRate']  = 0;
 
         if ($taxSchema['zones']) {

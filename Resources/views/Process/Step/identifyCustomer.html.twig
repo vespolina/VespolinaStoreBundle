@@ -14,9 +14,21 @@
 <div class="row-fluid">
     <div class="span6">
         <h3>I am already a customer</h3>
-        <a class="btn btn-primary" href="{{ path('vespolina_store_cart_checkout') }}">Login</a>
 
+        <form action="{{ path("vespolina_store_checkout_login_customer", { 'processId': currentProcessStep.process.id })}}" method="post">
+            <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+            <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+            <input type="password" id="password" name="_password" />
+
+            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+            <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+
+            <input type="submit" id="_submit" name="_submit" class="btn" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+        </form>
     </div>
+
     <div class="span6">
         <h3>I'm not yet a customer</h3>
 

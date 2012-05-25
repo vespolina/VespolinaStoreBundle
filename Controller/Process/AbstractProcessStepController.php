@@ -9,6 +9,15 @@ class AbstractProcessStepController extends AbstractController
 {
     protected $processStep;
 
+
+    public function completeProcessStep()
+    {
+        $process = $this->processStep->getProcess();
+        $process->completeProcessStep($this->processStep);
+
+        return $process->execute();
+    }
+
     public function setProcessStep(ProcessStepInterface $processStep)
     {
         $this->processStep = $processStep;

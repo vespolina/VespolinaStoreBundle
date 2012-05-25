@@ -11,6 +11,7 @@
         <field name="legalName" fieldName="legalName" type="string"/>
         <field name="operationalMode" fieldName="operationalMode" type="string"/>
         <field name="defaultCurrency" fieldName="defaultCurrency" type="string" />
+        <field name="defaultProductView" fieldName="defaultProductView" type="string" />
         <field name="salesChannel" fieldName="salesChannel" type="string" />
 
     </mapped-superclass>

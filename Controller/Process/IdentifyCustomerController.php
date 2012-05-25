@@ -15,21 +15,36 @@ class IdentifyCustomerController extends AbstractProcessStepController
 {
     public function executeAction()
     {
-        $createCustomerForm = $this->createCustomerQuickCreateForm();
+
+        //First attempt to load the customer from the process container
+        $customer = $this->processStep->getContext()->get('customer');
+
+        if (!$customer) {
+            //If this fails get it from the user session
+            if ($customer = $this->container->get('session')->get('customer')) {
+                $this->processStep->getContext()->set('customer', $customer);
+            }
+        }
+
+        if ($customer) {
+            return $this->completeProcessStep();
+        }
 
         // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
+        $createCustomerForm = $this->createCustomerQuickCreateForm();
 
         return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
                     array('currentProcessStep' => $this->processStep,
-                          'createCustomerForm' => $createCustomerForm->createView()));
+                          'createCustomerForm' => $createCustomerForm->createView(),
+                          'last_username' => ''));
     }
 
     public function createCustomerAction(Request $request, $processId)
     {
 
         $createCustomerForm = $this->createCustomerQuickCreateForm();
-        $processManager = $this->container->get('vespolina.process_manager');
         $partnerManager = $this->container->get('vespolina.partner_manager');
+        $processManager = $this->container->get('vespolina.process_manager');
 
         if ($request->getMethod() == 'POST') {
 
@@ -41,25 +56,29 @@ class IdentifyCustomerController extends AbstractProcessStepController
             
             if ($createCustomerForm->isValid()) {
                 
-                $partnerAddressForm = $createCustomerForm->get('address');
-                $partnerDetailsForm = $createCustomerForm->get('personalDetails');
+                $customerAddressForm = $createCustomerForm->get('address');
+                $customerDetailsForm = $createCustomerForm->get('personalDetails');
                 // get address and personal details forms
                 // FIXME: seems wrong?
-                $partnerAddress = $partnerAddressForm->getData();
-                $partnerDetails = $partnerDetailsForm->getData();
+                $customerAddress = $customerAddressForm->getData();
+                $customerDetails = $customerDetailsForm->getData();
                 
-                $partner = $createCustomerForm->getData();
+                $customer = $createCustomerForm->getData();
                 
-                $partner->addAddress($partnerAddress);
-                $partner->setPersonalDetails($partnerDetails);
-                $partner->setName($partnerManager->generatePartnerName($partnerDetails));
-                
-                $this->container->get('vespolina.partner_manager')->updatePartner($partner);
+                $customer->addAddress($customerAddress);
+                $customer->setPersonalDetails($customerDetails);
+                $customer->setName($partnerManager->generatePartnerName($customerDetails));
+
+
+                //Save into process context & session
+                $process->getContext()->set('customer', $customer);
+                $this->container->get('session')->set('customer', $customer);
+
+                $this->container->get('vespolina.partner_manager')->updatePartner($customer);
                 
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);
                 $processManager->updateProcess($process);
-
 
                 return $process->execute();
 

@@ -36,6 +36,7 @@ abstract class StoreZoneManager implements StoreZoneManagerInterface {
         return $storeZone;
     }
 
-    abstract function findStoreById($id);
+    abstract function findStoreZoneById($id);
+
 
 }

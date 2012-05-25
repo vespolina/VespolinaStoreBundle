@@ -12,6 +12,13 @@ class StoreController extends AbstractController
         return $this->render('VespolinaStoreBundle:Store:index.html.twig', array('taxonomyTerm' => $taxonomyTerm));
     }
 
+    public function quickCustomerInspectionAction()
+    {
+        $customer = $this->container->get('session')->get('customer');
+
+        return $this->render('VespolinaStoreBundle:Customer:quickInspection.html.twig', array('customer' => $customer));
+    }
+
     /**
      * Displays a store zone which typically consists of a product list, taxonomy terms and some CMS content
      *

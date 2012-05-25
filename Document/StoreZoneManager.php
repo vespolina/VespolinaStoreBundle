@@ -36,9 +36,9 @@ class StoreZoneManager extends BaseStoreZoneManager
     /**
      * @inheritdoc
      */
-    public function findStoreById($id)
+    public function findStoreZoneById($id)
     {
-        return $this->storeRepo->find($id);
+        return $this->storeZoneRepo->find($id);
     }
 
     /**
