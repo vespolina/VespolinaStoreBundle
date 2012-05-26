@@ -32,6 +32,8 @@ class SelectPaymentMethodController extends AbstractProcessStepController
                 $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
                 $process = $this->processStep->getProcess();
 
+                $this->processStep->getContext()->set('payment_method', $selectPaymentMethodForm->getData());
+
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);
                 $processManager->updateProcess($process);
@@ -52,7 +54,7 @@ class SelectPaymentMethodController extends AbstractProcessStepController
     protected function getPaymentMethodChoices()
     {
         return
-            array('paypal' => 'Paypal',
+            array('pay_pal' => 'Paypal',
                   'credit_card' => 'Credit card',
                   'bank_transfer' => 'Bank transfer');
     }

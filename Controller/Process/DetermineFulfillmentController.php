@@ -35,6 +35,8 @@ class DetermineFulfillmentController extends AbstractProcessStepController
                 $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
                 $process = $this->processStep->getProcess();
 
+                $this->processStep->getContext()->set('fulfillment', $selectFulfillmentForm->getData());
+
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);
                 $processManager->updateProcess($process);
