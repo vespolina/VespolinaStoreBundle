@@ -64,6 +64,15 @@ abstract class AbstractProcess implements ProcessInterface
         }
     }
 
+    public function gotoProcessStep(ProcessStepInterface $processStep) {
+
+        //Todo: add logic prevent transition to 'locked' steps,
+        //eg. step to perform payment should not be repeatable
+
+        $this->context['state'] = $processStep->getName();
+        return $this->execute();
+    }
+
     public function getContainer()
     {
         return $this->container;
@@ -100,22 +109,8 @@ abstract class AbstractProcess implements ProcessInterface
         return $this->id;
     }
 
-
-    protected function loadProcessSteps($firstTime)
+    public function getProcessStepByName($name)
     {
-
-        foreach($this->getClassMap() as $processStepClass) {
-
-            $processStep = new $processStepClass($this);
-            $processStep->init($firstTime);
-            $this->processSteps[] = $processStep;
-
-        }
-    }
-
-    protected function getProcessStepByName($name)
-    {
-
         foreach($this->processSteps as $processStep) {
             if ($processStep->getName() == $name ) {
 
@@ -123,7 +118,18 @@ abstract class AbstractProcess implements ProcessInterface
             }
         }
         echo 'not found';
-   }
+    }
+
+    protected function loadProcessSteps($firstTime)
+    {
+        foreach($this->getClassMap() as $processStepClass) {
+
+            $processStep = new $processStepClass($this);
+            $processStep->init($firstTime);
+            $this->processSteps[] = $processStep;
+        }
+    }
+
 
    protected function setState($state)
    {

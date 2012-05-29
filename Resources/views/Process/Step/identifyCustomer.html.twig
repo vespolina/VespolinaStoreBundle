@@ -34,7 +34,7 @@
 
         <p>Full out this form below</p>
 
-        <form action="{{ path('vespolina_store_checkout_create_customer', { 'processId': currentProcessStep.process.id })}}" method="post" {{ form_enctype(createCustomerForm) }}>
+        <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(createCustomerForm) }}>
         {{ form_widget(createCustomerForm) }}
             <input type="submit" class="btn" />
         </form>

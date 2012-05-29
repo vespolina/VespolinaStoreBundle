@@ -4,38 +4,24 @@ namespace Vespolina\StoreBundle\Controller\Process;
 
 use Symfony\Component\HttpFoundation\Request;
 use Vespolina\StoreBundle\Controller\Process\AbstractProcessStepController;
-use Vespolina\StoreBundle\Form\Type\Process\SelectFulfillment;
+use Vespolina\StoreBundle\Form\Type\Process\SelectFulfillmentMethodFormType;
 
 class DetermineFulfillmentController extends AbstractProcessStepController
 {
     public function executeAction()
     {
-        $selectFulfillmentForm = $this->createSelectFulfillmentForm();
-
-        // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
-        return $this->render('VespolinaStoreBundle:Process:Step/determineFulfillment.html.twig',
-            array('currentProcessStep' => $this->processStep,
-                  'selectFulfillmentForm' => $selectFulfillmentForm->createView()));
-    }
-
-    public function fulfillmentSelectedAction(Request $request, $processId)
-    {
-        $this->loadProcess($processId);
-
-
-        $selectFulfillmentForm = $this->createSelectFulfillmentForm();
         $processManager = $this->container->get('vespolina.process_manager');
+        $request = $this->container->get('request');
+        $selectFulfillmentForm = $this->createSelectFulfillmentForm();
 
-        if ($request->getMethod() == 'POST') {
+        if ($this->isPostForForm($request, $selectFulfillmentForm)) {
 
             $selectFulfillmentForm->bindRequest($request);
 
             if ($selectFulfillmentForm->isValid()) {
 
-                $this->processStep = $this->getCurrentProcessStepByProcessId($processId);
                 $process = $this->processStep->getProcess();
-
-                $this->processStep->getContext()->set('fulfillment', $selectFulfillmentForm->getData());
+                $this->processStep->getContext()->set('fulfillment_method', $selectFulfillmentForm->getData());
 
                 //Signal enclosing process step that we are done here
                 $process->completeProcessStep($this->processStep);
@@ -45,12 +31,18 @@ class DetermineFulfillmentController extends AbstractProcessStepController
 
             } else {
             }
+        } else {
+
+            return $this->render('VespolinaStoreBundle:Process:Step/determineFulfillment.html.twig',
+                array('currentProcessStep' => $this->processStep,
+                      'selectFulfillmentForm' => $selectFulfillmentForm->createView()));
+
         }
     }
 
     protected function createSelectFulfillmentForm()
     {
-        $selectFulfillmentForm = $this->container->get('form.factory')->create(new SelectFulfillment($this->getFulfillmentChoices()), null, array());
+        $selectFulfillmentForm = $this->container->get('form.factory')->create(new SelectFulfillmentMethodFormType($this->getFulfillmentChoices()), null, array());
 
         return $selectFulfillmentForm;
     }

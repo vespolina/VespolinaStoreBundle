@@ -9,8 +9,8 @@
         <li class="">
         {% endif %}
 
-
-            <a href=="#">{{loop.index}}. {{ processStep.displayName }}</a>
+            <a href="{{path('vespolina_store_checkout_goto', {'processStepName': processStep.name, 'processId': processStep.process.id})}}">
+                {{loop.index}}. {{ processStep.displayName }}</a>
         </li>
     {% endfor %}
     </ul>

@@ -14,28 +14,16 @@ use Symfony\Component\Form\FormBuilder;
  *
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class SelectPaymentMethod extends AbstractType
+class CustomerQuickCreateFormType extends AbstractType
 {
-    protected $paymentMethodChoices;
-
-    public function __construct($paymentMethodChoices)
-    {
-        $this->paymentMethodChoices = $paymentMethodChoices;
-    }
-
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('payment_method', 'choice', array(
-            'choices'   => $this->paymentMethodChoices,
-            'expanded'  => true,
-            'multiple'  => false,
-        ));
+        $builder->add('name');
 
     }
 
     public function getName()
     {
-        return 'select_payment_method';
+        return 'vespolina_store_customer_quick_create';
     }
-
 }

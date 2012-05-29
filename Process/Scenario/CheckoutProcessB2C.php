@@ -59,10 +59,10 @@ class CheckoutProcessB2C extends AbstractProcess
 
             case 'execute_payment':
 
-                $this->setState('complete');
+                $this->setState('complete_checkout');
                 break;
 
-            case 'complete':
+            case 'complete_checkout':
 
                 $this->setState('finished');
                 break;
