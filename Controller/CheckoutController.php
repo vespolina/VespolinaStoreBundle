@@ -43,6 +43,9 @@ class CheckoutController extends AbstractController
         $processManager = $this->container->get('vespolina.process_manager');
         $processStep = $this->getCurrentProcessStepByProcessId($processId);
 
+        if (null === $processStep) {
+            throw new \Exception('Process session expired');
+        }
         //Assert that the current process step (according to the process) is the same as the step name
         //passed on to the request
         if ($processStep->getName() != $processStepName) {

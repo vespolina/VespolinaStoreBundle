@@ -45,20 +45,22 @@ class CompleteCheckoutController extends AbstractProcessStepController
 
     protected function createSalesOrderFromCart($cart, $salesOrderManager) {
 
+        //Todo: move to a service/manager
+        $store = $this->container->get('vespolina.store.store_resolver')->getStore();
+
         $context = $this->processStep->getContext();
         $salesOrder = $salesOrderManager->createSalesOrder('default');
         $salesOrder->setCustomer($context->get('customer'));
         $salesOrder->setOrderDate(new \DateTime());
-        $salesOrder->setOrderState('paid');
-        $salesOrder->setSalesChannel('webshop-foo.com');
-
+        $salesOrder->setOrderState('unprocessed');
+        $salesOrder->setSalesChannel($store->getSalesChannel());
+        $salesOrder->setPricingSet($cart->getPricingSet());
 
         $paymentAgreement = new PaymentAgreement();
         $paymentAgreement->setType($context->get('payment_method')['payment_method']);
         $paymentAgreement->setState('paid');
 
         $salesOrder->setPaymentAgreement($paymentAgreement);
-
 
         $fulfillmentAgreement = new FulfillmentAgreement();
         $fulfillmentAgreement->setType($context->get('fulfillment_method')['fulfillment_method']);
@@ -72,6 +74,10 @@ class CompleteCheckoutController extends AbstractProcessStepController
         foreach($cart->getItems() as $cartItem) {
 
             $salesOrderItem = $salesOrderManager->createItem($salesOrder);
+            $salesOrderItem->setOrderedQuantity($cartItem->getQuantity());
+            $salesOrderItem->setProduct($cartItem->getCartableItem());
+            $salesOrderItem->setItemState('open');
+            $salesOrderItem->setPricingSet($cartItem->getPricingSet());
         }
 
         return $salesOrder;

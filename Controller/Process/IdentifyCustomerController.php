@@ -31,6 +31,8 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
                 $customerAddressForm = $createCustomerForm->get('address');
                 $customerDetailsForm = $createCustomerForm->get('personalDetails');
+                //$customerContactForm = $createCustomerForm->get('contact');
+
                 // get address and personal details forms
                 // FIXME: seems wrong?
                 $customerAddress = $customerAddressForm->getData();
