@@ -1,0 +1,19 @@
+<h4>{% trans %}Personal details{% endtrans %}</h4>
+{{ form_row(form.personalDetails.initials) }}
+<div class="clearfix">
+	{{ form_errors(form.personalDetails.prefix) }}
+	{{ form_errors(form.personalDetails.lastname) }}
+	<div class="span1" style="margin-left:0;">
+		{{ form_label(form.personalDetails.prefix) }}
+		{{ form_widget(form.personalDetails.prefix, { 'attr' : { 'class' : 'span1' } }) }}
+	</div>
+	<div class="span2">
+		{{ form_label(form.personalDetails.lastname) }}
+		{{ form_widget(form.personalDetails.lastname, { 'attr' : { 'class' : 'span2' } }) }}
+
+	</div>
+</div>
+{{ form_widget(form.primaryContact) }}
+<h4>{% trans %}Address{% endtrans %}</h4>
+{{ form_widget(form.address) }}
+{{ form_rest(form) }}

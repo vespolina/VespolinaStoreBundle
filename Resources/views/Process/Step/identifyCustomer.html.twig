@@ -36,6 +36,7 @@
 
         <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(createCustomerForm) }}>
         {{ form_widget(createCustomerForm) }}
+			{% include "VespolinaStoreBundle:Process:Form/quickCustomer.html.twig" with { 'form': createCustomerForm } %}
             <input type="submit" class="btn" />
         </form>
 
