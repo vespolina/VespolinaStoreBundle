@@ -22,28 +22,20 @@ class IdentifyCustomer extends AbstractProcessStep
         $this->setDisplayName('identify customer');
     }
 
-    public function complete()
-    {
-
-    }
     public function execute($context)
     {
+        if ($this->isCustomerIdentified()) {
 
-        $customerIdentified = false;
+            return $this->complete();
 
-        if (!$customerIdentified) {
+        } else {
 
             $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\IdentifyCustomerController');
             $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();
-
-        } else {
-
-            return true;    //Todo encapsulate return value
         }
-
     }
 
     public function getName()
@@ -51,5 +43,18 @@ class IdentifyCustomer extends AbstractProcessStep
         return 'identify_customer';
     }
 
+    protected function isCustomerIdentified()
+    {
+        //First attempt to load the customer from the process container
+        $customer = $this->getContext()->get('customer');
 
+        if (!$customer) {
+            //If this fails get it from the user session
+            if ($customer = $this->process->getContainer()->get('session')->get('customer')) {
+                $this->getContext()->set('customer', $customer);
+            }
+        }
+
+        return null !== $customer;
+    }
 }

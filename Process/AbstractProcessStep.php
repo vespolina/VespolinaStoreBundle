@@ -25,6 +25,13 @@ abstract class AbstractProcessStep implements ProcessStepInterface
         $this->process = $process;
     }
 
+    public function complete() {
+
+        $this->process->completeProcessStep($this);
+
+        return $this->process->execute();
+    }
+
     public function getContext()
     {
         return $this->process->getContext();

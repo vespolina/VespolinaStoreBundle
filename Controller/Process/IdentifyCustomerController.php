@@ -31,14 +31,14 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
                 $customerAddressForm = $createCustomerForm->get('address');
                 $customerDetailsForm = $createCustomerForm->get('personalDetails');
-                //$customerContactForm = $createCustomerForm->get('contact');
+                $customerPrimaryContactForm = $createCustomerForm->get('primaryContact');
 
                 // get address and personal details forms
                 // FIXME: seems wrong?
+                $customer = $createCustomerForm->getData();
                 $customerAddress = $customerAddressForm->getData();
                 $customerDetails = $customerDetailsForm->getData();
-
-                $customer = $createCustomerForm->getData();
+                $customerPrimaryContact = $customerPrimaryContactForm->getData();
 
                 $customer->addAddress($customerAddress);
                 $customer->setPersonalDetails($customerDetails);
@@ -55,7 +55,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
                 $userManager = $this->container->get('fos_user.user_manager');
                 $user = $userManager->createUser();
                 $user->setPartner($customer);
-                $user->setEmail('john.doe@example.com');
+                $user->setEmail($customerPrimaryContact->getEmail());
                 $userManager->updateUser($user);
 
                 //Signal enclosing process step that we are done here
@@ -68,19 +68,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
         } else {
 
-            //First attempt to load the customer from the process container
-            $customer = $this->processStep->getContext()->get('customer');
 
-            if (!$customer) {
-                //If this fails get it from the user session
-                if ($customer = $this->container->get('session')->get('customer')) {
-                    $this->processStep->getContext()->set('customer', $customer);
-                }
-            }
-
-            if ($customer) {
-                return $this->completeProcessStep();
-            }
 
             // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
             $createCustomerForm = $this->createCustomerQuickCreateForm();

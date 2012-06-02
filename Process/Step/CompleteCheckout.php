@@ -24,21 +24,26 @@ class CompleteCheckout extends AbstractProcessStep
 
     public function execute($context)
     {
+        //Copy cart -> sales order
+        $cart = $this->getContext()->get('cart');
 
-        $customerIdentified = false;
+        $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina_sales_order.sales_order_manager');
+        $salesOrder = $this->createSalesOrderFromCart($cart, $salesOrderManager);
 
-        if (!$customerIdentified) {
-
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\CompleteCheckoutController');
-            $controller->setProcessStep($this);
-            $controller->setContainer($this->process->getContainer());
-
-            return $controller->executeAction();
-        } else {
-
-            return true;    //Todo encapsulate return value
+        if ($salesOrder) {
+            $salesOrderManager->updateSalesOrder($salesOrder, true);
         }
+        //Reset session cart
+        $cart->clearItems();
 
+        //Signal enclosing process step that we are done here
+//        $this->complete();
+
+        $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\CompleteCheckoutController');
+        $controller->setProcessStep($this);
+        $controller->setContainer($this->process->getContainer());
+
+        return $controller->executeAction();
     }
 
 
@@ -48,4 +53,43 @@ class CompleteCheckout extends AbstractProcessStep
     }
 
 
+    protected function createSalesOrderFromCart($cart, $salesOrderManager) {
+
+        //Todo: move to a service/manager
+        $store = $this->getProcess()->getContainer()->get('vespolina.store.store_resolver')->getStore();
+
+        $context = $this->getContext();
+        $salesOrder = $salesOrderManager->createSalesOrder('default');
+        $salesOrder->setCustomer($context->get('customer'));
+        $salesOrder->setOrderDate(new \DateTime());
+        $salesOrder->setOrderState('unprocessed');
+        $salesOrder->setSalesChannel($store->getSalesChannel());
+        $salesOrder->setPricingSet($cart->getPricingSet());
+
+        $paymentAgreement = $salesOrderManager->createPaymentAgreement();
+        $paymentAgreement->setType($context->get('payment_method')['payment_method']);
+        $paymentAgreement->setState('paid');
+
+        $salesOrder->setPaymentAgreement($paymentAgreement);
+
+        $fulfillmentAgreement = $salesOrderManager->createFulfillmentAgreement();
+        $fulfillmentAgreement->setType($context->get('fulfillment_method')['fulfillment_method']);
+        $fulfillmentAgreement->setState('warehouse_notice');
+        $fulfillmentAgreement->setServiceLevel('express_delivery');
+
+        $salesOrder->setFulfillmentAgreement($fulfillmentAgreement);
+        //$salesOrder->setCustomerComment('Hey, If possible can I get a free bag?');
+
+        //Item data
+        foreach($cart->getItems() as $cartItem) {
+
+            $salesOrderItem = $salesOrderManager->createItem($salesOrder);
+            $salesOrderItem->setOrderedQuantity($cartItem->getQuantity());
+            $salesOrderItem->setProduct($cartItem->getCartableItem());
+            $salesOrderItem->setItemState('open');
+            $salesOrderItem->setPricingSet($cartItem->getPricingSet());
+        }
+
+        return $salesOrder;
+    }
 }
