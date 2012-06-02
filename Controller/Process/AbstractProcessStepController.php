@@ -18,6 +18,11 @@ class AbstractProcessStepController extends AbstractController
         return $process->execute();
     }
 
+    public function isPostForForm($request, $form) {
+
+        return $request->request->has($form->getName());
+    }
+
     public function setProcessStep(ProcessStepInterface $processStep)
     {
         $this->processStep = $processStep;

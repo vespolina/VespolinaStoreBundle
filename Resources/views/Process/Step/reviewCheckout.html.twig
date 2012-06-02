@@ -11,14 +11,36 @@
 
 {% render "VespolinaStoreBundle:Process:processNavigator" with {'currentProcessStep': currentProcessStep } %}
 
-Review your cart
 
-{% include "VespolinaCartBundle:Partials:cart.html.twig" with {'cart': cart, 'mode': 'review' } %}
+<div class="alert alert-info">
+    You are about to purchase following items using <b>{{ context.fulfillment_method.fulfillment_method }}</b> and pay with
+    <b>{{ context.payment_method.payment_method }}</b>
+</div>
 
-<br/>
+<table class="table table-striped table-condensed">
+    <thead>
+    <tr>
+        <td>Qty</td><td>Product</td><td>Price</td><td>&nbsp;</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart.items %}
+    <tr>
+        <td>{{ item.quantity }}</td><td>{{ item.name }}</td><td>{{ item.totalPrice }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2">Grand Total</td><td>{{ cart.totalPrice }}</td>
+    </tr>
+    </tfoot>
+</table>
 
-<a class = "btn" href="{{path('vespolina_store_checkout_review', { 'processId': currentProcessStep.process.id })}}">Pay</a>
-
+<form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(checkoutReviewForm) }}>
+    {{ form_widget(checkoutReviewForm) }}
+    <input type="submit" class="btn" value="confirm" />
+</form>
 
 {% endblock %}
 

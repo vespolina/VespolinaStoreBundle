@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilder;
  *
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class SelectFulfillment extends AbstractType
+class SelectFulfillmentMethodFormType extends AbstractType
 {
     protected $fulfillmentChoices;
 
@@ -25,7 +25,7 @@ class SelectFulfillment extends AbstractType
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('fulfillment', 'choice', array(
+        $builder->add('fulfillment_method', 'choice', array(
             'choices'   => $this->fulfillmentChoices,
             'expanded'  => true,
             'multiple'  => false,
@@ -35,7 +35,7 @@ class SelectFulfillment extends AbstractType
 
     public function getName()
     {
-        return 'select_fulfilment';
+        return 'vespolina_store_select_fulfilment_method';
     }
 
     public function setFulfillmentChoices($fulfillmentChoices)
