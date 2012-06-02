@@ -14,16 +14,22 @@ use Symfony\Component\Form\FormBuilder;
  *
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class CustomerQuickCreate extends AbstractType
+class CheckoutReviewFormType extends AbstractType
 {
+    public function __construct()
+    {
+    }
+
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('name');
+        $builder->add('dummy', 'hidden');
+
 
     }
 
     public function getName()
     {
-        return 'customer_quick_create';
+        return 'vespolina_store_checkout_review';
     }
+
 }

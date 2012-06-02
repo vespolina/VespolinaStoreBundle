@@ -121,13 +121,15 @@ class SetupCommand extends ContainerAwareCommand
             $pricing = array();
             $pricing['netUnitPrice'] = rand(2,80);
 
-            //Set Manufacturer Suggested Retail Price to +10 % of the net unit price
-            $pricing['unitPriceMSRP'] = $pricing['netUnitPrice'] * 1.1;
+            //Set Manufacturer Suggested Retail Price to +(random) % of the net unit price
+            $pricing['MSRPDiscountRate'] = rand(10,35);
+            $pricing['unitPriceMSRP'] = $pricing['netUnitPrice'] * ( 1 + $pricing['MSRPDiscountRate'] / 100);
+
 
             if ($defaultTaxRate) {
 
                 $pricing['unitPriceTax'] = $pricing['netUnitPrice'] / 100 * $defaultTaxRate;
-                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP']/ 100 * $defaultTaxRate;
+                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'] * (1 + $defaultTaxRate / 100);
                 $pricing['unitPriceTotal'] = $pricing['netUnitPrice'] + $pricing['unitPriceTax'];
 
             } else {
@@ -135,7 +137,6 @@ class SetupCommand extends ContainerAwareCommand
                 $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
                 $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
             }
-
             $aProduct->setPricing($pricing);
 
             //Attach it to a random taxonomy term (= product category)

@@ -24,14 +24,13 @@ class DetermineFulfillment extends AbstractProcessStep
 
     public function execute($context)
     {
-
         $customerIdentified = false;
 
         if (!$customerIdentified) {
 
             $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\DetermineFulfillmentController');
-            $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
+            $controller->setProcessStep($this);
 
             return $controller->executeAction();
         } else {

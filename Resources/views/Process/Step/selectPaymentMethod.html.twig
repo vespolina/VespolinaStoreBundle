@@ -15,7 +15,7 @@
     <div class="span12">
         <h3>Please select how you want your items to be shipped</h3>
 
-        <form action="{{ path('vespolina_store_checkout_select_payment_method', { 'processId': currentProcessStep.process.id })}}" method="post" {{ form_enctype(selectPaymentMethodForm) }}>
+        <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(selectPaymentMethodForm) }}>
             {{ form_widget(selectPaymentMethodForm) }}
             <input type="submit" class="btn" />
         </form>
