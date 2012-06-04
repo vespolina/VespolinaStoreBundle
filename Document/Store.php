@@ -13,7 +13,5 @@ use Vespolina\StoreBundle\Document\BaseStore;
  */
 class Store extends BaseStore
 {
-    public function __construct()
-    {
-    }
+
 }

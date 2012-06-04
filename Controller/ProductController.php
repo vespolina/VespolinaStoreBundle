@@ -10,7 +10,7 @@ class ProductController extends AbstractController
     public function detailAction($slug)
     {
 
-        $productManager = $this->get('vespolina.product_manager');
+        $productManager = $this->container->get('vespolina.product_manager');
 
         $product = $productManager->findProductBySlug($slug);
 

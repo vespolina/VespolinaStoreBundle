@@ -30,7 +30,4 @@ abstract class AbstractStoreResolver implements StoreResolverInterface
     {
         return $this->store;
     }
-
-
-
 }

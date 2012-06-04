@@ -107,8 +107,13 @@ class SetupCommand extends ContainerAwareCommand
 
         for($i = 1; $i < $productCount; $i++) {
 
+            //Get a random taxonomy term (= product category) to which we'll be attaching this product
+            $index = rand(0, $productTaxonomyTerms->count() - 1);
+            $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
+            $productName = ucfirst(substr($aRandomTerm->getName(), 0, strlen($aRandomTerm->getName())-1)) . ' ' . $i;
+
             $aProduct = $productManager->createProduct();
-            $aProduct->setName('product ' . $i);
+            $aProduct->setName($productName);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
 
             /** Set up for each product following pricing elements
@@ -139,10 +144,6 @@ class SetupCommand extends ContainerAwareCommand
             }
             $aProduct->setPricing($pricing);
 
-            //Attach it to a random taxonomy term (= product category)
-            $index = rand(0, $productTaxonomyTerms->count() - 1);
-
-            $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
             $aProduct->addTerm($aRandomTerm);
 
             $productManager->updateProduct($aProduct, true);
@@ -172,8 +173,8 @@ class SetupCommand extends ContainerAwareCommand
             case 'beverages':
 
                 $termFixtures = array();
-                $termFixtures[] = array('path' => 'beers', 'name' => 'Beer');
-                $termFixtures[] = array('path' => 'wine',  'name' => 'Wine');
+                $termFixtures[] = array('path' => 'beers', 'name' => 'Beers');
+                $termFixtures[] = array('path' => 'wines',  'name' => 'Wines');
                 break;
 
             case 'fashion':
@@ -278,6 +279,7 @@ class SetupCommand extends ContainerAwareCommand
 
             //Setup store zones
             $storeZone = $storeZoneManager->createStoreZone($store);
+            $storeZone->setDisplayName(ucfirst($this->type));
             $storeZone->setTaxonomyName('products');
 
             $storeZoneManager->updateStoreZone($storeZone);

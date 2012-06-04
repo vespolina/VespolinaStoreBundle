@@ -6,9 +6,15 @@
 
     <route id="vespolina_store_start" pattern="/">
         <default key="_controller">vespolina.store.store_controller:zoneDetailAction</default>
-        <default key="taxonomyTerm">all</default>
+        <default key="taxonomyTerm">_all</default> 
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="vespolina_store_store_zone" pattern="/">
+        <default key="_controller">vespolina.store.store_controller:zoneDetailAction</default>
+        <default key="taxonomyTerm">_all</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
 
     <route id="vespolina_store_product_detail" pattern="/product_detail/{slug}">
         <default key="_controller">VespolinaStoreBundle:Product:detail</default>

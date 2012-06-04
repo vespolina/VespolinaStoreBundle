@@ -23,7 +23,6 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
 
     public function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context)
     {
-
         return $this->findProducts($context['taxonomyTerm']);
     }
 
@@ -44,7 +43,6 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
             $productsQuery,
             $this->container->get('request')->query->get('page', 1),
             $context['productsPerPage']);
-
 
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }

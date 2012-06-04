@@ -30,6 +30,13 @@ class RequestListener
         $storeResolver = $this->container->get('vespolina.store.store_resolver');
         $store = $storeResolver->resolveStore($event->getRequest());
 
+        $storeZoneManager = $this->container->get('vespolina.store.store_zone_manager');
+        $storeZones = $storeZoneManager->findBy(array());
+
+        foreach($storeZones as $storeZone) {
+            $store->addStoreZone($storeZone);
+        }
+
         //Register store as a global Twig variable
         $this->container->get('twig')->addGlobal('store', $store);
     }

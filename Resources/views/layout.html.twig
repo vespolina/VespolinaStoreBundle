@@ -1,14 +1,17 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="{{ path('homepage') }}">{{ store ? store.name : "Undefined store" }}</a>
+      <a class="brand" href="{{ path('homepage') }}"><img src="/bundles/vespolinastore/images/vespolina-logo-v.png" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
         <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
-        <li><a href="#about">About</a></li>
+          {% for storeZone in store.storeZones %}
+          <li><a href="{{ path('vespolina_store_store_zone', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>
+          {% endfor %}
+
+          <li><a href="#about">About</a></li>
       </ul>
       <ul class="nav secondary-nav">
         <li class="dropdown">
@@ -17,11 +20,7 @@
       </ul>
     </div>
   </div>
-
 </div>
-
-
-
 <div class="container">
     <div class="row-fluid">
         <div class="span12">
@@ -33,11 +32,9 @@
                 {% block cart_quick_inspection %}
                 {% render "VespolinaStoreBundle:Cart:quickInspection" %}
             {% endblock %}
-
             </div>
         </div>
     </div>
-
     <div class="row-fluid">
         <div class="span2">
             {% block product_taxonomy %}

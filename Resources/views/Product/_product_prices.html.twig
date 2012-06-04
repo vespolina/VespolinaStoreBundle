@@ -1,5 +1,4 @@
 {% set product_pricing =  product.getPricing %}
-
 {% set discount_rate = ( product_pricing['unitPriceTotal'] - product_pricing['unitPriceMSRPTotal'] ) / product_pricing['unitPriceTotal'] %}
 
 <span class="v-product-msrp-discount-rate">

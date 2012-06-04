@@ -7,8 +7,9 @@
  */
 
 namespace Vespolina\StoreBundle\Model;
-
+use Doctrine\Common\Collections\ArrayCollection;
 use Vespolina\StoreBundle\Model\StoreInterface;
+use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
@@ -16,16 +17,16 @@ use Vespolina\StoreBundle\Model\StoreInterface;
 abstract class Store implements StoreInterface
 {
     protected $id;
-    protected $defaultCurrency;
     protected $displayName;
+    protected $defaultCurrency;
+    protected $defaultProductView;
     protected $legalName;
     protected $operationalMode;
     protected $salesChannel;
-    protected $defaultProductView;
+    protected $storeZones;
 
      public function __construct()
     {
-
     }
 
     public function getId()
@@ -43,7 +44,6 @@ abstract class Store implements StoreInterface
 
     public function setId($id)
     {
-
         $this->id = $id;
     }
 
@@ -112,6 +112,24 @@ abstract class Store implements StoreInterface
     public function getDefaultProductView()
     {
         return $this->defaultProductView;
+    }
+
+    public function addStoreZone(StoreZoneInterface $storeZone)
+    {
+        if (!$this->storeZones) {
+            $this->storeZones = new ArrayCollection();
+            $this->storeZones->add($storeZone);
+        }
+    }
+
+    public function setStoreZones($storeZones)
+    {
+        $this->storeZones = $storeZones;
+    }
+
+    public function getStoreZones()
+    {
+        return $this->storeZones;
     }
 
 

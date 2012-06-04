@@ -33,6 +33,10 @@ class StoreZoneManager extends BaseStoreZoneManager
         parent::__construct($storeZoneClass);
     }
 
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return $this->storeZoneRepo->findBy($criteria, $orderBy, $limit, $offset);
+    }
     /**
      * @inheritdoc
      */

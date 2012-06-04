@@ -25,11 +25,14 @@ class SingleStoreResolver extends AbstractStoreResolver
      */
     public function resolveStore(Request $request)
     {
-        $this->store =  $this->storeManager->findStoreById('default_store');
-
         if (!$this->store) {
 
-            throw new \Exception('Could not resolve request to a store');
+            $this->store =  $this->storeManager->findStoreById('default_store');
+
+            if (!$this->store) {
+
+                throw new \Exception('Could not resolve request to a store');
+            }
         }
 
         return $this->store;

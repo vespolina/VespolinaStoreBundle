@@ -47,8 +47,8 @@ abstract class AbstractStoreHandler extends ContainerAware
         $qb = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product');
         $qb->sort('name', 'ASC');
 
-        //Add product categorisation as criteria if different from 'all'
-        if (null !== $taxonomyTerm && $taxonomyTerm != 'all') {
+        //Add product categorisation as criteria if different from '_all'
+        if (null !== $taxonomyTerm && $taxonomyTerm != '_all') {
 
             $qb->field('terms.slug')->equals($taxonomyTerm);
         }
