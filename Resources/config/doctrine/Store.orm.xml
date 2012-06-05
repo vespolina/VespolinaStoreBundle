@@ -8,6 +8,7 @@
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>
     </id>
+    <field name="code" type="string" column="code" length="255" />
     <field name="defaultCurrency" type="string" column="default_currency" length="255"/>
     <field name="displayName" type="string" column="display_name" length="255"/>
     <field name="legalName" type="string" column="legal_name" length="255" nullable="true"/>
@@ -15,5 +16,10 @@
     <field name="salesChannel" type="string" column="sales_channel" length="255"/>
     <field name="defaultProductView" type="string" column="default_product_view" length="255"/>
     <lifecycle-callbacks/>
+
+    <unique-constraints>
+        <unique-constraint columns="code" name="code_idx" />
+    </unique-constraints>
+
   </entity>
 </doctrine-mapping>

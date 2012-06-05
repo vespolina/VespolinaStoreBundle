@@ -13,6 +13,6 @@ use Vespolina\StoreBundle\Model\Store as AbstractStore;
  */
 abstract class BaseStore extends AbstractStore
 {
-    protected $id;
+    protected $code;
 
 }

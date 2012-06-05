@@ -15,16 +15,16 @@ use Vespolina\StoreBundle\Model\Store as AbstractStore;
  */
 class BaseStore extends AbstractStore
 {
-    protected $id;
+    protected $code;
 
     /**
-     * Get id
+     * Get code
      *
      * @return integer
      */
-    public function getId()
+    public function getCode()
     {
-        return $this->id;
+        return $this->code;
     }
 
 }

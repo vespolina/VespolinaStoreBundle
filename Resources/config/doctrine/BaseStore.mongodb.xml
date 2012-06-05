@@ -6,7 +6,7 @@
 
     <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStore" collection="vespolinaStore">
 
-        <field name="id" fieldName="id" type="string" id="true"/>
+        <field name="code" fieldName="code" type="string" id="true"/>
         <field name="displayName" fieldName="displayName" type="string"/>
         <field name="legalName" fieldName="legalName" type="string"/>
         <field name="operationalMode" fieldName="operationalMode" type="string"/>

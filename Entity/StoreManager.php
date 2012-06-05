@@ -37,9 +37,9 @@ class StoreManager extends BaseStoreManager
     /**
      * @inheritdoc
      */
-    public function findStoreById($id)
+    public function findStoreByCode($code)
     {
-        return $this->storeRepo->find($id);
+        return $this->storeRepo->findOneByCode($code);
     }
 
     /**
