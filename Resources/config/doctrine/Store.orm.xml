@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+        http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+  <entity name="Vespolina\StoreBundle\Entity\Store" table="store">
+    <id name="id" type="integer" column="id">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="defaultCurrency" type="string" column="default_currency" length="255"/>
+    <field name="displayName" type="string" column="display_name" length="255"/>
+    <field name="legalName" type="string" column="legal_name" length="255" nullable="true"/>
+    <field name="operationalMode" type="string" column="operational_mode" length="255"/>
+    <field name="salesChannel" type="string" column="sales_channel" length="255"/>
+    <field name="defaultProductView" type="string" column="default_product_view" length="255"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>
