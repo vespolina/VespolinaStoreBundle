@@ -27,7 +27,7 @@ class SingleStoreResolver extends AbstractStoreResolver
     {
         if (!$this->store) {
 
-            $this->store =  $this->storeManager->findStoreById('default_store');
+            $this->store =  $this->storeManager->findStoreByCode('default_store');
 
             if (!$this->store) {
 
