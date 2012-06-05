@@ -4,7 +4,7 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="{{ path('homepage') }}"><img src="/bundles/vespolinastore/images/vespolina-logo-v.png" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
+      <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-v.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
         <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
           {% for storeZone in store.storeZones %}

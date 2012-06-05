@@ -67,13 +67,15 @@ class CompleteCheckout extends AbstractProcessStep
         $salesOrder->setPricingSet($cart->getPricingSet());
 
         $paymentAgreement = $salesOrderManager->createPaymentAgreement();
-        $paymentAgreement->setType($context->get('payment_method')['payment_method']);
+        $paymentMethodData = $context->get('payment_method');
+        $paymentAgreement->setType($paymentMethodData['payment_method']);
         $paymentAgreement->setState('paid');
 
         $salesOrder->setPaymentAgreement($paymentAgreement);
 
         $fulfillmentAgreement = $salesOrderManager->createFulfillmentAgreement();
-        $fulfillmentAgreement->setType($context->get('fulfillment_method')['fulfillment_method']);
+        $fulfillmentMethodData = $context->get('fulfillment_method');
+        $fulfillmentAgreement->setType($fulfillmentMethodData['fulfillment_method']);
         $fulfillmentAgreement->setState('warehouse_notice');
         $fulfillmentAgreement->setServiceLevel('express_delivery');
 

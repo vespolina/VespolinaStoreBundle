@@ -110,11 +110,20 @@ class SetupCommand extends ContainerAwareCommand
             //Get a random taxonomy term (= product category) to which we'll be attaching this product
             $index = rand(0, $productTaxonomyTerms->count() - 1);
             $aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
-            $productName = ucfirst(substr($aRandomTerm->getName(), 0, strlen($aRandomTerm->getName())-1)) . ' ' . $i;
+            $singularTermName = substr($aRandomTerm->getName(), 0, strlen($aRandomTerm->getName())-1);
+            $productName = ucfirst($singularTermName) . ' ' . $i;
 
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
+
+            //Set up a nice primary media item
+            $imageRelativePath = 'bundles' . DIRECTORY_SEPARATOR .
+                                 'applicationvespolinastore' . DIRECTORY_SEPARATOR .
+                                 'images' . DIRECTORY_SEPARATOR .
+                                 $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i . '_thumb.jpg';
+            $aProduct->addMediaItem(array('relativePath' => $imageRelativePath));
+
 
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax
