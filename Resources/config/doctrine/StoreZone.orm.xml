@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+        http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+  <entity name="Vespolina\StoreBundle\Entity\StoreZone" table="store_zone">
+    <id name="id" type="integer" column="id">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="displayName" type="string" column="display_name" length="255"/>
+    <field name="taxonomyName" type="string" column="taxonomy_name" length="255"/>
+
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

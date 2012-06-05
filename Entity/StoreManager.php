@@ -5,12 +5,12 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Vespolina\StoreBundle\Document;
+namespace Vespolina\StoreBundle\Entity;
 
 use Symfony\Component\DependencyInjection\Container;
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
 
-use Vespolina\StoreBundle\Document\Store;
+use Vespolina\StoreBundle\Entity\Store;
 use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreManager as BaseStoreManager;
 /**
@@ -21,15 +21,15 @@ class StoreManager extends BaseStoreManager
 {
     protected $storeClass;
     protected $storeRepo;
-    protected $dm;
+    protected $em;
     protected $primaryIdentifier;
 
-    public function __construct(DocumentManager $dm, $storeClass, $storesConfigurations)
+    public function __construct(EntityManager $em, $storeClass, $storesConfigurations)
     {
-        $this->dm = $dm;
+        $this->em = $em;
 
         $this->storeClass = $storeClass;
-        $this->storeRepo = $this->dm->getRepository($storeClass);
+        $this->storeRepo = $this->em->getRepository($storeClass);
 
         parent::__construct($storeClass, $storesConfigurations);
     }
@@ -47,9 +47,9 @@ class StoreManager extends BaseStoreManager
      */
     public function updateStore(StoreInterface $store, $andFlush = true)
     {
-        $this->dm->persist($store);
+        $this->em->persist($store);
         if ($andFlush) {
-            $this->dm->flush();
+            $this->em->flush();
         }
     }
 }

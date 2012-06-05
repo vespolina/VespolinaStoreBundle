@@ -17,6 +17,7 @@ use Vespolina\StoreBundle\Model\StoreZoneInterface;
 abstract class Store implements StoreInterface
 {
     protected $id;
+    protected $code;
     protected $displayName;
     protected $defaultCurrency;
     protected $defaultProductView;
@@ -45,6 +46,16 @@ abstract class Store implements StoreInterface
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function setCode ($code)
+    {
+        $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**
