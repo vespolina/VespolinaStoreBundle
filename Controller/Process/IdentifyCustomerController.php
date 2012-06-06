@@ -27,14 +27,14 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
             $process = $this->processStep->getProcess();
 
+            $customerAddressForm = $createCustomerForm->get('address');
+            $customerDetailsForm = $createCustomerForm->get('personalDetails');
+            $customerPrimaryContactForm = $createCustomerForm->get('primaryContact');
+
             if ($createCustomerForm->isValid()) {
 
-                $customerAddressForm = $createCustomerForm->get('address');
-                $customerDetailsForm = $createCustomerForm->get('personalDetails');
-                $customerPrimaryContactForm = $createCustomerForm->get('primaryContact');
-
                 // get address and personal details forms
-                // FIXME: seems wrong?
+                // FIXME: seems wrong? Why should we manual set this data?
                 $customer = $createCustomerForm->getData();
                 $customerAddress = $customerAddressForm->getData();
                 $customerDetails = $customerDetailsForm->getData();
@@ -73,11 +73,12 @@ class IdentifyCustomerController extends AbstractProcessStepController
             // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
             $createCustomerForm = $this->createCustomerQuickCreateForm();
 
-            return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
+        }
+
+        return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
                 array('currentProcessStep' => $this->processStep,
                     'createCustomerForm' => $createCustomerForm->createView(),
                     'last_username' => ''));
-        }
 
    }
 
@@ -85,7 +86,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
     {
         $partnerManager = $this->container->get('vespolina.partner_manager');
         $customer = $partnerManager->createPartner();
-        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer, array());
+        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer);
 
         return $createCustomerForm;
     }
