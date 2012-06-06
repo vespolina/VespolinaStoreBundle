@@ -43,6 +43,7 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
             $productsQuery,
             $this->container->get('request')->query->get('page', 1),
             $context['productsPerPage']);
+        $context['productsPagination']->setTemplate('VespolinaStoreBundle:Store/standard:pagination.html.twig');
 
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }
