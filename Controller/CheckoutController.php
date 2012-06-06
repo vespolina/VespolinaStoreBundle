@@ -27,8 +27,12 @@ class CheckoutController extends AbstractController
             $processManager->updateProcess($checkoutProcess);
 
         } else{
-            $checkoutProcess->init();
+            $processResult = $checkoutProcess->execute();
+
+            //Persist (in session)
+            $processManager->updateProcess($checkoutProcess);
         }
+
         if ($processResult) {
 
             return $processResult;

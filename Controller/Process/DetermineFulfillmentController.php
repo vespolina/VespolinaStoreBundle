@@ -42,7 +42,9 @@ class DetermineFulfillmentController extends AbstractProcessStepController
 
     protected function createSelectFulfillmentForm()
     {
-        $selectFulfillmentForm = $this->container->get('form.factory')->create(new SelectFulfillmentMethodFormType($this->getFulfillmentChoices()), null, array());
+        $fulfillment = $this->processStep->getContext()->get('fulfillment_method');
+
+        $selectFulfillmentForm = $this->container->get('form.factory')->create(new SelectFulfillmentMethodFormType($this->getFulfillmentChoices()), $fulfillment, array());
 
         return $selectFulfillmentForm;
     }

@@ -24,7 +24,8 @@ class IdentifyCustomer extends AbstractProcessStep
 
     public function execute($context)
     {
-        if ($this->isCustomerIdentified()) {
+        $currentStep = $this->getProcess()->getCurrentProcessStep();
+        if ($this->isCustomerIdentified() && $currentStep->getName() !== $this->getName()) {
 
             return $this->complete();
 
