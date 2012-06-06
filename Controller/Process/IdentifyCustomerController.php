@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Vespolina\PartnerBundle\Form\QuickCustomerType;
 use Vespolina\StoreBundle\Form\Type\Process\CustomerQuickCreateFormType;
 use Vespolina\StoreBundle\Controller\Process\AbstractProcessStepController;
@@ -17,6 +19,11 @@ class IdentifyCustomerController extends AbstractProcessStepController
     {
 
         $createCustomerForm = $this->createCustomerQuickCreateForm();
+
+        $addresses = $createCustomerForm->getData()->getAddresses();
+        if ($addresses)
+            $createCustomerForm->get('address')->setData($addresses->get(0));
+
         $partnerManager = $this->container->get('vespolina.partner_manager');
         $processManager = $this->container->get('vespolina.process_manager');
         $request = $this->container->get('request');
@@ -27,23 +34,27 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
             $process = $this->processStep->getProcess();
 
+            $customerAddressForm = $createCustomerForm->get('address');
+            $customerDetailsForm = $createCustomerForm->get('personalDetails');
+            $customerPrimaryContactForm = $createCustomerForm->get('primaryContact');
+
             if ($createCustomerForm->isValid()) {
 
-                $customerAddressForm = $createCustomerForm->get('address');
-                $customerDetailsForm = $createCustomerForm->get('personalDetails');
-                $customerPrimaryContactForm = $createCustomerForm->get('primaryContact');
-
                 // get address and personal details forms
-                // FIXME: seems wrong?
+                // FIXME: seems wrong? Why should we manual set this data?
                 $customer = $createCustomerForm->getData();
                 $customerAddress = $customerAddressForm->getData();
                 $customerDetails = $customerDetailsForm->getData();
                 $customerPrimaryContact = $customerPrimaryContactForm->getData();
 
-                $customer->addAddress($customerAddress);
-                $customer->setPersonalDetails($customerDetails);
-                $customer->setName($partnerManager->generatePartnerName($customerDetails));
+                if ($customerAddress) {
+                    $customer->setAddresses(new ArrayCollection(array($customerAddress)));
+                }
 
+                if ($customerDetails) {
+                    $customer->setPersonalDetails($customerDetails);
+                    $customer->setName($partnerManager->generatePartnerName($customerDetails));
+                }
 
                 //Save into process context & session
                 $process->getContext()->set('customer', $customer);
@@ -66,26 +77,23 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
             }
 
-        } else {
+        }
 
-
-
-            // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
-            $createCustomerForm = $this->createCustomerQuickCreateForm();
-
-            return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
+        return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
                 array('currentProcessStep' => $this->processStep,
                     'createCustomerForm' => $createCustomerForm->createView(),
                     'last_username' => ''));
-        }
 
    }
 
     protected function createCustomerQuickCreateForm()
     {
-        $partnerManager = $this->container->get('vespolina.partner_manager');
-        $customer = $partnerManager->createPartner();
-        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer, array());
+        $customer = $this->getProcessStep()->getProcess()->getContext()->get('customer');
+        if (null === $customer) {
+            $partnerManager = $this->container->get('vespolina.partner_manager');
+            $customer = $partnerManager->createPartner();
+        }
+        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer);
 
         return $createCustomerForm;
     }

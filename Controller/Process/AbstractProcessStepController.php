@@ -28,6 +28,9 @@ class AbstractProcessStepController extends AbstractController
         $this->processStep = $processStep;
     }
 
+    /**
+     * @return \Vespolina\StoreBundle\Process\AbstractProcessStep
+     */
     public function getProcessStep()
     {
         return $this->processStep;
