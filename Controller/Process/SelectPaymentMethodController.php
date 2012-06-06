@@ -40,7 +40,8 @@ class SelectPaymentMethodController extends AbstractProcessStepController
 
     protected function createSelectPaymentMethodForm()
     {
-        $selectPaymentMethodForm = $this->container->get('form.factory')->create(new SelectPaymentMethodFormType($this->getPaymentMethodChoices()), array(), array());
+        $paymentMethod = $this->processStep->getContext()->get('payment_method');
+        $selectPaymentMethodForm = $this->container->get('form.factory')->create(new SelectPaymentMethodFormType($this->getPaymentMethodChoices()), $paymentMethod, array());
 
         return $selectPaymentMethodForm;
     }

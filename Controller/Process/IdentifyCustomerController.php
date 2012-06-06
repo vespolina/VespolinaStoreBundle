@@ -17,6 +17,11 @@ class IdentifyCustomerController extends AbstractProcessStepController
     {
 
         $createCustomerForm = $this->createCustomerQuickCreateForm();
+
+        $addresses = $createCustomerForm->getData()->getAddresses();
+        if ($addresses)
+            $createCustomerForm->get('address')->setData($addresses->get(0));
+
         $partnerManager = $this->container->get('vespolina.partner_manager');
         $processManager = $this->container->get('vespolina.process_manager');
         $request = $this->container->get('request');
@@ -40,10 +45,14 @@ class IdentifyCustomerController extends AbstractProcessStepController
                 $customerDetails = $customerDetailsForm->getData();
                 $customerPrimaryContact = $customerPrimaryContactForm->getData();
 
-                $customer->addAddress($customerAddress);
-                $customer->setPersonalDetails($customerDetails);
-                $customer->setName($partnerManager->generatePartnerName($customerDetails));
+                if ($customerAddress) {
+                    $customer->setAddresses(new \Doctrine\Common\Collections\ArrayCollection(array($customerAddress)));
+                }
 
+                if ($customerDetails) {
+                    $customer->setPersonalDetails($customerDetails);
+                    $customer->setName($partnerManager->generatePartnerName($customerDetails));
+                }
 
                 //Save into process context & session
                 $process->getContext()->set('customer', $customer);
@@ -66,13 +75,6 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
             }
 
-        } else {
-
-
-
-            // We came here because the checkout process 'identify customer' step could not determine the identity of the customer
-            $createCustomerForm = $this->createCustomerQuickCreateForm();
-
         }
 
         return $this->render('VespolinaStoreBundle:Process:Step/identifyCustomer.html.twig',
@@ -84,8 +86,11 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
     protected function createCustomerQuickCreateForm()
     {
-        $partnerManager = $this->container->get('vespolina.partner_manager');
-        $customer = $partnerManager->createPartner();
+        $customer = $this->getProcessStep()->getProcess()->getContext()->get('customer');
+        if (null === $customer) {
+            $partnerManager = $this->container->get('vespolina.partner_manager');
+            $customer = $partnerManager->createPartner();
+        }
         $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer);
 
         return $createCustomerForm;
