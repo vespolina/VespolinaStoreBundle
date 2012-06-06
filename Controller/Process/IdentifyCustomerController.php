@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Vespolina\PartnerBundle\Form\QuickCustomerType;
 use Vespolina\StoreBundle\Form\Type\Process\CustomerQuickCreateFormType;
 use Vespolina\StoreBundle\Controller\Process\AbstractProcessStepController;
@@ -46,7 +48,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
                 $customerPrimaryContact = $customerPrimaryContactForm->getData();
 
                 if ($customerAddress) {
-                    $customer->setAddresses(new \Doctrine\Common\Collections\ArrayCollection(array($customerAddress)));
+                    $customer->setAddresses(new ArrayCollection(array($customerAddress)));
                 }
 
                 if ($customerDetails) {
