@@ -8,7 +8,7 @@
 
 namespace Vespolina\StoreBundle\Form\Type\Process;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Quickly create a customer
  *
@@ -23,7 +23,7 @@ class SelectPaymentMethodFormType extends AbstractType
         $this->paymentMethodChoices = $paymentMethodChoices;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('payment_method', 'choice', array(
             'choices'   => $this->paymentMethodChoices,
