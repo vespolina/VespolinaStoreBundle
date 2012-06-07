@@ -30,10 +30,6 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="vespolina_cart_checkout" pattern="/cart">
-        <default key="_controller">VespolinaStoreBundle:Cart:show</default>
-        <requirement key="_method">GET</requirement>
-    </route>
     <!-- Process routes -->
     <route id="vespolina_store_checkout_process_step" pattern="/checkout/{processStepName}/{processId}">
         <default key="_controller">VespolinaStoreBundle:Checkout:execute</default>
