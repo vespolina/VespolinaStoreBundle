@@ -8,6 +8,7 @@
 
 namespace Vespolina\StoreBundle\Process\Step;
 
+use Vespolina\OrderBundle\Model\SalesOrderInterface;
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 
 /**
@@ -30,8 +31,13 @@ class CompleteCheckout extends AbstractProcessStep
         $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina_sales_order.sales_order_manager');
         $salesOrder = $this->createSalesOrderFromCart($cart, $salesOrderManager);
 
-        if ($salesOrder) {
+        if (null != $salesOrder) {
             $salesOrderManager->updateSalesOrder($salesOrder, true);
+
+            //Notify involved partners about the sales order.  Tod: Move into a dispatcher event listener
+            $this->notifyPartners($salesOrder);
+
+
         }
         //Reset session cart
         $cart->clearItems();
@@ -94,4 +100,14 @@ class CompleteCheckout extends AbstractProcessStep
 
         return $salesOrder;
     }
+
+    protected function notifyPartners(SalesOrderInterface $salesOrder) {
+
+        //Notify the customer
+        $customer = $salesOrder->getCustomer();
+
+
+
+    }
+
 }
