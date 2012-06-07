@@ -15,5 +15,9 @@ class StoreHandlerFactoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (!extension_loaded('intl'))
+        {
+            throw new \Exception ("You must have the php extension \"intl\" installed");
+        }
     }
 }
