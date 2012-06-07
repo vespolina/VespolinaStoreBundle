@@ -1,0 +1,13 @@
+{% extends 'VespolinaStoreBundle:Email:base.html.twig' %}
+
+{% block content %}
+<h1>Thanks for your order</h1>
+<p>Your order and payment has been received.</p>
+<p>Below an summary of your order:</p>
+<ul style="list-style: none;">
+    {% for item in order.getItems %}
+        <li>{{ item.orderedQuantity }}x {{ item.product.name }}</li>
+    {% endfor %}
+</ul>
+<p>A total of {{ order.getItems|length }} items.</p>
+{% endblock content %}
