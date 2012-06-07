@@ -118,11 +118,13 @@ class SetupCommand extends ContainerAwareCommand
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
 
             //Set up a nice primary media item
-            $imageRelativePath = 'bundles' . DIRECTORY_SEPARATOR .
+            $imageBasePath = 'bundles' . DIRECTORY_SEPARATOR .
                                  'applicationvespolinastore' . DIRECTORY_SEPARATOR .
                                  'images' . DIRECTORY_SEPARATOR .
-                                 $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i . '_thumb.jpg';
-            $aProduct->addMediaItem(array('relativePath' => $imageRelativePath));
+                                 $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
+            ;
+            $aProduct->addMediaItem(array('relativePath' => $imageBasePath . '.jpg',
+                                          'relativeThumbnailPath' =>  $imageBasePath . '_thumb.jpg'));
 
 
             /** Set up for each product following pricing elements
