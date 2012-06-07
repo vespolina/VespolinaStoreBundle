@@ -1,6 +1,14 @@
+{% if type is not defined %}
+    {% set type = 'thumbnail' %}
+{% endif %}
+
 {% if product.mediaItems|length > 0 %}
 {% set mediaItem = product.mediaItems[0] %}
-<img class="thumbs" src="{{ asset(mediaItem.relativePath) }}"/>
+    {% if type == 'thumbnail' %}
+    <img class="v-media-item thumbs" src="{{ asset(mediaItem.relativeThumbnailPath) }}"/>
+    {%  else %}
+    <img class="v-media-item" src="{{ asset(mediaItem.relativePath) }}"/>
+    {%  endif %}
 {%  else %}
-<img class="thumbs" src="{{ asset('bundles/vespolinastore/images/no-product-image.jpg') }}"/>
+    <img class="thumbs" src="{{ asset('bundles/vespolinastore/images/no-product-image.jpg') }}"/>
 {%  endif %}
