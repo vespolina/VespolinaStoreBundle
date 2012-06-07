@@ -4,7 +4,7 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-v.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
+      <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
       <ul class="nav">
         <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
           {% for storeZone in store.storeZones %}
@@ -13,28 +13,20 @@
 
           <li><a href="#about">About</a></li>
       </ul>
-      <ul class="nav secondary-nav">
+      <ul class="nav secondary-nav pull-right">
+            {% block customer_info %}
+                {% render "VespolinaStoreBundle:Customer:navBar" %}
+            {% endblock %}
         <li class="dropdown">
-            <a href="{{ path('vespolina_cart_show') }}">My Cart</a>
+            {% block cart_quick_inspection %}
+                {% render "VespolinaStoreBundle:Cart:navBar" %}
+            {% endblock %}
         </li>
       </ul>
     </div>
   </div>
 </div>
 <div class="container">
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="offset9 span3">
-                {% block customer_info %}
-                {% render "VespolinaStoreBundle:Store:quickCustomerInspection" %}
-                {% endblock %}
-
-                {% block cart_quick_inspection %}
-                {% render "VespolinaStoreBundle:Cart:quickInspection" %}
-            {% endblock %}
-            </div>
-        </div>
-    </div>
     <div class="row-fluid">
         <div class="span2">
             {% block product_taxonomy %}
@@ -59,7 +51,7 @@
     </div>
    <!-- Footer -->
     <div id="footer" class="box">
-        <p class="f-right">Copyright &copy; 2O11 - 2012 <a href="http://www.vespolina.org">Vespolina Project</a>, All Rights Reserved</p>
+        <p class="f-right">Copyright &copy; 2011 - 2012 <a href="http://www.vespolina.org">Vespolina Project</a>, All Rights Reserved</p>
     </div> <!-- /footer -->
 </div>
 {% endblock %}
