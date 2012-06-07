@@ -10,6 +10,8 @@ namespace Vespolina\StoreBundle\Process\Step;
 
 use Vespolina\OrderBundle\Model\SalesOrderInterface;
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
+use Vespolina\StoreBundle\StoreEvents;
+use Vespolina\StoreBundle\Event\CheckoutEvent;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
@@ -101,13 +103,12 @@ class CompleteCheckout extends AbstractProcessStep
         return $salesOrder;
     }
 
-    protected function notifyPartners(SalesOrderInterface $salesOrder) {
-
+    protected function notifyPartners(SalesOrderInterface $salesOrder)
+    {
         //Notify the customer
-        $customer = $salesOrder->getCustomer();
-
-
-
+        $dispatcher = $this->getProcess()->getContainer()->get('event_dispatcher');
+        $event = new CheckoutEvent($salesOrder);
+        $dispatcher->dispatch(StoreEvents::COMPLETE_CHECKOUT, $event);
     }
 
 }

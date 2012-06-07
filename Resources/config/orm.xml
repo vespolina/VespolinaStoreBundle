@@ -31,10 +31,5 @@
             </call>
         </service>
         <service id="vespolina.process_manager" alias="vespolina.store.process_manager" />
-
-        <service id="vespolina.store.listener.request" class="Vespolina\StoreBundle\Event\RequestListener">
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
-            <argument type="service" id="service_container" />
-        </service>
     </services>
 </container>
