@@ -1,0 +1,6 @@
+{% if product.mediaItems|length > 0 %}
+{% set mediaItem = product.mediaItems[0] %}
+<img class="thumbs" src="{{ asset(mediaItem.relativePath) }}"/>
+{%  else %}
+<img class="thumbs" src="{{ asset('bundles/vespolinastore/images/no-product-image.jpg') }}"/>
+{%  endif %}

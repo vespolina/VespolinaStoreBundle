@@ -5,12 +5,7 @@
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
                     <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
-                        {% if product.mediaItems|length > 0 %}
-                            {% set mediaItem = product.mediaItems[0] %}
-                            <img class="thumbs" src="{{ asset(mediaItem.relativePath) }}"/>
-                        {%  else %}
-                            <img class="thumbs" src="{{ asset('bundles/vespolinastore/images/no-product-image.jpg') }}"/>
-                        {%  endif %}
+                        {% include 'VespolinaStoreBundle:Product:_product_primary_media.html.twig' with {'product': product } %}
                     </a>
                 </div>
                 <div class="caption">
