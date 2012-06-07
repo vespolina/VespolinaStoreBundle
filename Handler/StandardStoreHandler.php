@@ -31,7 +31,7 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
 
         $defaults = array('productView' => $this->getStore()->getDefaultProductView(),
                           'taxonomyName' => $storeZone->getTaxonomyName(),
-                          'taxonomyRenderType' => 'belowEachOther',
+                          'taxonomyRenderType' => 'BelowEachOther',
                           'productsPerPage' => 20);
 
         $context = array_merge($defaults, $context);
