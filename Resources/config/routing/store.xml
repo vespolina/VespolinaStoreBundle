@@ -16,15 +16,6 @@
     </route>
 
 
-    <route id="vespolina_store_product_detail" pattern="/product_detail/{slug}">
-        <default key="_controller">VespolinaStoreBundle:Product:detail</default>
-        <requirement key="_method">GET</requirement>
-    </route>
-
-    <route id="vespolina_store_products" pattern="/products/{taxonomyTerm}">
-        <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
-        <requirement key="_method">GET</requirement>
-    </route>
     <route id="vespolina_store_cart_checkout" pattern="/checkout">
         <default key="_controller">VespolinaStoreBundle:Checkout:checkout</default>
         <requirement key="_method">GET</requirement>
