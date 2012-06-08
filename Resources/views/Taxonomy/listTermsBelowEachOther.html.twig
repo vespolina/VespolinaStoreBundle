@@ -10,7 +10,7 @@
                 {% set css = ''%}
             {% endif %}
         <li class="{{ css }}">
-         <a href="{{ url('vespolina_products', { 'taxonomyTerm': term.path }) }}">
+         <a href="{{ url('vespolina_taxonomy', { 'taxonomyTerm': term.path }) }}">
             <div>{{ term.name }}</div>
         </a>
         </li>
