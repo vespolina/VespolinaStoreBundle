@@ -1,0 +1,37 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+<ul class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li>Checkout<span class="divider">/</span></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+{% render "VespolinaStoreBundle:Process:processNavigator" with {'currentProcessStep': currentProcessStep } %}
+
+<div id="payment_frame">
+Starting Payment...
+</div>
+
+
+
+<form name="execute_payment" action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(paymentForm) }}>
+    {{ form_widget(paymentForm) }}
+    <input type="submit" class="btn" id="submit" value="confirm" />
+</form>
+
+<script type="text/javascript">
+    //Simulate payment
+    setTimeout(function(){
+        document.getElementById('payment_frame').innerHTML = "<b>Payment succesful!</b>";
+        setTimeout(function(){
+            document.forms["execute_payment"].submit();
+        }, 1000);
+
+    }, 1000);
+</script>
+
+{% endblock %}
+

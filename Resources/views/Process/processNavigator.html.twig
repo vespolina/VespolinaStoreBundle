@@ -1,0 +1,17 @@
+<div class="v-process-navigator">
+    <ul class="nav nav-pills">
+    {% for processStep in processSteps %}
+
+        {% if processStep.name == currentProcessStep.name %}
+
+        <li class="active">
+        {% else %}
+        <li class="">
+        {% endif %}
+
+            <a href="{{path('vespolina_store_checkout_goto', {'processStepName': processStep.name, 'processId': processStep.process.id})}}">
+                {{loop.index}}. {{ processStep.displayName }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,47 @@
+{% extends "VespolinaStoreBundle::layout.html.twig" %}
+
+{% block navigation %}
+<ul class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li>Checkout<span class="divider">/</span></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+{% render "VespolinaStoreBundle:Process:processNavigator" with {'currentProcessStep': currentProcessStep } %}
+
+<div class="row-fluid">
+    <div class="span6">
+        <h3>I am already a customer</h3>
+
+        <form action="{{ path("vespolina_store_checkout_login_customer", { 'processId': currentProcessStep.process.id })}}" method="post">
+            <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+            <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+            <input type="password" id="password" name="_password" />
+
+            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+            <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+
+            <input type="submit" id="_submit" name="_submit" class="btn" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+        </form>
+    </div>
+
+    <div class="span6">
+        <h3>I'm not yet a customer</h3>
+
+        <p>Full out this form below</p>
+
+        <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(createCustomerForm) }}>
+        	{% include "VespolinaStoreBundle:Process:Form/quickCustomer.html.twig" with { 'form': createCustomerForm } %}
+            <input type="submit" class="btn" />
+        </form>
+
+    </div>
+</div>
+<div class="row-fluid">
+</div>
+{% endblock %}
+

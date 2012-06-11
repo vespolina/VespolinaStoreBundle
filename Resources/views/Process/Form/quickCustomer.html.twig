@@ -1,0 +1,8 @@
+{{ form_errors(form) }}
+<h4>{% trans %}Personal details{% endtrans %}</h4>
+{{ form_row(form.personalDetails.firstname) }}
+{{ form_row(form.personalDetails.lastname) }}
+{{ form_widget(form.primaryContact) }}
+<h4>{% trans %}Address{% endtrans %}</h4>
+{{ form_widget(form.address) }}
+{{ form_rest(form) }}
