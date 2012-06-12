@@ -17,5 +17,7 @@
 .v-taxonomy-below-eachother { width: 10em; margin-right: 0.5em}
 .navigation { text-align: center; }
 
+.navbar .nav > li.v-nav-cart > a { padding-right: 0px; }
+.navbar .nav > li.v-nav-cart.dropdown > a { padding-left: 2px; }
 .v-nav-checkout { text-align: center; }
 .dropdown-menu li > a.v-nav-checkout:hover, .dropdown-menu .active > a.v-nav-checkout, .dropdown-menu .active > a.v-nav-checkout:hover { background-color: #fff; color: #000; }
