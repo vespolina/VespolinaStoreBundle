@@ -46,9 +46,11 @@ abstract class StoreManager implements StoreManagerInterface {
         foreach ($this->storesConfigurations as $storeCode => $storeConfiguration) {
 
             $store = $this->createStore($storeCode, $storeConfiguration['display_name']);
+            $store->setDisplayName($storeConfiguration['display_name']);
+            $store->setDefaultProductView($storeConfiguration['default_product_view']);
+            $store->setLegalName($storeConfiguration['legal_name']);
             $store->setOperationalMode($storeConfiguration['operational_mode']);
             $store->setSalesChannel($storeConfiguration['sales_channel']);
-            $store->setDefaultProductView($storeConfiguration['default_product_view']);
 
             $this->stores[$storeCode] = $store;
 
