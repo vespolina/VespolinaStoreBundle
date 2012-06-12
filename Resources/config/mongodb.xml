@@ -3,10 +3,9 @@
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    
+
     <parameters>
         <parameter key="vespolina.store.store_manager.class">Vespolina\StoreBundle\Document\StoreManager</parameter>
-        <parameter key="vespolina.store.process_manager.class">Vespolina\StoreBundle\Process\ProcessManager</parameter>
         <parameter key="vespolina.store.store_zone_manager.class">Vespolina\StoreBundle\Document\StoreZoneManager</parameter>
         <parameter key="vespolina.store.model.store.class">Vespolina\StoreBundle\Document\Store</parameter>
         <parameter key="vespolina.store.model.store_zone.class">Vespolina\StoreBundle\Document\StoreZone</parameter>
