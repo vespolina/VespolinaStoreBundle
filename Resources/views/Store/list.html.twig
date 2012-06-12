@@ -5,20 +5,20 @@
         {% for product in products %}
             <div class="span3 v-product-tile">
                 <div class="thumbnail">
-                    <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                    <a href="{{ path('vespolina_product_detail', { 'slug': product.slug }) }}">
                     <img class="thumbs" src="/images/no-product-image.jpg"/>
                     </a>
                 </div>
                 <div class="caption">
                     <span class="v-product-name">
-                        <a href="{{ path('vespolina_store_product_detail', { 'slug': product.slug }) }}">
+                        <a href="{{ path('vespolina_product_detail', { 'slug': product.slug }) }}">
                             {{ product.name }}
                         </a>
                     </span>
                     <div>
                         <a class="btn" href="{{ path('vespolina_cart_add_cartable', {'cartableId': product.id}) }}">Add to Cart</a>
                         <span class="v-product-price">
-                            {% include 'VespolinaStoreBundle:Product:_product_prices.html.twig' with {'product': product } %}
+                            {% include 'VespolinaProductBundle:Default:_product_prices.html.twig' with {'product': product } %}
                         </span>
                     </div>
                 </div>

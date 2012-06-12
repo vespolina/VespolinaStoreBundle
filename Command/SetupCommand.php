@@ -123,9 +123,26 @@ class SetupCommand extends ContainerAwareCommand
                                  'images' . DIRECTORY_SEPARATOR .
                                  $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;
-            $aProduct->addMediaItem(array('relativePath' => $imageBasePath . '.jpg',
-                                          'relativeThumbnailPath' =>  $imageBasePath . '_thumb.jpg'));
 
+            $asset = $productManager->getAssetManager()->createAsset(
+                $aProduct,
+                $imageBasePath . '.jpg',
+                'main_detail'
+            );
+            $asset = $productManager->getAssetManager()->createAsset(
+                $aProduct,
+                $imageBasePath . '_thumb.jpg',
+                'thumbnail'
+            );
+
+            for ($c = 1; $c<= rand(0,5); $c++)
+            {
+                $asset = $productManager->getAssetManager()->createAsset(
+                    $aProduct,
+                    $imageBasePath . '.jpg',
+                    'secondary_detail'
+                );
+            }
 
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax

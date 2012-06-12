@@ -14,6 +14,6 @@
 {% endblock %}
 
 {% block content %}
-    {% include "VespolinaStoreBundle:Product:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
+    {% include "VespolinaProductBundle:Default:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
 {% endblock %}
 
