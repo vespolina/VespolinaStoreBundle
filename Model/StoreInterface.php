@@ -21,6 +21,23 @@ interface StoreInterface
      */
     function getDisplayName();
 
+    /**
+     * Get the default country this store is aiming at
+     * (might be different from the country of the legal name )
+     *
+     *
+     * @abstract
+     * @return mixed
+     */
+    function getDefaultCountry();
+
+    /**
+     * Get the default state this store is aiming at
+     * @abstract
+     * @return mixed
+     */
+    function getDefaultState();
+
     function getLegalName();
 
     /**
@@ -32,6 +49,10 @@ interface StoreInterface
      *
      */
     function getSalesChannel();
+
+    function setDefaultState($defaultState);
+
+    function setDefaultCountry($defaultCountry);
 
     function setDisplayName($displayName);
 

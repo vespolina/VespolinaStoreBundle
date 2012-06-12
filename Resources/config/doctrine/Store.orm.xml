@@ -9,12 +9,14 @@
       <generator strategy="AUTO"/>
     </id>
     <field name="code" type="string" column="code" length="255" />
+    <field name="defaultCountry" type="string" column="default_country" length="3"/>
     <field name="defaultCurrency" type="string" column="default_currency" length="255"/>
+    <field name="defaultProductView" type="string" column="default_product_view" length="255"/>
+    <field name="defaultState" type="string" column="default_state" length="100"/>
     <field name="displayName" type="string" column="display_name" length="255"/>
     <field name="legalName" type="string" column="legal_name" length="255" nullable="true"/>
     <field name="operationalMode" type="string" column="operational_mode" length="255"/>
     <field name="salesChannel" type="string" column="sales_channel" length="255"/>
-    <field name="defaultProductView" type="string" column="default_product_view" length="255"/>
     <lifecycle-callbacks/>
 
     <unique-constraints>

@@ -19,6 +19,8 @@ abstract class Store implements StoreInterface
     protected $id;
     protected $code;
     protected $displayName;
+    protected $defaultCountry;
+    protected $defaultState;
     protected $defaultCurrency;
     protected $defaultProductView;
     protected $legalName;
@@ -141,6 +143,26 @@ abstract class Store implements StoreInterface
     public function getStoreZones()
     {
         return $this->storeZones;
+    }
+
+    public function setDefaultCountry($defaultCountry)
+    {
+        $this->defaultCountry = $defaultCountry;
+    }
+
+    public function getDefaultCountry()
+    {
+        return $this->defaultCountry;
+    }
+
+    public function setDefaultState($defaultState)
+    {
+        $this->defaultState = $defaultState;
+    }
+
+    public function getDefaultState()
+    {
+        return $this->defaultState;
     }
 
 

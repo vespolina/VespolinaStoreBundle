@@ -16,6 +16,7 @@ class SetupCommand extends ContainerAwareCommand
     protected $input;
     protected $country;
     protected $output;
+    protected $state;
     protected $type;
 
     protected function configure()
@@ -124,6 +125,7 @@ class SetupCommand extends ContainerAwareCommand
                                  $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;
 
+            /**
             $asset = $productManager->getAssetManager()->createAsset(
                 $aProduct,
                 $imageBasePath . '.jpg',
@@ -143,7 +145,7 @@ class SetupCommand extends ContainerAwareCommand
                     'secondary_detail'
                 );
             }
-
+             */
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
@@ -288,6 +290,8 @@ class SetupCommand extends ContainerAwareCommand
                     default: $currency = 'EUR'; break;
                 }
                 $store->setDefaultCurrency($currency);
+                $store->setDefaultCountry($this->country);
+                $store->setDefaultState($this->state);
             }
 
             $storeManager->updateStore($store);
