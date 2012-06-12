@@ -1,7 +1,13 @@
 {% if cart.isEmpty %}
+<li class="dropdown">
     <a href="{{ path('vespolina_cart_show')}}"><i class="icon-shopping-cart"></i>Cart <span class="badge">0</span></a>
+</li>
 {% else %}
-    <a href="{{ path('vespolina_cart_show')}}" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white"></i>Cart <span class="badge">{{ cart.items.count }}<b class="caret"></b></a>
+<li class="v-nav-cart">
+    <a href="{{ path('vespolina_cart_show')}}" ><i class="icon-shopping-cart icon-white"></i>Cart </a>
+</li>
+<li class="v-nav-cart dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="badge">{{ cart.items.count }}<b class="caret"></b></a>
     <ul class="dropdown-menu">
     {% for item in cart.items %}
         <li><a href="{{ path('vespolina_store_product_detail', { 'slug': item.cartableItem.slug}) }}">({{ item.quantity }})  {{ item.name }}  -  {{ item.totalPrice | price_format(store.defaultCurrency) }}</a>
@@ -14,4 +20,5 @@
             </a>
         <li>
     </ul>
+</li>
 {% endif %}
