@@ -125,27 +125,6 @@ class SetupCommand extends ContainerAwareCommand
                                  $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;
 
-            /**
-            $asset = $productManager->getAssetManager()->createAsset(
-                $aProduct,
-                $imageBasePath . '.jpg',
-                'main_detail'
-            );
-            $asset = $productManager->getAssetManager()->createAsset(
-                $aProduct,
-                $imageBasePath . '_thumb.jpg',
-                'thumbnail'
-            );
-
-            for ($c = 1; $c<= rand(0,5); $c++)
-            {
-                $asset = $productManager->getAssetManager()->createAsset(
-                    $aProduct,
-                    $imageBasePath . '.jpg',
-                    'secondary_detail'
-                );
-            }
-             */
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
@@ -177,6 +156,27 @@ class SetupCommand extends ContainerAwareCommand
             $aProduct->addTerm($aRandomTerm);
 
             $productManager->updateProduct($aProduct, true);
+
+            $asset = $productManager->getAssetManager()->createAsset(
+                $aProduct,
+                $imageBasePath . '.jpg',
+                'main_detail'
+            );
+            $asset = $productManager->getAssetManager()->createAsset(
+                $aProduct,
+                $imageBasePath . '_thumb.jpg',
+                'thumbnail'
+            );
+
+            for ($c = 1; $c<= rand(0,5); $c++)
+            {
+                $asset = $productManager->getAssetManager()->createAsset(
+                    $aProduct,
+                    $imageBasePath . '.jpg',
+                    'secondary_detail'
+                );
+            }
+
         }
 
         $output->writeln('- Created ' . $productCount . ' sample products.' );
