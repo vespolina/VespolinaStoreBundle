@@ -16,5 +16,5 @@ final class StoreEvents
      *
      * @var string
      */
-    const COMPLETE_CHECKOUT = 'vespolina.store.complete_checkout';
+    const COMPLETE_CHECKOUT = 'vespolina_store.complete_checkout';
 }
