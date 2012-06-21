@@ -27,6 +27,7 @@ abstract class Store implements StoreInterface
     protected $operationalMode;
     protected $salesChannel;
     protected $storeZones;
+    protected $taxationEnabled;
 
      public function __construct()
     {
@@ -163,6 +164,16 @@ abstract class Store implements StoreInterface
     public function getDefaultState()
     {
         return $this->defaultState;
+    }
+
+    public function setTaxationEnabled($taxationEnabled)
+    {
+        $this->taxationEnabled = $taxationEnabled;
+    }
+
+    public function getTaxationEnabled()
+    {
+        return $this->taxationEnabled;
     }
 
 

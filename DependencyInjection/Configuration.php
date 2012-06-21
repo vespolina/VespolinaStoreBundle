@@ -46,7 +46,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('sales_channel')->end()
                         ->scalarNode('operational_mode')->end()
                         ->scalarNode('default_product_view')->end()
-
+                        ->scalarNode('taxation_enabled')->end()
             ->end()
             ->end()
         ->end();

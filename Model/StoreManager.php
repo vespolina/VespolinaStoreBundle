@@ -51,6 +51,7 @@ abstract class StoreManager implements StoreManagerInterface {
             $store->setLegalName($storeConfiguration['legal_name']);
             $store->setOperationalMode($storeConfiguration['operational_mode']);
             $store->setSalesChannel($storeConfiguration['sales_channel']);
+            $store->setTaxationEnabled($storeConfiguration['taxation_enabled']);
 
             $this->stores[$storeCode] = $store;
 
