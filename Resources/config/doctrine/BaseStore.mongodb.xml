@@ -4,7 +4,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStore" collection="vespolinaStore">
+    <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStore">
 
         <field name="code" fieldName="code" type="string" id="true"/>
         <field name="displayName" fieldName="displayName" type="string"/>
@@ -15,6 +15,7 @@
         <field name="defaultProductView" fieldName="defaultProductView" type="string" />
         <field name="defaultState" fieldName="defaultState" type="string" />
         <field name="salesChannel" fieldName="salesChannel" type="string" />
+        <field name="taxationEnabled" fieldName="taxationEnabled" type="boolean" />
 
     </mapped-superclass>
 
