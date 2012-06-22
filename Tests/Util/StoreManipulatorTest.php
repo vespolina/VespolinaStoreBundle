@@ -18,6 +18,7 @@ class StoreManipulatorTest extends \PHPUnit_Framework_TestCase
         $legalName = 'ABC Store Sale-o-rama';
         $salesChannel = '';
         $operationalMode = 'standard';
+        $taxationEnabled = true;
         $productView = 'tiled';
 
         $storeManagerMock->expects ($this->once())
@@ -25,7 +26,7 @@ class StoreManipulatorTest extends \PHPUnit_Framework_TestCase
             ->will ($this->returnValue($store));
 
         $manipulator = new StoreManipulator($storeManagerMock);
-        $manipulator->create($code, $displayName, $legalName, $salesChannel, $operationalMode, $productView);
+        $manipulator->create($code, $displayName, $legalName, $salesChannel, $taxationEnabled, $operationalMode, $productView);
 
         $this->assertEquals($code, $store->getCode());
         $this->assertEquals($displayName, $store->getDisplayName());
