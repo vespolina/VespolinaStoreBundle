@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 vendor/*
 !vendor/vendors.php
-=======
 phpunit.xml
-vendor/*
 composer.phar
 composer.lock
->>>>>>> 4b661d376cda5a945218dcb3ce3b29b01da5eb34
