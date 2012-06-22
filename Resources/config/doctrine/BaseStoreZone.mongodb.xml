@@ -4,7 +4,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStoreZone" collection="vespolinaStoreZone">
+    <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStoreZone">
 
         <field name="id" fieldName="id" type="string" id="true"/>
         <field name="displayName" fieldName="displayName" type="string"/>

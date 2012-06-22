@@ -93,7 +93,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
             $partnerManager = $this->container->get('vespolina.partner_manager');
             $customer = $partnerManager->createPartner();
         }
-        $createCustomerForm = $this->container->get('form.factory')->create(new QuickCustomerType(), $customer);
+        $createCustomerForm = $this->container->get('form.factory')->create($this->container->get('vespolina.partner.quick_customer_type'), $customer);
 
         return $createCustomerForm;
     }

@@ -277,7 +277,7 @@ class SetupCommand extends ContainerAwareCommand
     protected function setupStores($input, $output)
     {
         $manipulator = $this->getContainer()->get('vespolina.store.util.store_manipulator');
-        $stores[] = $manipulator->create ('default_store', 'Vespolina Store', 'Mr. Nice Corp', 'default_store_web', 'standard', 'tiled');
+        $stores[] = $manipulator->create ('default_store', 'Vespolina Store', 'Mr. Nice Corp', 'default_store_web', true, 'standard', 'tiled');
 
         $output->writeln('- Setup ' . count($stores) . ' store(s)');
         return $stores;

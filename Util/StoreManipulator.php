@@ -24,13 +24,14 @@ class StoreManipulator
     /**
      * Creates a store and returns it
      */
-    public function create( $code, $display_name, $legal_name, $sales_channel, $operational_mode = 'standard', $default_product_view = 'tiled')
+    public function create( $code, $display_name, $legal_name, $sales_channel, $taxation = true, $operational_mode = 'standard', $default_product_view = 'tiled')
     {
         $store = $this->storeManager->createStore();
         $store->setCode($code);
         $store->setDisplayName($display_name);
         $store->setLegalName($legal_name);
         $store->setSalesChannel($sales_channel);
+        $store->setTaxationEnabled($taxation);
         $store->setOperationalMode($operational_mode);
         $store->setDefaultProductView($default_product_view);
 

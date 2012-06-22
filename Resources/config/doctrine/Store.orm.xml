@@ -17,7 +17,9 @@
     <field name="legalName" type="string" column="legal_name" length="255" nullable="true"/>
     <field name="operationalMode" type="string" column="operational_mode" length="255"/>
     <field name="salesChannel" type="string" column="sales_channel" length="255"/>
-    <lifecycle-callbacks/>
+    <field name="taxationEnabled" type="boolean" column="taxation_enabled" />
+
+      <lifecycle-callbacks/>
 
     <unique-constraints>
         <unique-constraint columns="code" name="code_idx" />
