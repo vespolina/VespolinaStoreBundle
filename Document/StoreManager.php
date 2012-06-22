@@ -49,7 +49,7 @@ class StoreManager extends BaseStoreManager
      */
     public function findStoreByCode($code)
     {
-        return $this->storeRepo->findOneByCode($code);
+        return $this->storeRepo->find($code);
     }
 
     /**
