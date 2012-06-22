@@ -39,7 +39,7 @@ class StoreManager extends BaseStoreManager
     /**
      * @inheritdoc
      */
-    public function getStore()
+    public function getClass()
     {
         return $this->class;
     }
