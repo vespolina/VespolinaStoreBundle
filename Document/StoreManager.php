@@ -19,19 +19,29 @@ use Vespolina\StoreBundle\Model\StoreManager as BaseStoreManager;
  */
 class StoreManager extends BaseStoreManager
 {
-    protected $storeClass;
+    protected $class;
     protected $storeRepo;
     protected $dm;
     protected $primaryIdentifier;
 
-    public function __construct(DocumentManager $dm, $storeClass, $storesConfigurations)
+    public function __construct(DocumentManager $dm, $class, $storesConfigurations)
     {
         $this->dm = $dm;
 
-        $this->storeClass = $storeClass;
-        $this->storeRepo = $this->dm->getRepository($storeClass);
+        $this->storeRepo = $this->dm->getRepository($class);
+        $metadata = $dm->getClassMetadata($class);
+        $this->class = $metadata->name;
 
-        parent::__construct($storeClass, $storesConfigurations);
+        parent::__construct($storesConfigurations);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getStore()
+    {
+        return $this->class;
     }
 
     /**

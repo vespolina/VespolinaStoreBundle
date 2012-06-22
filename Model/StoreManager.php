@@ -17,45 +17,27 @@ use Vespolina\StoreBundle\Model\StoreManagerInterface;
  */
 abstract class StoreManager implements StoreManagerInterface {
 
-    protected $storeClass;
     protected $stores;
     protected $storesConfigurations;
 
-    public function __construct($storeClass, $storesConfigurations) {
+    public function __construct($storesConfigurations) {
 
-        $this->storeClass = $storeClass;
         $this->storesConfigurations = $storesConfigurations;
 
     }
 
-    public function createStore($code, $displayName)
+    public function createStore()
     {
-
-        $baseClass = $this->storeClass;
-        $store = new $baseClass;
-        $store->setCode($code);
-        $store->setDisplayName($displayName);
+        $cass = $this->getClass();
+        $store = new $cass;
 
         return $store;
     }
 
-    abstract function findStoreByCode($code);
-
-    public function loadStoresConfigurations()
+    public function supportsClass($class)
     {
-        foreach ($this->storesConfigurations as $storeCode => $storeConfiguration) {
-
-            $store = $this->createStore($storeCode, $storeConfiguration['display_name']);
-            $store->setDisplayName($storeConfiguration['display_name']);
-            $store->setDefaultProductView($storeConfiguration['default_product_view']);
-            $store->setLegalName($storeConfiguration['legal_name']);
-            $store->setOperationalMode($storeConfiguration['operational_mode']);
-            $store->setSalesChannel($storeConfiguration['sales_channel']);
-
-            $this->stores[$storeCode] = $store;
-
-        }
-
-        return $this->stores;
+        return $class === $this->getClass();
     }
+
+
 }

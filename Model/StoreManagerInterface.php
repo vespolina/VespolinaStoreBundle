@@ -13,5 +13,10 @@ namespace Vespolina\StoreBundle\Model;
 interface StoreManagerInterface
 {
 
+    function getClass();
 
+    function createStore();
+    function updateStore(StoreInterface $store);
+
+    function findStoreByCode($code);
 }
