@@ -37,6 +37,9 @@ class SetupCommand extends ContainerAwareCommand
         $this->type = $input->getOption('type');
         $this->state = strtoupper($input->getOption('state'));
 
+        //Set up various employees
+        $this->setupEmployees($input, $output);
+
         $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
         $productTaxonomy = $this->setupProductTaxonomy($input, $output);
 
@@ -95,6 +98,44 @@ class SetupCommand extends ContainerAwareCommand
 
         $output->writeln('- Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
         return $aTaxonomy;
+    }
+
+    protected function setupEmployees($input, $output)
+    {
+        $partnerManager = $this->getContainer()->get('vespolina.partner_manager');
+        $partnerManipulator = $this->getContainer()->get('vespolina.partner_manipulator');
+        $userManager = $this->getContainer()->get('fos_user.user_manager');
+
+        $employees = array();
+
+        $employeeFixtures = array(
+            array(  'name' => 'Big Boss',
+                    'role' => Partner::ROLE_EMPLOYEE,
+                    'username' => 'big_boss',
+                    'email' => 'big_boss@example.org' ),
+            array(  'name' => 'Sales Clerk',
+                    'role' => Partner::ROLE_EMPLOYEE,
+                    'username' => 'sales_clerk',
+                    'email' => 'simple_assistant@example.org' ));
+
+        foreach($employeeFixtures as $employeeFixture) {
+
+            //Create and initialize partner
+            $employee = $partnerManager->createPartner(Partner::ROLE_EMPLOYEE);
+            $employee->setName($employeeFixture['name']);
+
+            $employee->setPrimaryContact($partnerManager->createPartnerContact());
+            $employee->getPrimaryContact()->setEmail($employeeFixture['email']);
+
+            $partnerManager->updatePartner($employee);
+
+            //Setup CEO fos user linkage
+            $user = $partnerManipulator->createUser($employee, $employeeFixture['username'], $employeeFixture['username']);
+            $userManager->updateUser($user);
+            $employees[] = $employee;
+        }
+        $output->writeln('- Setup ' . count($employees) . ' employees.' );
+
     }
 
     protected function setupProducts($productTaxonomy, $taxSchema, $input, $output)
