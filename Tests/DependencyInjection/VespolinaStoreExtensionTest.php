@@ -74,16 +74,6 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertParameter('Vespolina\StoreBundle\Entity\StoreZone', 'vespolina.store.model.store_zone.class');
     }
 
-    public function testStoreLoadParameterStoresConfigurations()
-    {
-        $this->createDefaultConfiguration();
-        $config = $this->getBaseConfig();
-
-        unset($config['stores']['default_store']['id']);
-        $this->assertEquals( $config['stores'], $this->configuration->getParameter('vespolina.store.stores_configurations'));
-
-    }
-
     private function createDefaultConfiguration()
     {
         $this->configuration = new ContainerBuilder();
@@ -107,15 +97,6 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $yaml = <<<EOF
 db_driver: mongodb
-stores:
-    default_store:
-        id: default_store
-        default: true
-        display_name: Test Store
-        legal_name: My Test Store
-        sales_channel: default_store_web
-        operational_mode: standard
-        default_product_view: tiled
 EOF;
 
         $parser = new Parser();

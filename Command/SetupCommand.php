@@ -317,27 +317,8 @@ class SetupCommand extends ContainerAwareCommand
 
     protected function setupStores($input, $output)
     {
-        $storeManager = $this->getContainer()->get('vespolina.store_manager');
-
-        //Load stores configurations (for now get that from vespolina.yml)
-        $stores = $storeManager->loadStoresConfigurations();
-
-        foreach($stores as $store) {
-
-            if (!$store->getDefaultCurrency()) {
-               //Default currency
-                switch ($this->country) {
-                    case 'US': $currency = 'USD'; break;
-                    default: $currency = 'EUR'; break;
-                }
-                $store->setDefaultCurrency($currency);
-                $store->setDefaultCountry($this->country);
-                $store->setDefaultState($this->state);
-            }
-
-            $storeManager->updateStore($store);
-
-        }
+        $manipulator = $this->getContainer()->get('vespolina.store.util.store_manipulator');
+        $stores[] = $manipulator->create ('default_store', 'Vespolina Store', 'Mr. Nice Corp', 'default_store_web', true, 'standard', 'tiled');
 
         $output->writeln('- Setup ' . count($stores) . ' store(s)');
         return $stores;

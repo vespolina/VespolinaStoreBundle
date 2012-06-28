@@ -1,4 +1,5 @@
-phpunit.xml
 vendor/*
+!vendor/vendors.php
+phpunit.xml
 composer.phar
 composer.lock

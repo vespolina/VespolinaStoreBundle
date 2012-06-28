@@ -19,19 +19,20 @@ use Vespolina\StoreBundle\Model\StoreManager as BaseStoreManager;
  */
 class StoreManager extends BaseStoreManager
 {
-    protected $storeClass;
     protected $storeRepo;
     protected $em;
+    protected $class;
     protected $primaryIdentifier;
 
-    public function __construct(EntityManager $em, $storeClass, $storesConfigurations)
+    public function __construct(EntityManager $em, $class, $storesConfigurations)
     {
         $this->em = $em;
 
-        $this->storeClass = $storeClass;
-        $this->storeRepo = $this->em->getRepository($storeClass);
+        $this->storeRepo = $this->em->getRepository($class);
+        $metadata = $em->getClassMetadata($class);
+        $this->class = $metadata->name;
 
-        parent::__construct($storeClass, $storesConfigurations);
+        parent::__construct($storesConfigurations);
     }
 
     /**

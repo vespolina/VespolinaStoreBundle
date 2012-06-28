@@ -31,6 +31,7 @@ abstract class Store implements StoreInterface
 
      public function __construct()
     {
+            $this->storeZones = new ArrayCollection();
     }
 
     public function getId()
@@ -130,10 +131,7 @@ abstract class Store implements StoreInterface
 
     public function addStoreZone(StoreZoneInterface $storeZone)
     {
-        if (!$this->storeZones) {
-            $this->storeZones = new ArrayCollection();
-            $this->storeZones->add($storeZone);
-        }
+        $this->storeZones->add($storeZone);
     }
 
     public function setStoreZones($storeZones)

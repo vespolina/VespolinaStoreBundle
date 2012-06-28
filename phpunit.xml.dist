@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="Tests/bootstrap.php">
+<phpunit bootstrap="./Tests/bootstrap.php" colors="true">
+
     <testsuites>
-        <testsuite name="VespolinaStoreBundle for the Symfony Framework">
-            <directory>./Tests</directory>
+        <testsuite name="VespolinaStoreBundle  test suite">
+            <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>.</directory>
+            <directory>./</directory>
             <exclude>
                 <directory>./Resources</directory>
                 <directory>./Tests</directory>
