@@ -95,7 +95,7 @@ class CompleteCheckout extends AbstractProcessStep
 
             $salesOrderItem = $salesOrderManager->createItem($salesOrder);
             $salesOrderItem->setOrderedQuantity($cartItem->getQuantity());
-            $salesOrderItem->setProduct($cartItem->getCartableItem());
+            $salesOrderItem->setProduct($cartItem->getProduct());
             $salesOrderItem->setItemState('open');
             $salesOrderItem->setPricingSet($cartItem->getPricingSet());
         }
