@@ -56,15 +56,15 @@ class DetermineFulfillmentController extends AbstractProcessStepController
         $fulfillmentMethodResolver = $this->container->get('vespolina.fulfillment.fulfillment_method_resolver');
         $cart = $this->processStep->getContext()->get('cart');
 
-        //Collect all cartable items from the cart
-        $cartableItems = array();
+        //Collect all products from the cart
+        $products = array();
         $fulfillmentChoices = array();
 
         foreach($cart->getItems() as $cartItem) {
-            $cartableItems[] = $cartItem->getCartableItem();
+            $products[] = $cartItem->getProduct();
         }
 
-        $fulfillmentMethods = $fulfillmentMethodResolver->resolveFulfillmentMethods($cartableItems, null);
+        $fulfillmentMethods = $fulfillmentMethodResolver->resolveFulfillmentMethods($products, null);
 
         foreach($fulfillmentMethods as $fulfillmentMethod) {
 

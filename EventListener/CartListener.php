@@ -10,7 +10,7 @@ namespace Vespolina\StoreBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\Container;
 use Vespolina\CartBundle\Event\CartEvent;
-use Vespolina\CartBundle\Model\CartInterface;
+use Vespolina\Entity\OrderInterface;
 
 class CartListener
 {
