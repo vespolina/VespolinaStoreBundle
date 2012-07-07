@@ -62,6 +62,8 @@ class SetupCommand extends ContainerAwareCommand
 
         $customerCount = 10;
         $partnerManager = $this->getContainer()->get('vespolina_partner.partner_manager');
+        $partnerManipulator = $this->getContainer()->get('vespolina.partner_manipulator');
+        $userManager = $this->getContainer()->get('fos_user.user_manager');
 
         for ($i = 0; $i < $customerCount; $i++) {
 
@@ -71,9 +73,15 @@ class SetupCommand extends ContainerAwareCommand
             $anAddress = $partnerManager->createPartnerAddress();
             $anAddress->setCountry($this->country);
             $aCustomer->addAddress($anAddress);
-
+            $aCustomer->setPrimaryContact($partnerManager->createPartnerContact());
+            $aCustomer->getPrimaryContact()->setEmail('customer_' . $i . '@example.com');
 
             $partnerManager->updatePartner($aCustomer, true);
+
+            //Link partner to an FOS user so the customer can login (username = 'customer_x', pass = 'customer_x')
+            $username = $this->slugify(($aCustomer->getName()));
+            $user = $partnerManipulator->createUser($aCustomer, $username, $username);
+            $userManager->updateUser($user);
         }
         $output->writeln('- Created ' . $customerCount . ' customers.' );
     }
@@ -129,7 +137,7 @@ class SetupCommand extends ContainerAwareCommand
 
             $partnerManager->updatePartner($employee);
 
-            //Setup CEO fos user linkage
+            //Link partner to the user
             $user = $partnerManipulator->createUser($employee, $employeeFixture['username'], $employeeFixture['username']);
             $userManager->updateUser($user);
             $employees[] = $employee;
