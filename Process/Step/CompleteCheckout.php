@@ -8,7 +8,7 @@
 
 namespace Vespolina\StoreBundle\Process\Step;
 
-use Vespolina\OrderBundle\Model\SalesOrderInterface;
+use Vespolina\Entity\OrderInterface;
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 use Vespolina\StoreBundle\StoreEvents;
 use Vespolina\StoreBundle\Event\CheckoutEvent;
@@ -30,7 +30,7 @@ class CompleteCheckout extends AbstractProcessStep
         //Copy cart -> sales order
         $cart = $this->getContext()->get('cart');
 
-        $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina_sales_order.sales_order_manager');
+        $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina.sales_order_manager');
         $salesOrder = $this->createSalesOrderFromCart($cart, $salesOrderManager);
 
         if (null != $salesOrder) {
@@ -63,47 +63,34 @@ class CompleteCheckout extends AbstractProcessStep
 
     protected function createSalesOrderFromCart($cart, $salesOrderManager) {
 
-        //Todo: move to a service/manager
         $store = $this->getProcess()->getContainer()->get('vespolina.store.store_resolver')->getStore();
+        $salesOrderManipulator = $this->getProcess()->getContainer()->get('vespolina.sales_order_manipulator');
 
         $context = $this->getContext();
-        $salesOrder = $salesOrderManager->createSalesOrder('default');
-        $salesOrder->setCustomer($context->get('customer'));
-        $salesOrder->setOrderDate(new \DateTime());
-        $salesOrder->setOrderState('unprocessed');
-        $salesOrder->setSalesChannel($store->getSalesChannel());
-        $salesOrder->setPricingSet($cart->getPricingSet());
 
-        $paymentAgreement = $salesOrderManager->createPaymentAgreement();
+        //Do a basic copy process from cart to a sales order
+        $salesOrder = $salesOrderManipulator->createSalesOrderFromCart($cart);
+
+        $salesOrder->setCustomer($context->get('customer'));
+        $salesOrder->setSalesChannel($store->getSalesChannel());
+
+        $paymentAgreement = $salesOrder->getPaymentAgreement();
         $paymentMethodData = $context->get('payment_method');
         $paymentAgreement->setType($paymentMethodData['payment_method']);
         $paymentAgreement->setState('paid');
 
-        $salesOrder->setPaymentAgreement($paymentAgreement);
-
-        $fulfillmentAgreement = $salesOrderManager->createFulfillmentAgreement();
+        $fulfillmentAgreement = $salesOrder->getFulfillmentAgreement();
         $fulfillmentMethodData = $context->get('fulfillment_method');
         $fulfillmentAgreement->setType($fulfillmentMethodData['fulfillment_method']);
         $fulfillmentAgreement->setState('warehouse_notice');
         $fulfillmentAgreement->setServiceLevel('express_delivery');
 
         $salesOrder->setFulfillmentAgreement($fulfillmentAgreement);
-        //$salesOrder->setCustomerComment('Hey, If possible can I get a free bag?');
-
-        //Item data
-        foreach($cart->getItems() as $cartItem) {
-
-            $salesOrderItem = $salesOrderManager->createItem($salesOrder);
-            $salesOrderItem->setOrderedQuantity($cartItem->getQuantity());
-            $salesOrderItem->setProduct($cartItem->getProduct());
-            $salesOrderItem->setItemState('open');
-            $salesOrderItem->setPricingSet($cartItem->getPricingSet());
-        }
 
         return $salesOrder;
     }
 
-    protected function notifyPartners(SalesOrderInterface $salesOrder)
+    protected function notifyPartners(OrderInterface $salesOrder)
     {
         //Notify the customer
         $dispatcher = $this->getProcess()->getContainer()->get('event_dispatcher');
