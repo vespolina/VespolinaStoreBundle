@@ -2,6 +2,6 @@
     {% if customer %}
         <a href="#">Welcome {{ customer.name }}</a>
     {% else %}
-        <a href="#">Login/Register</a>
+        <a href="{{ path('fos_user_security_login')}}">Login/Register</a>
     {% endif %}
 </li>

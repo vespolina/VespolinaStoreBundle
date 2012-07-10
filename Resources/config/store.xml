@@ -38,6 +38,11 @@
         </service>
 
         <!-- events -->
+        <service id="vespolina.store.listener.authentication" class="Vespolina\StoreBundle\EventListener\AuthenticationListener">
+            <tag name="kernel.event_listener" event="security.authentication.success" method="onAuthenticationSuccess" />
+            <argument type="service" id="session" />
+            <argument type="service" id="vespolina.partner_manager" />
+        </service>
         <service id="vespolina.store.listener.cart_pricing" class="Vespolina\StoreBundle\EventListener\CartPricingListener">
             <tag name="kernel.event_listener" event="vespolina_cart.init_pricing_context" method="onInitPricingContext" />
             <argument type="service" id="service_container" />
