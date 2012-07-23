@@ -29,7 +29,11 @@ class StoreTwigExtension extends \Twig_Extension {
             case 'USD' :  $left = '$ '; break;
         }
 
-        return $left . money_format('%i', $amount) . $right;
+        setlocale(LC_ALL, ''); // Locale will be different on each system.
+        $locale = localeconv();
+        $amount = number_format($amount, 2, $locale['decimal_point'], $locale['thousands_sep']);
+
+        return $left . $amount . $right;
     }
 
     public function getName()
