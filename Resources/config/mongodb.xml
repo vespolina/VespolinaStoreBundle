@@ -12,13 +12,13 @@
     </parameters>
     <services>
         <service id="vespolina.store.store_manager" class="%vespolina.store.store_manager.class%">
-            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.default_document_manager" />
             <argument>%vespolina.store.model.store.class%</argument>
             <argument>%vespolina.store.stores_configurations%</argument>
         </service>
         <service id="vespolina.store_manager" alias="vespolina.store.store_manager" />
         <service id="vespolina.store.store_zone_manager" class="%vespolina.store.store_zone_manager.class%">
-            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.default_document_manager" />
             <argument>%vespolina.store.model.store_zone.class%</argument>
         </service>
         <service id="vespolina.store_zone_manager" alias="vespolina.store.store_zone_manager" />
