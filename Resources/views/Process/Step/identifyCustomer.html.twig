@@ -15,15 +15,8 @@
     <div class="span6">
         <h3>I am already a customer</h3>
 
-        <form action="{{ path("vespolina_store_checkout_login_customer", { 'processId': currentProcessStep.process.id })}}" method="post">
-            <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" />
-
-            <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-            <input type="password" id="password" name="_password" />
-
-            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-            <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+        <form name="login" action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(customerLoginForm) }}>
+            {% include "VespolinaStoreBundle:Process:Form/loginCustomer.html.twig" with { 'form': customerLoginForm } %}
 
             <input type="submit" id="_submit" name="_submit" class="btn" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
         </form>
@@ -34,8 +27,8 @@
 
         <p>Full out this form below</p>
 
-        <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(createCustomerForm) }}>
-        	{% include "VespolinaStoreBundle:Process:Form/quickCustomer.html.twig" with { 'form': createCustomerForm } %}
+        <form action="{{ path('vespolina_store_checkout_process_step', { 'processId': currentProcessStep.process.id, 'processStepName': currentProcessStep.name })}}" method="post" {{ form_enctype(customerCreateForm) }}>
+        	{% include "VespolinaStoreBundle:Process:Form/quickCustomer.html.twig" with { 'form': customerCreateForm } %}
             <input type="submit" class="btn" />
         </form>
 
