@@ -11,6 +11,7 @@ namespace Vespolina\StoreBundle\EventListener;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Vespolina\PartnerBundle\Model\PartnerManagerInterface;
+use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
 class AuthenticationListener
 {
@@ -18,9 +19,12 @@ class AuthenticationListener
     protected $partnerManager;
     protected $session;
 
-    public function __construct(SessionInterface $session, PartnerManagerInterface $partnerManager = null) {
+    public function __construct( SessionInterface $session,
+                                 PartnerManagerInterface $partnerManager = null,
+                                 ProcessManagerInterface $processManager) {
 
         $this->partnerManager = $partnerManager;
+        $this->processManager = $processManager;
         $this->session = $session;
     }
 

@@ -25,7 +25,10 @@ class IdentifyCustomer extends AbstractProcessStep
     public function execute($context)
     {
         $currentStep = $this->getProcess()->getCurrentProcessStep();
-        if ($this->isCustomerIdentified() && $currentStep->getName() !== $this->getName()) {
+        $customer = $this->getCustomer();
+
+        if (null != $customer) {
+            $this->getContext()->set('customer', $customer);
 
             return $this->complete();
 
@@ -44,18 +47,17 @@ class IdentifyCustomer extends AbstractProcessStep
         return 'identify_customer';
     }
 
-    protected function isCustomerIdentified()
+    protected function getCustomer()
     {
         //First attempt to load the customer from the process container
         $customer = $this->getContext()->get('customer');
 
-        if (!$customer) {
+        if (null == $customer) {
+
             //If this fails get it from the user session
-            if ($customer = $this->process->getContainer()->get('session')->get('customer')) {
-                $this->getContext()->set('customer', $customer);
-            }
+            $customer = $this->process->getContainer()->get('session')->get('customer');
         }
 
-        return null !== $customer;
+        return $customer;
     }
 }

@@ -86,6 +86,7 @@ class CheckoutProcessB2C extends AbstractProcess
     {
         return array(
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
+            'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
             'select_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',
             'review_checkout'        => 'Vespolina\StoreBundle\Process\Step\ReviewCheckout',
