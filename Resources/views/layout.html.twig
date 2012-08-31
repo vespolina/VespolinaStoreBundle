@@ -14,12 +14,14 @@
           <li><a href="#about">About</a></li>
       </ul>
       <ul class="nav secondary-nav pull-right">
+        {% if not is_granted('ROLE_ADMIN') %}
             {% block customer_info %}
                 {% render "VespolinaStoreBundle:Customer:navBar" %}
             {% endblock %}
             {% block cart_quick_inspection %}
                 {% render "VespolinaCartBundle:Default:navBar" %}
             {% endblock %}
+        {% endif %}
       </ul>
     </div>
   </div>

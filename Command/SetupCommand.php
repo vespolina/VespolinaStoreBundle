@@ -74,12 +74,12 @@ class SetupCommand extends ContainerAwareCommand
             $anAddress->setCountry($this->country);
             $aCustomer->addAddress($anAddress);
             $aCustomer->setPrimaryContact($partnerManager->createPartnerContact());
-            $aCustomer->getPrimaryContact()->setEmail('customer_' . $i . '@example.com');
+            $aCustomer->getPrimaryContact()->setEmail('customer' . $i . '@example.com');
 
             $partnerManager->updatePartner($aCustomer, true);
 
             //Link partner to an FOS user so the customer can login (username = 'customer_x', pass = 'customer_x')
-            $username = $this->slugify(($aCustomer->getName()));
+            $username = 'customer' . $i;
             $user = $partnerManipulator->createUser($aCustomer, $username, $username);
             $userManager->updateUser($user);
         }
