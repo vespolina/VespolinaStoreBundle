@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="vespolina_store_start" pattern="/">
-        <default key="_controller">vespolina.store.store_controller:zoneDetailAction</default>
+        <default key="_controller">vespolina_store.store_controller:zoneDetailAction</default>
         <default key="taxonomyTerm">_all</default>
         <requirement key="_method">GET</requirement>
     </route>
     <route id="vespolina_store_store_zone" pattern="/">
-        <default key="_controller">vespolina.store.store_controller:zoneDetailAction</default>
+        <default key="_controller">vespolina_store.store_controller:zoneDetailAction</default>
         <default key="taxonomyTerm">_all</default>
         <requirement key="_method">GET</requirement>
     </route>

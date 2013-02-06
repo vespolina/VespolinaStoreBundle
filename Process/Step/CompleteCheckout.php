@@ -63,8 +63,8 @@ class CompleteCheckout extends AbstractProcessStep
 
     protected function createSalesOrderFromCart($cart, $salesOrderManager) {
 
-        $store = $this->getProcess()->getContainer()->get('vespolina.store.store_resolver')->getStore();
-        $salesOrderManipulator = $this->getProcess()->getContainer()->get('vespolina.sales_order_manipulator');
+        $store = $this->getProcess()->getContainer()->get('vespolina_store.store_resolver')->getStore();
+        $salesOrderManipulator = $this->getProcess()->getContainer()->get('vespolina_order.order_manipulator');
 
         $context = $this->getContext();
 
