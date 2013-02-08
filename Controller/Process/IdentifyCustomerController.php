@@ -127,7 +127,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
 
     protected function createCustomerLoginForm()
     {
-        $customerLoginForm = $this->container->get('form.factory')->create($this->container->get('vespolina.store.login_customer_type'));
+        $customerLoginForm = $this->container->get('form.factory')->create($this->container->get('vespolina_store.login_customer_type'));
 
         return $customerLoginForm;
     }

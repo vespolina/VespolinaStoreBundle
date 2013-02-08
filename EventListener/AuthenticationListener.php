@@ -10,7 +10,7 @@ namespace Vespolina\StoreBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
-use Vespolina\PartnerBundle\Model\PartnerManagerInterface;
+use Vespolina\Partner\Manager\PartnerManagerInterface;
 use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
 class AuthenticationListener

@@ -49,6 +49,6 @@ class VespolinaStoreExtension extends Extension
 
     protected function configureStores(array $config, ContainerBuilder $container)
     {
-        $container->setParameter('vespolina.store.stores_configurations', $config);
+        $container->setParameter('vespolina_store.stores_configurations', $config);
     }
 }

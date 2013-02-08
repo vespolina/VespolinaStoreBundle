@@ -9,8 +9,8 @@
 namespace Vespolina\StoreBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\Container;
-use Vespolina\CartBundle\Event\CartEvent;
-use Vespolina\Entity\OrderInterface;
+use Vespolina\OrderBundle\Event\CartEvent;
+use Vespolina\Entity\Order\OrderInterface;
 
 class CartListener
 {
@@ -28,7 +28,7 @@ class CartListener
      */
     public function onCartInit(CartEvent $event)
     {
-        $store = $this->container->get('vespolina.store.store_resolver')->getStore();
+        $store = $this->container->get('vespolina_store.store_resolver')->getStore();
         $cart = $event->getCart();
 
         if ($store->getTaxationEnabled() ) {

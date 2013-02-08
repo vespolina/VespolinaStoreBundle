@@ -19,7 +19,7 @@ class AbstractController extends ContainerAware
             if (!$operationalMode) {
                 $operationalMode = 'standard';  //Always fall back to the standard handler
             }
-            $this->storeHandler = $this->container->get('vespolina.store.handler.' . $operationalMode);
+            $this->storeHandler = $this->container->get('vespolina_store.handler.' . $operationalMode);
             $this->storeHandler->setStore($this->getStore());
         }
 
@@ -30,7 +30,7 @@ class AbstractController extends ContainerAware
     {
         if (!$this->store) {
 
-            $this-> store = $this->container->get('vespolina.store.store_resolver')->getStore();
+            $this-> store = $this->container->get('vespolina_store.store_resolver')->getStore();
         }
 
         return $this->store;

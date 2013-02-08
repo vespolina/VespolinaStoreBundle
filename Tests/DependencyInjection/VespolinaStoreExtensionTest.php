@@ -9,11 +9,11 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected $configuration;
     private $definitions = array(
-        'vespolina.store.listener.request',
-        'vespolina.store.listener.request',
-        'vespolina.store_manager',
-        'vespolina.store.store_zone_manager',
-        'vespolina.store_zone_manager'
+        'vespolina_store.listener.request',
+        'vespolina_store.listener.request',
+        'vespolina_store_manager',
+        'vespolina_store.store_zone_manager',
+        'vespolina_store_zone_manager'
     );
     public function testStoreLoadConfigPass()
     {
@@ -58,20 +58,20 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->createDefaultConfiguration();
 
-        $this->assertParameter('Vespolina\StoreBundle\Document\StoreManager', 'vespolina.store.store_manager.class');
-        $this->assertParameter('Vespolina\StoreBundle\Document\StoreZoneManager', 'vespolina.store.store_zone_manager.class');
-        $this->assertParameter('Vespolina\StoreBundle\Document\Store', 'vespolina.store.model.store.class');
-        $this->assertParameter('Vespolina\StoreBundle\Document\StoreZone', 'vespolina.store.model.store_zone.class');
+        $this->assertParameter('Vespolina\StoreBundle\Document\StoreManager', 'vespolina_store.store_manager.class');
+        $this->assertParameter('Vespolina\StoreBundle\Document\StoreZoneManager', 'vespolina_store.store_zone_manager.class');
+        $this->assertParameter('Vespolina\StoreBundle\Document\Store', 'vespolina_store.model.store.class');
+        $this->assertParameter('Vespolina\StoreBundle\Document\StoreZone', 'vespolina_store.model.store_zone.class');
     }
 
     public function testStoreLoadParameterWithOrm()
     {
         $this->createOrmConfiguration();
 
-        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreManager', 'vespolina.store.store_manager.class');
-        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreZoneManager', 'vespolina.store.store_zone_manager.class');
-        $this->assertParameter('Vespolina\StoreBundle\Entity\Store', 'vespolina.store.model.store.class');
-        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreZone', 'vespolina.store.model.store_zone.class');
+        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreManager', 'vespolina_store.store_manager.class');
+        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreZoneManager', 'vespolina_store.store_zone_manager.class');
+        $this->assertParameter('Vespolina\StoreBundle\Entity\Store', 'vespolina_store.model.store.class');
+        $this->assertParameter('Vespolina\StoreBundle\Entity\StoreZone', 'vespolina_store.model.store_zone.class');
     }
 
     public function testStoreLoadParameterStoresConfigurations()
@@ -80,7 +80,7 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
         $config = $this->getBaseConfig();
 
         unset($config['stores']['default_store']['id']);
-        $this->assertEquals( $config['stores'], $this->configuration->getParameter('vespolina.store.stores_configurations'));
+        $this->assertEquals( $config['stores'], $this->configuration->getParameter('vespolina_store.stores_configurations'));
 
     }
 
