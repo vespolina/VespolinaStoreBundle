@@ -5,64 +5,75 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="vespolina.store.store_controller.class">Vespolina\StoreBundle\Controller\StoreController</parameter>
-        <parameter key="vespolina.store.store_resolver.class">Vespolina\StoreBundle\Resolver\SingleStoreResolver</parameter>
-        <parameter key="vespolina.store.standard_store_handler.class">Vespolina\StoreBundle\Handler\StandardStoreHandler</parameter>
-        <parameter key="vespolina.store.daily_deal_store_handler.class">Vespolina\StoreBundle\Handler\DailyDealStoreHandler</parameter>
-        <parameter key="vespolina.store.campaign_store_handler.class">Vespolina\StoreBundle\Handler\CampaignStoreHandler</parameter>
-        <parameter key="vespolina.store.stores_configurations">null</parameter>         <!-- Should be set in the Store Extension -->
+        <parameter key="vespolina_store.store_controller.class">Vespolina\StoreBundle\Controller\StoreController</parameter>
+        <parameter key="vespolina_store.store_resolver.class">Vespolina\StoreBundle\Resolver\SingleStoreResolver</parameter>
+        <parameter key="vespolina_store.standard_store_handler.class">Vespolina\StoreBundle\Handler\StandardStoreHandler</parameter>
+        <parameter key="vespolina_store.daily_deal_store_handler.class">Vespolina\StoreBundle\Handler\DailyDealStoreHandler</parameter>
+        <parameter key="vespolina_store.campaign_store_handler.class">Vespolina\StoreBundle\Handler\CampaignStoreHandler</parameter>
+        <parameter key="vespolina_store.stores_configurations">null</parameter>         <!-- Should be set in the Store Extension -->
+
+        <parameter key="vespolina.process_manager.class">Vespolina\StoreBundle\Process\ProcessManager</parameter>
+
     </parameters>
     <services>
-        <service id="vespolina.store.store_resolver" class="%vespolina.store.store_resolver.class%">
-            <argument type="service" id="vespolina.store.store_manager" />
+        <service id="vespolina_store.store_resolver" class="%vespolina_store.store_resolver.class%">
+            <argument type="service" id="vespolina_store.store_manager" />
         </service>
-        <service id="vespolina.store.store_controller" class="%vespolina.store.store_controller.class%">
+        <service id="vespolina_store.store_controller" class="%vespolina_store.store_controller.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
-        <service id="vespolina.store.handler.standard" class="%vespolina.store.standard_store_handler.class%">
+        <service id="vespolina_store.handler.standard" class="%vespolina_store.standard_store_handler.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
-        <service id="vespolina.store.handler.dailyDeal" class="%vespolina.store.daily_deal_store_handler.class%">
+        <service id="vespolina_store.handler.dailyDeal" class="%vespolina_store.daily_deal_store_handler.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
-        <service id="vespolina.store.handler.campaign" class="%vespolina.store.campaign_store_handler.class%">
+        <service id="vespolina_store.handler.campaign" class="%vespolina_store.campaign_store_handler.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="vespolina.process_manager" class="%vespolina.process_manager.class%">
+            <argument type="service" id="doctrine_mongodb.odm.default_document_manager" />
+            <argument type="service" id="session" />
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
 
         <!-- forms -->
-        <service id="vespolina.store.login_customer_type" class="Vespolina\StoreBundle\Form\Type\CustomerLoginFormType">
+        <service id="vespolina_store.login_customer_type" class="Vespolina\StoreBundle\Form\Type\CustomerLoginFormType">
             <tag name="form.type" alias="login_customer" />
             <argument>%vespolina_partner.model.partner.class%</argument>
         </service>
         <!-- events -->
-        <service id="vespolina.store.listener.authentication" class="Vespolina\StoreBundle\EventListener\AuthenticationListener">
+        <service id="vespolina_store.listener.authentication" class="Vespolina\StoreBundle\EventListener\AuthenticationListener">
             <tag name="kernel.event_listener" event="security.authentication.success" method="onAuthenticationSuccess" />
             <argument type="service" id="session" />
             <argument type="service" id="vespolina.partner_manager" />
             <argument type="service" id="vespolina.process_manager" />
         </service>
-        <service id="vespolina.store.listener.cart_pricing" class="Vespolina\StoreBundle\EventListener\CartPricingListener">
+        <service id="vespolina_store.listener.cart_pricing" class="Vespolina\StoreBundle\EventListener\CartPricingListener">
             <tag name="kernel.event_listener" event="vespolina_cart.init_pricing_context" method="onInitPricingContext" />
             <argument type="service" id="service_container" />
         </service>
-        <service id="vespolina.store.listener.cart" class="Vespolina\StoreBundle\EventListener\CartListener">
+        <service id="vespolina_store.listener.cart" class="Vespolina\StoreBundle\EventListener\CartListener">
             <tag name="kernel.event_listener" event="vespolina_cart.cart_init" method="onCartInit" />
             <argument type="service" id="service_container" />
         </service>
-        <service id="vespolina.store.listener.request" class="Vespolina\StoreBundle\Event\RequestListener">
+        <service id="vespolina_store.listener.request" class="Vespolina\StoreBundle\Event\RequestListener">
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
             <argument type="service" id="service_container" />
         </service>
-        <service id="vespolina.store.listener.process" class="Vespolina\StoreBundle\Event\ProcessListener">
-            <tag name="kernel.event_listener" event="vespolina.store.complete_checkout" method="onCompleteCheckout" />
+        <service id="vespolina_store.listener.process" class="Vespolina\StoreBundle\Event\ProcessListener">
+            <tag name="kernel.event_listener" event="vespolina_store.complete_checkout" method="onCompleteCheckout" />
             <argument type="service" id="service_container" />
         </service>
     </services>
