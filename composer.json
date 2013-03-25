@@ -14,8 +14,10 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.1.*",
-        "vespolina/order-bundle": "dev-refactor",
-        "vespolina/product-bundle": "dev-refactor"
+        "vespolina/order-bundle": "dev-master",
+        "vespolina/partner-bundle": "dev-master",
+        "vespolina/product-bundle": "dev-master",
+        "vespolina/taxation-bundle": "dev-master"
     },
     "suggest": {
         "symfony/doctrine-bundle": "*",
