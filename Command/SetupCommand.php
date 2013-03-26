@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vespolina\PartnerBundle\Model\Partner;
+use Vespolina\Entity\Partner\Partner;
 
 class SetupCommand extends ContainerAwareCommand
 {
@@ -24,7 +24,7 @@ class SetupCommand extends ContainerAwareCommand
         $this
             ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
-            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
+            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'US')
             ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', '')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
@@ -40,14 +40,14 @@ class SetupCommand extends ContainerAwareCommand
         //Set up various employees
         $this->setupEmployees($input, $output);
 
-        $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
-        $productTaxonomy = $this->setupProductTaxonomy($input, $output);
+        //$customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
+        //$productTaxonomy = $this->setupProductTaxonomy($input, $output);
 
         //Setup taxation based on country
-        $taxSchema = $this->setupTaxation($input, $output);
+        //$taxSchema = $this->setupTaxation($input, $output);
 
-        $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
-        $this->setupCustomers($customerTaxonomy, $input, $output);
+        //$this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
+        //$this->setupCustomers($customerTaxonomy, $input, $output);
 
         //Setup on or multiple stores
         $stores = $this->setupStores($input, $output);
@@ -62,7 +62,7 @@ class SetupCommand extends ContainerAwareCommand
 
         $customerCount = 10;
         $partnerManager = $this->getContainer()->get('vespolina_partner.partner_manager');
-        $partnerManipulator = $this->getContainer()->get('vespolina.partner_manipulator');
+        $partnerManipulator = $this->getContainer()->get('vespolina_partner.partner_manipulator');
         $userManager = $this->getContainer()->get('fos_user.user_manager');
 
         for ($i = 0; $i < $customerCount; $i++) {
@@ -325,7 +325,7 @@ class SetupCommand extends ContainerAwareCommand
 
     protected function setupStores($input, $output)
     {
-        $storeManager = $this->getContainer()->get('vespolina.store_manager');
+        $storeManager = $this->getContainer()->get('vespolina_store.store_manager');
 
         //Load stores configurations (for now get that from vespolina.yml)
         $stores = $storeManager->loadStoresConfigurations();
@@ -354,7 +354,7 @@ class SetupCommand extends ContainerAwareCommand
     protected function setupStoreZones($stores, $input, $output)
     {
         $storeZones = array();
-        $storeZoneManager = $this->getContainer()->get('vespolina.store_zone_manager');
+        $storeZoneManager = $this->getContainer()->get('vespolina_store.store_zone_manager');
 
         foreach ($stores as $store) {
 
