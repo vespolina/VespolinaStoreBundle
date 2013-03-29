@@ -8,7 +8,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vespolina\PartnerBundle\Model\Partner;
+use Vespolina\Entity\Partner\Partner;
+use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
+use Vespolina\Entity\Pricing\PricingSet;
 
 class SetupCommand extends ContainerAwareCommand
 {
@@ -24,7 +26,7 @@ class SetupCommand extends ContainerAwareCommand
         $this
             ->setName('vespolina:store-setup')
             ->setDescription('Setup a Vespolina demo store')
-            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'us')
+            ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'US')
             ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', '')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')
         ;
@@ -62,7 +64,7 @@ class SetupCommand extends ContainerAwareCommand
 
         $customerCount = 10;
         $partnerManager = $this->getContainer()->get('vespolina_partner.partner_manager');
-        $partnerManipulator = $this->getContainer()->get('vespolina.partner_manipulator');
+        $partnerManipulator = $this->getContainer()->get('vespolina_partner.partner_manipulator');
         $userManager = $this->getContainer()->get('fos_user.user_manager');
 
         for ($i = 0; $i < $customerCount; $i++) {
@@ -174,6 +176,8 @@ class SetupCommand extends ContainerAwareCommand
                                  $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;
 
+            //TODO: move into a pricing set builder
+
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
@@ -200,12 +204,13 @@ class SetupCommand extends ContainerAwareCommand
                 $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
                 $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
             }
-            $aProduct->setPricing($pricing);
+            $aProduct->setPricing(new PricingSet(new TotalDoughValueElement()));
 
-            $aProduct->addTerm($aRandomTerm);
+            //TODO: fix taxonomy
+            //$aProduct->addTerm($aRandomTerm);
 
             $productManager->updateProduct($aProduct, true);
-
+            /**
             $asset = $productManager->getAssetManager()->createAsset(
                 $aProduct,
                 $imageBasePath . '.jpg',
@@ -225,7 +230,7 @@ class SetupCommand extends ContainerAwareCommand
                     'secondary_detail'
                 );
             }
-
+            */
         }
 
         $output->writeln('- Created ' . $productCount . ' sample products.' );
@@ -325,7 +330,7 @@ class SetupCommand extends ContainerAwareCommand
 
     protected function setupStores($input, $output)
     {
-        $storeManager = $this->getContainer()->get('vespolina.store_manager');
+        $storeManager = $this->getContainer()->get('vespolina_store.store_manager');
 
         //Load stores configurations (for now get that from vespolina.yml)
         $stores = $storeManager->loadStoresConfigurations();
@@ -354,7 +359,7 @@ class SetupCommand extends ContainerAwareCommand
     protected function setupStoreZones($stores, $input, $output)
     {
         $storeZones = array();
-        $storeZoneManager = $this->getContainer()->get('vespolina.store_zone_manager');
+        $storeZoneManager = $this->getContainer()->get('vespolina_store.store_zone_manager');
 
         foreach ($stores as $store) {
 

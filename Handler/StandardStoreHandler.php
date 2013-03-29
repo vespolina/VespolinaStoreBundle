@@ -36,15 +36,16 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
 
         $context = array_merge($defaults, $context);
 
-        //Get products in this store zone as a doctrine query
-        $productsQuery = $this->getZoneProducts($storeZone, true, $context);
+        $productsPager = $this->getZoneProducts($storeZone, true, $context);
+        $context['productsPager'] = $productsPager;
 
+        /**
         $context['productsPagination'] =  $this->container->get('knp_paginator')->paginate(
-            $productsQuery,
-            $this->container->get('request')->query->get('page', 1),
-            $context['productsPerPage']);
+        $productsQuery,
+        $this->container->get('request')->query->get('page', 1),
+        $context['productsPerPage']);
         $context['productsPagination']->setTemplate('VespolinaStoreBundle:Store/standard:pagination.html.twig');
-
+         */
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }
 }

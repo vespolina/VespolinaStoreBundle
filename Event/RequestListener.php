@@ -27,10 +27,10 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
 
-        $storeResolver = $this->container->get('vespolina.store.store_resolver');
+        $storeResolver = $this->container->get('vespolina_store.store_resolver');
         $store = $storeResolver->resolveStore($event->getRequest());
 
-        $storeZoneManager = $this->container->get('vespolina.store.store_zone_manager');
+        $storeZoneManager = $this->container->get('vespolina_store.store_zone_manager');
         $storeZones = $storeZoneManager->findBy(array());
 
         foreach($storeZones as $storeZone) {

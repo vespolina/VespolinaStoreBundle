@@ -1,57 +1,57 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
-      <ul class="nav">
-        <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
-          {% for storeZone in store.storeZones %}
-          <li><a href="{{ path('vespolina_store_store_zone', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>
-          {% endfor %}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
+                <ul class="nav">
+                    <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
+                    {% for storeZone in store.storeZones %}
+                        <li><a href="{{ path('vespolina_store_store_zone', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>
+                    {% endfor %}
 
-          <li><a href="#about">About</a></li>
-      </ul>
-      <ul class="nav secondary-nav pull-right">
-        {% if not is_granted('ROLE_ADMIN') %}
-            {% block customer_info %}
-                {% render "VespolinaStoreBundle:Customer:navBar" %}
-            {% endblock %}
-            {% block cart_quick_inspection %}
-                {% render "VespolinaCartBundle:Default:navBar" %}
-            {% endblock %}
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="container">
-    <div class="row-fluid">
-        <div class="span2">
-            {% block product_taxonomy %}
-
-            {% endblock %}
-        </div>
-        <div class="span10">
-            <div id="content" class="box">
-
-                {% block navigation %}
-                <ul class="breadcrumb">
-                    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
-                    <li class="active">You are here</li>
+                    <li><a href="#about">About</a></li>
                 </ul>
-                {% endblock %}
+                <ul class="nav secondary-nav pull-right">
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        {% block customer_info %}
+                            {% render "VespolinaStoreBundle:Customer:navBar" %}
+                        {% endblock %}
+                        {% block cart_quick_inspection %}
+                            {% render "VespolinaOrderBundle:Cart/Partials:quickInspection" %}
+                        {% endblock %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span2">
+                {% block product_taxonomy %}
 
-                {% block content %}
-                No content.
                 {% endblock %}
             </div>
-       </div>
+            <div class="span10">
+                <div id="content" class="box">
+
+                    {% block navigation %}
+                        <ul class="breadcrumb">
+                            <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+                            <li class="active">You are here</li>
+                        </ul>
+                    {% endblock %}
+
+                    {% block content %}
+                        No content.
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="box v-footer">
+            <p class="f-right">Copyright &copy; 2011 - 2013 <span class="v-store-display-name">{{ store.displayName }}</span> , All rights preserved. - Powered by <a href="http://www.vespolina.org">Vespolina</a></p>
+        </div>
     </div>
-    <div id="footer" class="box v-footer">
-        <p class="f-right">Copyright &copy; 2011 - 2012 <span class="v-store-display-name">{{ store.displayName }}</span> , All rights preserved. - Powered by <a href="http://www.vespolina.org">Vespolina</a></p>
-    </div>
-</div>
 {% endblock %}
 
