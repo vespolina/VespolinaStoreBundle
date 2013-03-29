@@ -43,17 +43,16 @@ abstract class AbstractStoreHandler extends ContainerAware
     {
         $criteria = array();
         //Todo: products query should come in through the product manager and work for both ORM and ODM
-        $dm = $this->container->get('doctrine_mongodb.odm.default_document_manager');
-        $qb = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product');
-        $qb->sort('name', 'ASC');
+        $productManager = $this->container->get('vespolina.product_manager');
+
 
         //Add product categorisation as criteria if different from '_all'
         if (null !== $taxonomyTerm && $taxonomyTerm != '_all') {
 
-            $qb->field('terms.slug')->equals($taxonomyTerm);
+            //$qb->field('terms.slug')->equals($taxonomyTerm);
         }
 
-        return $qb->getQuery();
+        return $productManager->findProductsBy($criteria, array('asc'), 1, 10, true);
     }
 
 

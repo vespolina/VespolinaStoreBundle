@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vespolina\Entity\Partner\Partner;
+use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
+use Vespolina\Entity\Pricing\PricingSet;
 
 class SetupCommand extends ContainerAwareCommand
 {
@@ -40,14 +42,14 @@ class SetupCommand extends ContainerAwareCommand
         //Set up various employees
         $this->setupEmployees($input, $output);
 
-        //$customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
-        //$productTaxonomy = $this->setupProductTaxonomy($input, $output);
+        $customerTaxonomy = $this->setupCustomerTaxonomy($input, $output);
+        $productTaxonomy = $this->setupProductTaxonomy($input, $output);
 
         //Setup taxation based on country
-        //$taxSchema = $this->setupTaxation($input, $output);
+        $taxSchema = $this->setupTaxation($input, $output);
 
-        //$this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
-        //$this->setupCustomers($customerTaxonomy, $input, $output);
+        $this->setupProducts($productTaxonomy, $taxSchema, $input, $output);
+        $this->setupCustomers($customerTaxonomy, $input, $output);
 
         //Setup on or multiple stores
         $stores = $this->setupStores($input, $output);
@@ -174,6 +176,8 @@ class SetupCommand extends ContainerAwareCommand
                                  $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;
 
+            //TODO: move into a pricing set builder
+
             /** Set up for each product following pricing elements
              *  - netUnitPrice : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
@@ -200,12 +204,13 @@ class SetupCommand extends ContainerAwareCommand
                 $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
                 $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
             }
-            $aProduct->setPricing($pricing);
+            $aProduct->setPricing(new PricingSet(new TotalDoughValueElement()));
 
-            $aProduct->addTerm($aRandomTerm);
+            //TODO: fix taxonomy
+            //$aProduct->addTerm($aRandomTerm);
 
             $productManager->updateProduct($aProduct, true);
-
+            /**
             $asset = $productManager->getAssetManager()->createAsset(
                 $aProduct,
                 $imageBasePath . '.jpg',
@@ -225,7 +230,7 @@ class SetupCommand extends ContainerAwareCommand
                     'secondary_detail'
                 );
             }
-
+            */
         }
 
         $output->writeln('- Created ' . $productCount . ' sample products.' );
