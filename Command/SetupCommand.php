@@ -8,9 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vespolina\Entity\Partner\Partner;
-use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
-use Vespolina\Entity\Pricing\PricingSet;
 use Vespolina\StoreBundle\ProcessScenario\Setup\SetupCLIProcess;
 
 class SetupCommand extends ContainerAwareCommand
@@ -47,28 +44,6 @@ class SetupCommand extends ContainerAwareCommand
         $setupProcess->init();
         $setupProcess->execute();
 
-        die('done');
-
-        //Set up various employees
-        $this->setupEmployees($input, $output);
-
-
-        //Setup on or multiple stores
-        $stores = $this->setupStores($input, $output);
-
-        //For each store set up a (default) store zone
-        $storeZones = $this->setupStoreZones($stores, $input, $output);
-
-        $output->writeln('Finished setting up stores for country "' . $this->country . '" with type "' . $this->type . '"');
+        $output->writeln('Finished setup');
     }
-
-
-    protected function setupStores($input, $output)
-    {
-
-    }
-
-
-
-
 }
