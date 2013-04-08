@@ -6,7 +6,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Scenario;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout;
 
 use Vespolina\StoreBundle\Process\AbstractProcess;
 use Vespolina\StoreBundle\Process\ProcessStepInterface;
@@ -85,7 +85,6 @@ class CheckoutProcessB2C extends AbstractProcess
     public function getClassMap()
     {
         return array(
-            'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
             'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
             'select_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',

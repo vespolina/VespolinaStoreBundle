@@ -6,31 +6,32 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Step;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class DetermineFulfillment extends AbstractProcessStep
+class ExecutePayment extends AbstractProcessStep
 {
     protected $process;
 
     public function init($firstTime = false)
     {
-        $this->setDisplayName('delivery');
+        $this->setDisplayName('pay');
     }
 
     public function execute($context)
     {
+
         $customerIdentified = false;
 
         if (!$customerIdentified) {
 
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\DetermineFulfillmentController');
-            $controller->setContainer($this->process->getContainer());
+            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\ExecutePaymentController');
             $controller->setProcessStep($this);
+            $controller->setContainer($this->process->getContainer());
 
             return $controller->executeAction();
         } else {
@@ -43,7 +44,7 @@ class DetermineFulfillment extends AbstractProcessStep
 
     public function getName()
     {
-        return 'determine_fulfillment';
+        return 'execute_payment';
     }
 
 

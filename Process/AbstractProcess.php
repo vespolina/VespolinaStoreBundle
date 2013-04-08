@@ -9,17 +9,21 @@
 namespace Vespolina\StoreBundle\Process;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Monolog\Logger;
 use Vespolina\StoreBundle\Process\ProcessInterface;
+use Vespolina\StoreBundle\Process\ProcessDefinition;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
 abstract class AbstractProcess implements ProcessInterface
 {
-    protected $classMap;
     protected $container;
     protected $context;
+    protected $definition;
+    protected $eventDispatcher;
     protected $id;
+    protected $logger;
     protected $processSteps;
 
     public function __construct($container, $context)
@@ -27,19 +31,25 @@ abstract class AbstractProcess implements ProcessInterface
         $this->container = $container;
         $this->context = $context;
 
-        if (!$this->context) {
+        if (null == $this->context) {
             $this->context = new ArrayCollection();
         }
+
+        $this->definition = new ProcessDefinition();
+        $this->eventDispatcher = $container->get('event_dispatcher');
+
+        $this->logger = new Logger('process');
     }
 
     public function init($firstTime = false)
     {
+        $this->definition = $this->build();
+
         if ($firstTime) {
 
             $this->setState($this->getInitialState());
         }
 
-        $this->loadProcessSteps($firstTime);
     }
 
     public function execute()
@@ -58,7 +68,7 @@ abstract class AbstractProcess implements ProcessInterface
 
         $processStep = $this->getProcessStepByName($name);
 
-        if ($processStep) {
+        if (null != $processStep) {
 
             return $processStep->execute($this);
         }
@@ -68,8 +78,8 @@ abstract class AbstractProcess implements ProcessInterface
 
         //Todo: add logic prevent transition to 'locked' steps,
         //eg. step to perform payment should not be repeatable
-
         $this->context['state'] = $processStep->getName();
+
         return $this->execute();
     }
 
@@ -81,6 +91,17 @@ abstract class AbstractProcess implements ProcessInterface
     public function getContext()
     {
         return $this->context;
+    }
+
+    public function getEventDispatcher()
+    {
+
+        return $this->eventDispatcher;
+    }
+
+    public function getLogger() {
+
+        return $this->logger;
     }
 
     public function getProcessSteps()
@@ -112,12 +133,12 @@ abstract class AbstractProcess implements ProcessInterface
     public function getProcessStepByName($name)
     {
         foreach($this->processSteps as $processStep) {
+
             if ($processStep->getName() == $name ) {
 
                 return $processStep;
             }
         }
-        echo 'not found';
     }
 
     protected function loadProcessSteps($firstTime)
@@ -129,7 +150,6 @@ abstract class AbstractProcess implements ProcessInterface
             $this->processSteps[] = $processStep;
         }
     }
-
 
    protected function setState($state)
    {

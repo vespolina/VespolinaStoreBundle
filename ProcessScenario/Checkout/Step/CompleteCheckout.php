@@ -6,7 +6,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Step;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
 use Vespolina\Entity\OrderInterface;
 use Vespolina\StoreBundle\Process\AbstractProcessStep;

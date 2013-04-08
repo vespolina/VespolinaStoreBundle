@@ -10,11 +10,8 @@ namespace Vespolina\StoreBundle\Process;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-interface ProcessStepInterface
+interface ProcessDefinitionInterface
 {
 
-    function init($firstTime = false);
-    function execute(&$context);
-    function getDisplayName();
-
+    function addProcessStep($name, $class);
 }

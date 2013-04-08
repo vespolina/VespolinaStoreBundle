@@ -7,26 +7,18 @@ class TaxonomyController extends AbstractController
 {
     protected $taxonomyManager;
 
-    public function listTermsAction($taxonomyName, $currentTaxonomyTerm, $renderType)
+    public function listNodesAction($taxonomyName, $nodePath = '')
     {
-        $addAllTerm = true; //Add an 'All' category
-        $taxonomy = $this->getTaxonomy($taxonomyName);
-        $terms = $taxonomy->getTerms()->toArray();
+        $rootTaxonomyNode = $this->getTaxonomy($taxonomyName, $nodePath);
+        $taxonomyNodes = $rootTaxonomyNode->getChildren();
 
-        if ($addAllTerm) {
-
-            $allTerm = $this->taxonomyManager->createTerm('all');
-            $allTerm->setPath('_all');
-            array_unshift($terms, $allTerm);
-        }
-
-        return $this->render('VespolinaStoreBundle:Taxonomy:listTerms' . $renderType . '.html.twig', array('terms' => $terms, 'currentTaxonomyTerm' => $currentTaxonomyTerm));
+        return $this->render('VespolinaStoreBundle:Taxonomy:listNodesFlat.html.twig', array('taxonomyNodes' => $taxonomyNodes, 'currentTaxonomyNode' => currentTaxonomyNode));
     }
 
-    protected function getTaxonomy($taxonomyName)
+    protected function getTaxonomy($taxonomyName, $nodePath)
     {
-        $this->taxonomyManager = $this->container->get('vespolina.taxonomy.taxonomy_manager');
+        $this->taxonomyManager = $this->container->get('vespolina_taxonomy.taxonomy_manager');
 
-        return $taxonomy = $this->taxonomyManager->findTaxonomyById('products');
+        return $taxonomy = $this->taxonomyManager->find('products');
     }
 }

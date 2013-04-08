@@ -7,17 +7,28 @@
  */
 namespace Vespolina\StoreBundle\Process;
 
+use Vespolina\StoreBundle\Process\ProcessDefinitionInterface;
+
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
 interface ProcessInterface
 {
 
+    /**
+     * Build the process definition (which steps to perform)
+     *
+     * @return ProcessDefinitionInterface $definition
+     */
+    function build();
+
+    /**
+     * Execute the process
+     */
     function execute();
-    function executeProcessStep($name);
-    function getInitialState();
-    function getClassMap();
-    function getCurrentProcessStep();
+
+    //function executeProcessStep($name);
+    //function getCurrentProcessStep();
     function getState();
     function init($firstTime = false);
 }
