@@ -13,19 +13,21 @@ class CreateProducts extends AbstractSetupStep
         $defaultTaxRate = $context['taxSchema']['defaultTaxRate'];
         $productCount = 10;
 
-        //$productTaxonomyTerms = $context['productTaxonomy']->getTerms();
-        //$keys = $productTaxonomyTerms->getKeys();
+        /* @var $productTaxonomy Vespolina\Entity\Taxonomy\TaxonomyNodeInterface */
+        $productTaxonomy = $context['productTaxonomy'];
+        $productTaxonomyNodes = $productTaxonomy->getChildren();
 
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
         for($i = 1; $i < $productCount; $i++) {
 
-            //Get a random taxonomy term (= product category) to which we'll be attaching this product
-            //$index = rand(0, $productTaxonomyTerms->count() - 1);
-            //$aRandomTerm = $productTaxonomyTerms->get($keys[$index]);
-            //$singularTermName = substr($aRandomTerm->getName(), 0, strlen($aRandomTerm->getName())-1);
-            //$productName = ucfirst($singularTermName) . ' ' . $i;
-            $productName = 'product ' . $i;
+            //Pick a random taxonomy node (= product category) to which we'll be attaching this product
+            $index = rand(0, $productTaxonomyNodes->count() - 1);
+            $aRandomTaxonomyNode = $productTaxonomyNodes->get($index);
+
+            //Determine the product name from the taxonomy name (eg. category "beer" -> product name is "beer 1"
+            $singularNodeName = substr($aRandomTaxonomyNode->getName(), 0, strlen($aRandomTaxonomyNode->getName())-1);
+            $productName = ucfirst($singularNodeName) . ' ' . $i;
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
@@ -94,7 +96,7 @@ class CreateProducts extends AbstractSetupStep
              */
         }
 
-        $this->getLogger()->addInfo('- Created ' . $productCount . ' sample products.' );
+        $this->getLogger()->addInfo('Created ' . $productCount . ' sample products.' );
     }
 
     public function getName() {
@@ -102,6 +104,10 @@ class CreateProducts extends AbstractSetupStep
         return 'create_products';
     }
 
+    protected function getRandomTaxonomyNode()
+    {
+
+    }
     protected function slugify($text)
     {
         return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim($text)))));
