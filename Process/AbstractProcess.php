@@ -25,6 +25,7 @@ abstract class AbstractProcess implements ProcessInterface
     protected $id;
     protected $logger;
     protected $processSteps;
+    protected $currentProcessStep;
 
     public function __construct($container, $context)
     {
@@ -37,8 +38,8 @@ abstract class AbstractProcess implements ProcessInterface
 
         $this->definition = new ProcessDefinition();
         $this->eventDispatcher = $container->get('event_dispatcher');
-
         $this->logger = new Logger('process');
+        $this->processSteps = new ArrayCollection();
     }
 
     public function init($firstTime = false)
@@ -46,36 +47,31 @@ abstract class AbstractProcess implements ProcessInterface
         $this->definition = $this->build();
 
         if ($firstTime) {
-
             $this->setState($this->getInitialState());
         }
-
     }
 
     public function execute()
     {
-
         if ($currentProcessStep = $this->getCurrentProcessStep()) {
 
             return $currentProcessStep->execute($this);
         } else {
-
             throw new \Exception('Could not find a process step to execute');
         }
     }
 
-    public function executeProcessStep($name) {
-
+    public function executeProcessStep($name)
+    {
         $processStep = $this->getProcessStepByName($name);
 
         if (null != $processStep) {
-
             return $processStep->execute($this);
         }
     }
 
-    public function gotoProcessStep(ProcessStepInterface $processStep) {
-
+    public function gotoProcessStep(ProcessStepInterface $processStep)
+    {
         //Todo: add logic prevent transition to 'locked' steps,
         //eg. step to perform payment should not be repeatable
         $this->context['state'] = $processStep->getName();
@@ -106,12 +102,14 @@ abstract class AbstractProcess implements ProcessInterface
 
     public function getProcessSteps()
     {
-        if (!$this->processSteps) {
+        $steps = array();
 
-            $this->loadProcessSteps(false);
+        foreach ($this->definition->getSteps() as $stepConfiguration) {
+            $step = $this->getProcessStepByName($stepConfiguration['name']);
+            $step->init();
+            $steps[] = $step;
         }
-
-        return $this->processSteps;
+        return $steps;
     }
 
     public function getState()
@@ -132,24 +130,18 @@ abstract class AbstractProcess implements ProcessInterface
 
     public function getProcessStepByName($name)
     {
-        foreach($this->processSteps as $processStep) {
+        $processStep = $this->processSteps->get($name);
 
-            if ($processStep->getName() == $name ) {
+        if (null == $processStep) {
 
-                return $processStep;
-            }
+            $data = $this->definition->getStepConfig($name);
+            $processStep = new $data['class']($this);
+            $this->processSteps->set($name, $processStep);
         }
+
+        return $processStep;
     }
 
-    protected function loadProcessSteps($firstTime)
-    {
-        foreach($this->getClassMap() as $processStepClass) {
-
-            $processStep = new $processStepClass($this);
-            $processStep->init($firstTime);
-            $this->processSteps[] = $processStep;
-        }
-    }
 
    protected function setState($state)
    {

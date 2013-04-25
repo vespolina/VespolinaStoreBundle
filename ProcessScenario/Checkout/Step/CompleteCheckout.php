@@ -25,7 +25,7 @@ class CompleteCheckout extends AbstractProcessStep
         $this->setDisplayName('complete');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
         //Copy cart -> sales order
         $cart = $this->getContext()->get('cart');
@@ -38,8 +38,6 @@ class CompleteCheckout extends AbstractProcessStep
 
             //Notify involved partners about the sales order.  Tod: Move into a dispatcher event listener
             $this->notifyPartners($salesOrder);
-
-
         }
         //Reset session cart
         $cart->clearItems();

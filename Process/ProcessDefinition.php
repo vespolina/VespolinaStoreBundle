@@ -22,7 +22,7 @@ class ProcessDefinition
 
     public function __construct() {
 
-        $this->steps = new ArrayCollection();
+        $this->steps = array();
     }
 
     public function addProcessStep($name, $class, $state = '') {
@@ -32,12 +32,35 @@ class ProcessDefinition
         $config['class'] = $class;
         $config['state'] = $state;
 
-        $this->steps->add($config);
+        $this->steps[] = $config;
     }
 
     public function getInitialStep() {
 
-        return $this->steps->first();
+        return $this->steps[0];
+    }
+
+    public function getStepConfig($name)
+    {
+       foreach ($this->steps as $stepConfig) {
+           if ($stepConfig['name'] == $name) {
+               return $stepConfig;
+           }
+       }
+    }
+
+    public function getNextStepConfig($name) {
+
+        $i = 0;
+        foreach ($this->steps as $stepConfig) {
+            $i++;
+            if ($stepConfig['name'] == $name) {
+
+                if ($i+1 <= count($this->steps)) {
+                    return $this->steps[$i+1];
+                }
+            }
+        }
     }
 
     public function getSteps() {

@@ -22,7 +22,7 @@ class ReviewCheckout extends AbstractProcessStep
         $this->setDisplayName('Review');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
 
         $customerIdentified = false;

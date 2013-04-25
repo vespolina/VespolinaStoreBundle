@@ -19,13 +19,14 @@ class IdentifyCustomerController extends AbstractProcessStepController
         $customerQuickCreateForm = $this->createCustomerQuickCreateForm();
         $customerLoginForm = $this->createCustomerLoginForm();
 
+        $process = $this->getProcessStep()->getProcess();
         $isCompleted = false;
 
         $addresses = $customerQuickCreateForm->getData()->getAddresses();
         if ($addresses)
             $customerQuickCreateForm->get('address')->setData($addresses->get(0));
 
-        $partnerManager = $this->container->get('vespolina.partner_manager');
+        $partnerManager = $this->container->get('vespolina_partner.partner_manager');
         $processManager = $this->container->get('vespolina.process_manager');
         $request = $this->container->get('request');
 
@@ -55,6 +56,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
                 }
 
                 //Save into process context & session
+
                 $process->getContext()->set('customer', $customer);
                 $this->container->get('session')->set('customer', $customer);
 
@@ -139,7 +141,7 @@ class IdentifyCustomerController extends AbstractProcessStepController
             $partnerManager = $this->container->get('vespolina.partner_manager');
             $customer = $partnerManager->createPartner();
         }
-        $customerQuickCreateForm = $this->container->get('form.factory')->create($this->container->get('vespolina.partner.quick_customer_type'), $customer);
+        $customerQuickCreateForm = $this->container->get('form.factory')->create($this->container->get('vespolina_partner.partner.quick_customer_type'), $customer);
 
         return $customerQuickCreateForm;
     }

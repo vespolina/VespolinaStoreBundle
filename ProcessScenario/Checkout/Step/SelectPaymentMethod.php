@@ -22,7 +22,7 @@ class SelectPaymentMethod extends AbstractProcessStep
         $this->setDisplayName('payment method');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
 
         $customerIdentified = false;

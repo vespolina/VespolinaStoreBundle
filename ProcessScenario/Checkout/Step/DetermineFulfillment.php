@@ -22,7 +22,7 @@ class DetermineFulfillment extends AbstractProcessStep
         $this->setDisplayName('delivery');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
         $customerIdentified = false;
 

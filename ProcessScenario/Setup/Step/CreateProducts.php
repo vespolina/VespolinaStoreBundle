@@ -5,9 +5,13 @@ namespace Vespolina\StoreBundle\ProcessScenario\Setup\Step;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
 use Vespolina\Entity\Pricing\PricingSet;
+use Vespolina\Pricing\Manager\PricingManager;
+use Vespolina\Entity\Product\Product;
 
 class CreateProducts extends AbstractSetupStep
 {
+    protected $pricingManager;
+
     public function execute(&$context) {
 
         $defaultTaxRate = $context['taxSchema']['defaultTaxRate'];
@@ -31,7 +35,7 @@ class CreateProducts extends AbstractSetupStep
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
-
+            $aProduct->setType(Product::PHYSICAL);
             //Set up a nice primary media item
             /**$imageBasePath = 'bundles' . DIRECTORY_SEPARATOR .
                 'applicationvespolinastore' . DIRECTORY_SEPARATOR .
@@ -42,32 +46,36 @@ class CreateProducts extends AbstractSetupStep
             //TODO: move into a pricing set builder
 
             /** Set up for each product following pricing elements
-             *  - netUnitPrice : unit price without tax
+             *  - netValue : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
              *  - unitPriceTax : tax over the net unit price (based on the default tax rate)
              *  - unitPriceTotal: final price a customer pays ( net unit price + tax )
              *  - unitMSRPTotal: manufacturer suggested retail price with tax
              **/
-            $pricing = array();
-            $pricing['netUnitPrice'] = rand(2,80);
+
+
+            $pricingValues = array();
+            $pricingValues['netValue'] = rand(2,80);
 
             //Set Manufacturer Suggested Retail Price to +(random) % of the net unit price
-            $pricing['MSRPDiscountRate'] = rand(10,35);
-            $pricing['unitPriceMSRP'] = $pricing['netUnitPrice'] * ( 1 + $pricing['MSRPDiscountRate'] / 100);
+            $pricingValues['MSRPDiscountRate'] = rand(10,35);
+            $pricingValues['unitPriceMSRP'] = $pricingValues['netValue'] * ( 1 + $pricingValues['MSRPDiscountRate'] / 100);
 
 
             if ($defaultTaxRate) {
 
-                $pricing['unitPriceTax'] = $pricing['netUnitPrice'] / 100 * $defaultTaxRate;
-                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'] * (1 + $defaultTaxRate / 100);
-                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'] + $pricing['unitPriceTax'];
+                $pricingValues['unitPriceTax'] = $pricingValues['netValue'] / 100 * $defaultTaxRate;
+                $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'] * (1 + $defaultTaxRate / 100);
+                $pricingValues['unitPriceTotal'] = $pricingValues['netValue'] + $pricingValues['unitPriceTax'];
 
             } else {
 
-                $pricing['unitPriceTotal'] = $pricing['netUnitPrice'];
-                $pricing['unitPriceMSRPTotal'] = $pricing['unitPriceMSRP'];
+                $pricingValues['unitPriceTotal'] = $pricingValues['netValue'];
+                $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'];
             }
-            $aProduct->setPricing(new PricingSet(new TotalDoughValueElement()));
+
+            $pricingSet = $this->getPricingManager()->createPricingSet('default_product', $pricingValues);
+            $aProduct->setPricing($pricingSet);
 
             //TODO: fix taxonomy
             //$aProduct->addTerm($aRandomTerm);
@@ -104,10 +112,20 @@ class CreateProducts extends AbstractSetupStep
         return 'create_products';
     }
 
-    protected function getRandomTaxonomyNode()
+    protected function getPricingManager()
     {
+        if (null == $this->pricingManager) {
+            $this->pricingManager = new PricingManager();
 
+            //Register the 'default_product' configuration
+            $this->pricingManager->addConfiguration('default_product', 'Vespolina\Entity\Pricing\PricingSet', array());
+        }
+new TotalDoughValueElement;
+
+
+        return $this->pricingManager;
     }
+
     protected function slugify($text)
     {
         return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim($text)))));

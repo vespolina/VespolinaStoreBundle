@@ -14,7 +14,19 @@ interface ProcessStepInterface
 {
 
     function init($firstTime = false);
+
+    /**
+     * Execute the process step with the provided process context
+     *
+     * @param $context
+     * @return mixed
+     */
     function execute(&$context);
-    function getDisplayName();
+
+    /**
+     * Name of the process step
+     * @return mixed
+     */
+    function getName();
 
 }

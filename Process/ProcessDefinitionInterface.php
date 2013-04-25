@@ -13,5 +13,12 @@ namespace Vespolina\StoreBundle\Process;
 interface ProcessDefinitionInterface
 {
 
+    /**
+     * Add a (linear) process step to the process definition
+     *
+     * @param $name
+     * @param $class
+     * @return mixed
+     */
     function addProcessStep($name, $class);
 }

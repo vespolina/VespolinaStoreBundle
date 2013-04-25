@@ -22,11 +22,11 @@ class IdentifyCustomer extends AbstractProcessStep
         $this->setDisplayName('identify customer');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
-        $currentStep = $this->getProcess()->getCurrentProcessStep();
         $customer = $this->getCustomer();
 
+        // If we already have a customer, this step is considered to be complete
         if (null != $customer) {
             $this->getContext()->set('customer', $customer);
 

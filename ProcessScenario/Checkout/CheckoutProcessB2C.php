@@ -10,7 +10,7 @@ namespace Vespolina\StoreBundle\ProcessScenario\Checkout;
 
 use Vespolina\StoreBundle\Process\AbstractProcess;
 use Vespolina\StoreBundle\Process\ProcessStepInterface;
-
+use Vespolina\StoreBundle\Process\ProcessDefinition;
 
 /**
  * This process models a commonly used checkout process which consists of following steps:
@@ -34,47 +34,49 @@ class CheckoutProcessB2C extends AbstractProcess
         parent::__construct($container, $context);
     }
 
-    public function completeProcessStep(ProcessStepInterface $processStep){
+    public function build() {
 
-        switch($processStep->getName()) {
-            case 'identify_customer':
+        $definition = new ProcessDefinition();
+        $definition->addProcessStep('identify_customer',
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\IdentifyCustomer');
+        $definition->addProcessStep('determine_fulfillment',
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\DetermineFulfillment');
+        $definition->addProcessStep('select_payment_method',
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\SelectPaymentMethod');
+        $definition->addProcessStep('review_checkout',
+            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ReviewCheckout');
+        $definition->addProcessStep('execute_payment',
+            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ExecutePayment');
+        $definition->addProcessStep('complete_checkout',
+            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\CompleteCheckout');
 
-                $this->setState('determine_fulfillment');
-                break;
+        return $definition;
+    }
+    public function completeProcessStep(ProcessStepInterface $processStep)
+    {
 
-            case 'determine_fulfillment':
+        $nextStepConfig = $this->definition->getNextStepConfig($processStep->getName());
 
-                $this->setState('select_payment_method');
-                break;
-
-            case 'select_payment_method':
-
-                $this->setState('review_checkout');
-                break;
-
-            case 'review_checkout':
-
-                $this->setState('execute_payment');
-                break;
-
-            case 'execute_payment':
-
-                $this->setState('complete_checkout');
-                break;
-
-            case 'complete_checkout':
-
-                $this->setState('finished');
-                break;
-
+        if (null == $nextStepConfig) {
+            $this->setState($nextStepConfig['name']);
+        } else {
+            $this->setState('finished');
         }
     }
+/**
+    public function execute()
+    {
 
+        die($this->getState());
+        if (!$this->getState() == 'finished') {
 
+            return $this->executeProcessStep($this->getState());
+        }
+    }
+*/
 
     public function getCurrentProcessStep()
     {
-
         //This is a simple case in which a state maps to a process step name, but it could be more dynamic
         if ($this->getState() != 'finished') {
 
@@ -82,18 +84,7 @@ class CheckoutProcessB2C extends AbstractProcess
         }
     }
 
-    public function getClassMap()
-    {
-        return array(
-            'identify_customer'      => 'Vespolina\StoreBundle\Process\Step\IdentifyCustomer',
-            'determine_fulfillment'  => 'Vespolina\StoreBundle\Process\Step\DetermineFulfillment',
-            'select_payment_method'  => 'Vespolina\StoreBundle\Process\Step\SelectPaymentMethod',
-            'review_checkout'        => 'Vespolina\StoreBundle\Process\Step\ReviewCheckout',
-            'execute_payment'        => 'Vespolina\StoreBundle\Process\Step\ExecutePayment',
-            'complete_checkout'      => 'Vespolina\StoreBundle\Process\Step\CompleteCheckout',
 
-        );
-    }
 
     public function getInitialState()
     {
