@@ -29,4 +29,13 @@ interface ProcessStepInterface
      */
     function getName();
 
+    /**
+     * Get the state of this process step
+     *
+     * @return mixed
+     */
+    function getState();
+
+    function isCompleted();
+
 }

@@ -47,19 +47,21 @@ class ProcessDefinition
                return $stepConfig;
            }
        }
+
+       throw new \Exception('Could not find step configuration for "' . $name . '"' );
     }
 
     public function getNextStepConfig($name) {
 
         $i = 0;
         foreach ($this->steps as $stepConfig) {
-            $i++;
             if ($stepConfig['name'] == $name) {
 
                 if ($i+1 <= count($this->steps)) {
                     return $this->steps[$i+1];
                 }
             }
+            $i++;
         }
     }
 

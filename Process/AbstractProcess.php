@@ -27,7 +27,7 @@ abstract class AbstractProcess implements ProcessInterface
     protected $processSteps;
     protected $currentProcessStep;
 
-    public function __construct($container, $context)
+    public function __construct($container, $context = null)
     {
         $this->container = $container;
         $this->context = $context;
@@ -44,6 +44,7 @@ abstract class AbstractProcess implements ProcessInterface
 
     public function init($firstTime = false)
     {
+        //Build the process model definition
         $this->definition = $this->build();
 
         if ($firstTime) {
@@ -51,13 +52,35 @@ abstract class AbstractProcess implements ProcessInterface
         }
     }
 
+    public function isCompleted()
+    {
+        return $this->getState() == 'completed';
+    }
+
     public function execute()
     {
+        if ($this->isCompleted()) {
+            return;
+        }
         if ($currentProcessStep = $this->getCurrentProcessStep()) {
 
-            return $currentProcessStep->execute($this);
+            $result =  $currentProcessStep->execute($this);
+
+            //Fire up the next step using recursion
+            if ($currentProcessStep->isCompleted())  {
+
+                //Signal the process that this process step has been completed
+                $this->completeProcessStep($currentProcessStep);
+
+                return $this->execute();
+            } else {
+                //We should have received a response
+                return $result;
+            }
+
         } else {
-            throw new \Exception('Could not find a process step to execute');
+
+            throw new \Exception('Could not find a process step to execute for state "' . $this->getState() . '"');
         }
     }
 
@@ -91,12 +114,11 @@ abstract class AbstractProcess implements ProcessInterface
 
     public function getEventDispatcher()
     {
-
         return $this->eventDispatcher;
     }
 
-    public function getLogger() {
-
+    public function getLogger()
+    {
         return $this->logger;
     }
 
@@ -142,11 +164,8 @@ abstract class AbstractProcess implements ProcessInterface
         return $processStep;
     }
 
-
    protected function setState($state)
    {
        $this->context['state'] = $state;
    }
-
-
 }

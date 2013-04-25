@@ -63,16 +63,21 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
     public function getActiveProcessByOwner($name, $owner)
     {
+        $process = null;
+
         if ($owner == $this->session->getId()) {
             $openProcesses = $this->session->get('processes', array());
             foreach ($openProcesses as $processName => $processContext) {
-                if ($processName === $name) {
-                    return $this->loadProcessFromContext($processName, $processContext);
+                if ($processName == $name) {
+                    $process = $this->loadProcessFromContext($processName, $processContext);
                 }
             }
         }
 
-        return null;
+        if (null != $process && !$process->isCompleted()) {
+
+            return $process;
+        }
     }
 
     public function updateProcess(ProcessInterface $process)

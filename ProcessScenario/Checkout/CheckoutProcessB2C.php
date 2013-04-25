@@ -26,14 +26,6 @@ use Vespolina\StoreBundle\Process\ProcessDefinition;
  */
 class CheckoutProcessB2C extends AbstractProcess
 {
-
-    protected $context;
-
-    public function __construct($container, $context = array())
-    {
-        parent::__construct($container, $context);
-    }
-
     public function build() {
 
         $definition = new ProcessDefinition();
@@ -44,47 +36,34 @@ class CheckoutProcessB2C extends AbstractProcess
         $definition->addProcessStep('select_payment_method',
                                     'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\SelectPaymentMethod');
         $definition->addProcessStep('review_checkout',
-            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ReviewCheckout');
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ReviewCheckout');
         $definition->addProcessStep('execute_payment',
-            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ExecutePayment');
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\ExecutePayment');
         $definition->addProcessStep('complete_checkout',
-            'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\CompleteCheckout');
+                                    'Vespolina\StoreBundle\ProcessScenario\Checkout\Step\CompleteCheckout');
 
         return $definition;
     }
     public function completeProcessStep(ProcessStepInterface $processStep)
     {
-
         $nextStepConfig = $this->definition->getNextStepConfig($processStep->getName());
 
-        if (null == $nextStepConfig) {
+        //Detect if this process step is followed by another process step
+        if (null != $nextStepConfig) {
             $this->setState($nextStepConfig['name']);
         } else {
-            $this->setState('finished');
+            $this->setState('completed');
         }
     }
-/**
-    public function execute()
-    {
-
-        die($this->getState());
-        if (!$this->getState() == 'finished') {
-
-            return $this->executeProcessStep($this->getState());
-        }
-    }
-*/
 
     public function getCurrentProcessStep()
     {
         //This is a simple case in which a state maps to a process step name, but it could be more dynamic
-        if ($this->getState() != 'finished') {
+        if (!$this->isCompleted()) {
 
             return $this->getProcessStepByName($this->getState());
         }
     }
-
-
 
     public function getInitialState()
     {

@@ -17,19 +17,17 @@ abstract class AbstractProcessStep implements ProcessStepInterface
 {
     protected $displayName;
     protected $name;
-
+    protected $state;
     protected $process;
 
     public function __construct(ProcessInterface $process)
     {
         $this->process = $process;
+        $this->state = 'initial';
     }
 
     public function complete() {
-
-        $this->process->completeProcessStep($this);
-
-        return $this->process->execute();
+       $this->state = 'completed';
     }
 
     public function getContext()
@@ -68,6 +66,12 @@ abstract class AbstractProcessStep implements ProcessStepInterface
     {
         return $this->displayName;
     }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
     public function setName($name)
     {
         $this->name = $name;
@@ -76,5 +80,10 @@ abstract class AbstractProcessStep implements ProcessStepInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    public function isCompleted()
+    {
+        return $this->getState() == 'completed';
     }
 }

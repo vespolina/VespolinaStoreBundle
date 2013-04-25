@@ -28,9 +28,9 @@ class IdentifyCustomer extends AbstractProcessStep
 
         // If we already have a customer, this step is considered to be complete
         if (null != $customer) {
-            $this->getContext()->set('customer', $customer);
 
-            return $this->complete();
+            $this->getContext()->set('customer', $customer);
+            $this->complete();
 
         } else {
 

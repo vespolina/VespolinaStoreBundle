@@ -9,16 +9,16 @@
 namespace Vespolina\StoreBundle\Event;
 
 use \Symfony\Component\HttpKernel\Event\KernelEvent;
-use \Vespolina\OrderBundle\Model\SalesOrder;
+use \Vespolina\Entity\Order\OrderInterface;
 
 class CheckoutEvent extends KernelEvent
 {
     /**
-     * @var \Vespolina\OrderBundle\Model\SalesOrder $order
+     * @var \Vespolina\Entity\Order\OrderInterface $order
      */
     protected $order;
 
-    public function __construct(SalesOrder $order)
+    public function __construct(OrderInterface $order)
     {
         $this->order = $order;
     }
