@@ -29,7 +29,6 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
     public function createProcess($name, $owner = null)
     {
         $baseClass = $this->getProcessClass($name);
-
         $process = new $baseClass($this->container);
         $process->setId(uniqid());
 
@@ -64,37 +63,42 @@ use Vespolina\StoreBundle\Process\ProcessManagerInterface;
 
     public function getActiveProcessByOwner($name, $owner)
     {
+        $process = null;
+
         if ($owner == $this->session->getId()) {
             $openProcesses = $this->session->get('processes', array());
             foreach ($openProcesses as $processName => $processContext) {
-                if ($processName === $name) {
-                    return $this->loadProcessFromContext($processName, $processContext);
+                if ($processName == $name) {
+                    $process = $this->loadProcessFromContext($processName, $processContext);
                 }
             }
         }
 
-        return null;
+        if (null != $process && !$process->isCompleted()) {
+
+            return $process;
+        }
+    }
+
+    public function updateProcess(ProcessInterface $process)
+    {
+         //For now we persist only the context into the session
+         $processes = $this->session->get('processes', array());
+
+         $processes[$process->getName()] = $process->getContext();
+         $this->session->set('processes', $processes);
+    }
+
+    public function getProcessClass($name) {
+
+         return $this->classMap[$name];
     }
 
     protected function getClassMap()
     {
         return array(
-            'checkout_b2c' =>  'Vespolina\StoreBundle\Process\Scenario\CheckoutProcessB2C'
+            'checkout_b2c' =>  'Vespolina\StoreBundle\ProcessScenario\Checkout\CheckoutProcessB2C'
         );
     }
 
-    public function updateProcess(ProcessInterface $process)
-    {
-        //For now we persist only the context into the session
-        $processes = $this->session->get('processes', array());
-
-        $processes[$process->getName()] = $process->getContext();
-        $this->session->set('processes', $processes);
-    }
-
-     public function getProcessClass($name) {
-
-         return $this->classMap[$name];
-
-     }
 }

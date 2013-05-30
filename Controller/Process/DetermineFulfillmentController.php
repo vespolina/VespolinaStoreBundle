@@ -63,7 +63,6 @@ class DetermineFulfillmentController extends AbstractProcessStepController
         foreach($cart->getItems() as $cartItem) {
             $products[] = $cartItem->getProduct();
         }
-
         $fulfillmentMethods = $fulfillmentMethodResolver->resolveFulfillmentMethods($products, null);
 
         foreach($fulfillmentMethods as $fulfillmentMethod) {

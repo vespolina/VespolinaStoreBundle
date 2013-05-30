@@ -26,7 +26,7 @@
     <tbody>
     {% for item in cart.items %}
     <tr>
-        <td>{{ item.quantity }}</td><td>{{ item.name }}</td><td>{{ item.totalPrice }}</td>
+        <td>{{ item.quantity }}</td><td>{{ item.name }}</td><td>{{ item.pricing.netValue }}</td>
     </tr>
     {% endfor %}
     </tbody>

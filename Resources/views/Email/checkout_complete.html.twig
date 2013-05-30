@@ -6,7 +6,7 @@
 <p>Below an summary of your order:</p>
 <ul style="list-style: none;">
     {% for item in order.getItems %}
-        <li>{{ item.orderedQuantity }}x {{ item.product.name }}</li>
+        <li>{{ item.quantity }}x {{ item.product.name }}</li>
     {% endfor %}
 </ul>
 <p>A total of {{ order.getItems|length }} items.</p>

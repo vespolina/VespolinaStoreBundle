@@ -1,0 +1,61 @@
+<?php
+/**
+ * (c) Vespolina Project http://www.vespolina-project.org
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Vespolina\StoreBundle\ProcessScenario\Setup;
+
+use Vespolina\StoreBundle\Process\AbstractProcess;
+use Vespolina\StoreBundle\Process\ProcessDefinition;
+use Vespolina\StoreBundle\Process\ProcessDefinitionInterface;
+
+/**
+ * This process models a setup of a V store using the command line
+ *
+ * @author Daniel Kucharski <daniel@xerias.be>
+ */
+class SetupCLIProcess extends AbstractProcess
+{
+
+    protected $currentStepIndex;
+
+    public function build() {
+
+        $definition = new ProcessDefinition();
+        $definition->addProcessStep('create_customer_taxonomy',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateCustomerTaxonomy');
+        $definition->addProcessStep('create_customers',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateCustomers');
+        $definition->addProcessStep('create_employees',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateEmployees');
+        $definition->addProcessStep('create_taxation',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateTaxation');
+        $definition->addProcessStep('create_product_taxonomy',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateProductTaxonomy');
+        $definition->addProcessStep('create_products',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateProducts');
+        $definition->addProcessStep('create_store',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateStore');
+
+        return $definition;
+    }
+
+    public function execute()
+    {
+        foreach ($this->definition->getSteps() as $stepDefinition) {
+
+            $processStep = new $stepDefinition['class']($this);
+            $processStep->init();
+            $processStep->execute($this->context);
+        }
+    }
+
+    public function getName()
+    {
+        return 'setup_cli_process';
+    }
+
+}

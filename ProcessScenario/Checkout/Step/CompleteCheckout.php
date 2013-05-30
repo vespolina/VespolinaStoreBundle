@@ -6,9 +6,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Step;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
-use Vespolina\Entity\OrderInterface;
+use Vespolina\Entity\Order\OrderInterface;
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 use Vespolina\StoreBundle\StoreEvents;
 use Vespolina\StoreBundle\Event\CheckoutEvent;
@@ -25,21 +25,19 @@ class CompleteCheckout extends AbstractProcessStep
         $this->setDisplayName('complete');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
         //Copy cart -> sales order
         $cart = $this->getContext()->get('cart');
 
-        $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina.sales_order_manager');
-        $salesOrder = $this->createSalesOrderFromCart($cart, $salesOrderManager);
+        $salesOrderManager = $this->getProcess()->getContainer()->get('vespolina.order_manager');
+        $salesOrder = $this->createOrderFromCart($cart, $salesOrderManager);
 
         if (null != $salesOrder) {
-            $salesOrderManager->updateSalesOrder($salesOrder, true);
+            $salesOrderManager->updateOrder($salesOrder, true);
 
             //Notify involved partners about the sales order.  Tod: Move into a dispatcher event listener
             $this->notifyPartners($salesOrder);
-
-
         }
         //Reset session cart
         $cart->clearItems();
@@ -61,7 +59,7 @@ class CompleteCheckout extends AbstractProcessStep
     }
 
 
-    protected function createSalesOrderFromCart($cart, $salesOrderManager) {
+    protected function createOrderFromCart($cart, $salesOrderManager) {
 
         $store = $this->getProcess()->getContainer()->get('vespolina_store.store_resolver')->getStore();
         $salesOrderManipulator = $this->getProcess()->getContainer()->get('vespolina_order.order_manipulator');
@@ -69,16 +67,16 @@ class CompleteCheckout extends AbstractProcessStep
         $context = $this->getContext();
 
         //Do a basic copy process from cart to a sales order
-        $salesOrder = $salesOrderManipulator->createSalesOrderFromCart($cart);
+        $salesOrder = $salesOrderManipulator->createOrderFromCart($cart);
 
-        $salesOrder->setCustomer($context->get('customer'));
-        $salesOrder->setSalesChannel($store->getSalesChannel());
+        $salesOrder->setOwner($context->get('customer'));
+        //$salesOrder->setSalesChannel($store->getSalesChannel());
 
+        /**
         $paymentAgreement = $salesOrder->getPaymentAgreement();
         $paymentMethodData = $context->get('payment_method');
         $paymentAgreement->setType($paymentMethodData['payment_method']);
         $paymentAgreement->setState('paid');
-
         $fulfillmentAgreement = $salesOrder->getFulfillmentAgreement();
         $fulfillmentMethodData = $context->get('fulfillment_method');
         $fulfillmentAgreement->setType($fulfillmentMethodData['fulfillment_method']);
@@ -86,6 +84,7 @@ class CompleteCheckout extends AbstractProcessStep
         $fulfillmentAgreement->setServiceLevel('express_delivery');
 
         $salesOrder->setFulfillmentAgreement($fulfillmentAgreement);
+         */
 
         return $salesOrder;
     }

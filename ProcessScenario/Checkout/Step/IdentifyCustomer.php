@@ -6,7 +6,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Step;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 
@@ -22,15 +22,15 @@ class IdentifyCustomer extends AbstractProcessStep
         $this->setDisplayName('identify customer');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
-        $currentStep = $this->getProcess()->getCurrentProcessStep();
         $customer = $this->getCustomer();
 
+        // If we already have a customer, this step is considered to be complete
         if (null != $customer) {
-            $this->getContext()->set('customer', $customer);
 
-            return $this->complete();
+            $this->getContext()->set('customer', $customer);
+            $this->complete();
 
         } else {
 
