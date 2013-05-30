@@ -9,7 +9,7 @@
 namespace Vespolina\StoreBundle\Event;
 
 use Symfony\Component\DependencyInjection\Container;
-use \Vespolina\OrderBundle\Model\SalesOrder;
+use \Vespolina\Entity\Order\OrderInterface;
 
 class ProcessListener
 {
@@ -24,10 +24,10 @@ class ProcessListener
     {
         $salesOrder = $event->getOrder();
 
-        if (!$salesOrder->getCustomer()->getPrimaryContact()->getEmail())
+        if (!$salesOrder->getOwner()->getPrimaryContact()->getEmail())
             return;
 
-        $customer = $salesOrder->getCustomer();
+        $customer = $salesOrder->getOwner();
 
         $mailer = $this->container->get('mailer');
         $translator = $this->container->get('translator');
@@ -45,7 +45,7 @@ class ProcessListener
         }
     }
 
-    protected function getMailBody(SalesOrder $salesOrder)
+    protected function getMailBody(OrderInterface $salesOrder)
     {
         // @TODO: Make template configurable
         $twig = $this->container->get('twig');

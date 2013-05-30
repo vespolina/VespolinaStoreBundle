@@ -3,15 +3,15 @@
         <li class="nav-header">
             Category
         </li>
-        {% for term in terms %}
-            {% if term.path == currentTaxonomyTerm %}
+        {% for node in nodes %}
+            {% if node.path == currentNode %}
                 {% set css = 'active'%}
             {% else %}
                 {% set css = ''%}
             {% endif %}
         <li class="{{ css }}">
-         <a href="{{ url('vespolina_taxonomy', { 'taxonomyTerm': term.path }) }}">
-            <div>{{ term.name }}</div>
+         <a href="{{ url('vespolina_taxonomy', { 'taxonomyTerm': node.id }) }}">
+            <div>{{ node.name }}</div>
         </a>
         </li>
         {% else %}

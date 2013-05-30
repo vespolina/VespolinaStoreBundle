@@ -6,7 +6,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Scenario;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\HttpKernelInterface;

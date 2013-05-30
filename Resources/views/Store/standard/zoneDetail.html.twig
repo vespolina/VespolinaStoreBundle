@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block product_taxonomy %}
-{% render "VespolinaStoreBundle:Taxonomy:listTerms" with {'currentTaxonomyTerm': taxonomyTerm,
+{% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
                                                           'taxonomyName': taxonomyName,
                                                           'renderType': taxonomyRenderType } %}
 {% endblock %}

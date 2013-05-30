@@ -7,17 +7,37 @@
  */
 namespace Vespolina\StoreBundle\Process;
 
+use Vespolina\StoreBundle\Process\ProcessDefinitionInterface;
+
 /**
+ * The process interface models a generic business process
+ *
  * @author Daniel Kucharski <daniel@xerias.be>
  */
 interface ProcessInterface
 {
 
+    /**
+     * Build the process definition (which and how steps need to be performed)
+     *
+     * @return ProcessDefinitionInterface $definition
+     */
+    function build();
+
+    /**
+     * Execute the process
+     */
     function execute();
-    function executeProcessStep($name);
-    function getInitialState();
-    function getClassMap();
-    function getCurrentProcessStep();
+
+    //function executeProcessStep($name);
+    //function getCurrentProcessStep();
     function getState();
+
+    /**
+     * Initialize the process
+     *
+     * @param bool $firstTime
+     * @return mixed
+     */
     function init($firstTime = false);
 }

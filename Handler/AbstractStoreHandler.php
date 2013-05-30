@@ -34,7 +34,7 @@ abstract class AbstractStoreHandler extends ContainerAware
     public function resolveStoreZone(array $context) {
 
         $storeZone = new StoreZone();
-        $storeZone->setTaxonomyName('product');
+        $storeZone->setTaxonomyName('products');
 
         return $storeZone;
     }

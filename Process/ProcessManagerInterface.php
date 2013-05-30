@@ -12,7 +12,21 @@ namespace Vespolina\StoreBundle\Process;
  */
 interface ProcessManagerInterface
 {
+    /**
+     * Creates a new process instance by the process definition name
+     *
+     * @param $name Process definition name
+     * @param null $owner Process owner (if relevant)
+     * @return ProcessInterface
+     */
+    function createProcess($name, $owner = null);
 
-
+    /**
+     * Find a process by the process id
+     *
+     * @param $processId the unique process id
+     * @return ProcessInterface
+     */
+    function findProcessById($processId);
 
 }

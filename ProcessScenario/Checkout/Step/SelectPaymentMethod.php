@@ -6,30 +6,30 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Vespolina\StoreBundle\Process\Step;
+namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
 use Vespolina\StoreBundle\Process\AbstractProcessStep;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class ReviewCheckout extends AbstractProcessStep
+class SelectPaymentMethod extends AbstractProcessStep
 {
     protected $process;
 
     public function init($firstTime = false)
     {
-        $this->setDisplayName('Review');
+        $this->setDisplayName('payment method');
     }
 
-    public function execute($context)
+    public function execute(&$context)
     {
 
         $customerIdentified = false;
 
         if (!$customerIdentified) {
 
-            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\ReviewCheckoutController');
+            $controller = $this->getController('Vespolina\StoreBundle\Controller\Process\SelectPaymentMethodController');
             $controller->setProcessStep($this);
             $controller->setContainer($this->process->getContainer());
 
@@ -41,10 +41,20 @@ class ReviewCheckout extends AbstractProcessStep
 
     }
 
+    public function executeProcessStep($name) {
+
+
+        $processStep = $this->getProcessStep($name);
+
+        if ($processStep) {
+
+            return $processStep->execute();
+        }
+    }
 
     public function getName()
     {
-        return 'review_checkout';
+        return 'select_payment_method';
     }
 
 
