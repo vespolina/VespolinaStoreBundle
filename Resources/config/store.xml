@@ -40,14 +40,6 @@
             </call>
         </service>
 
-        <service id="vespolina.process_manager" class="%vespolina.process_manager.class%">
-            <argument type="service" id="doctrine_mongodb.odm.default_document_manager" />
-            <argument type="service" id="session" />
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
-        </service>
-
         <!-- forms -->
         <service id="vespolina_store.login_customer_type" class="Vespolina\StoreBundle\Form\Type\CustomerLoginFormType">
             <tag name="form.type" alias="login_customer" />

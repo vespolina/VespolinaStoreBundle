@@ -3,7 +3,7 @@
         <div class="row">
         {% for term in terms %}
             <div class="span4">
-                <a href="{{ url('vespolina_taxonomy', { 'taxonomyTerm': term.path }) }}">
+                <a href="{{ url('v_taxonomy', { 'taxonomyTerm': term.path }) }}">
                     <div>{{ term.name }}</div>
                 </a>
             </div>

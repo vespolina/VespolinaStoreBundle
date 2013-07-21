@@ -23,7 +23,7 @@ class DailyDealStoreHandler extends AbstractStoreHandler
     public function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context)
     {
         $dm = $this->container->get('doctrine_mongodb.odm.default_document_manager');
-        $qb = $dm->createQueryBuilder('Application\Vespolina\ProductBundle\Document\Product');
+        $qb = $dm->createQueryBuilder('Application\Vespolina\CommerceBundle\Document\Product');
 
         return $qb->getQuery()->getSingleResult();
     }
