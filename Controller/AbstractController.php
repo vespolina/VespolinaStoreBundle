@@ -2,8 +2,6 @@
 
 namespace Vespolina\StoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Vespolina\CommerceBundle\Controller\AbstractController as BaseAbstractController;
 
 class AbstractController extends BaseAbstractController
@@ -35,5 +33,5 @@ class AbstractController extends BaseAbstractController
         }
 
         return $this->store;
-    }a
+    }
 }
