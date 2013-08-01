@@ -18,8 +18,9 @@ class TaxonomyController extends AbstractController
 
     protected function getTaxonomy($taxonomyName, $nodePath)
     {
-        $this->taxonomyManager = $this->container->get('vespolina_taxonomy.taxonomy_manager');
+        $this->taxonomyManager = $this->container->get('vespolina.taxonomy_manager');
+        $taxonomyNodes = $this->taxonomyManager->findAll();
 
-        return $this->taxonomyManager->findOneByTaxonomyNodeName($taxonomyName);
+        return $taxonomyNodes;
     }
 }

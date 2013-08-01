@@ -8,9 +8,10 @@
 {% endblock %}
 
 {% block product_taxonomy %}
-{% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
-                                                          'taxonomyName': taxonomyName,
-                                                          'renderType': taxonomyRenderType } %}
+    {% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
+    'taxonomyName': taxonomyName,
+    'renderType': taxonomyRenderType,
+    'routeName' : 'v_store_home'} %}
 {% endblock %}
 
 {% block content %}
