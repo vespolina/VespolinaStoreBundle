@@ -15,7 +15,7 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="vespolina_taxonomy" pattern="/search/{taxonomyTerm}">
+    <route id="v_taxonomy" pattern="/search/{taxonomyTerm}">
         <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
         <requirement key="_method">GET</requirement>
     </route>

@@ -12,7 +12,7 @@ class CreateCustomerTaxonomy extends AbstractSetupStep
 
     public function init($firstTime = false) {
 
-        $this->taxonomyManager = $this->getContainer()->get('vespolina_taxonomy.taxonomy_manager');
+        $this->taxonomyManager = $this->getContainer()->get('vespolina.taxonomy_manager');
     }
 
     public function execute(&$context) {
