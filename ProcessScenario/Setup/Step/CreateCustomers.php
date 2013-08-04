@@ -10,8 +10,8 @@ class CreateCustomers extends AbstractSetupStep
     public function execute(&$context) {
 
         $customerCount = 10;
-        $partnerManager = $this->getContainer()->get('vespolina_partner.partner_manager');
-        $partnerManipulator = $this->getContainer()->get('vespolina_partner.partner_manipulator');
+        $partnerManager = $this->getContainer()->get('vespolina_commerce.partner_manager');
+        $partnerManipulator = $this->getContainer()->get('vespolina_commerce.partner_manipulator');
         $userManager = $this->getContainer()->get('fos_user.user_manager');
 
         for ($i = 0; $i < $customerCount; $i++) {

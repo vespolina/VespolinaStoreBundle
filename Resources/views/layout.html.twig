@@ -4,11 +4,11 @@
     <div class="navbar">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
+                <a class="brand" href="{{ path('v_store_home') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>
                 <ul class="nav">
-                    <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
+                    <li class="active"><a href="{{ path('v_store_home') }}">Home</a></li>
                     {% for storeZone in store.storeZones %}
-                        <li><a href="{{ path('vespolina_store_store_zone', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>
+                        <li><a href="{{ path('v_store_zone_home', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>
                     {% endfor %}
 
                     <li><a href="#about">About</a></li>
@@ -19,7 +19,7 @@
                             {% render "VespolinaStoreBundle:Customer:navBar" %}
                         {% endblock %}
                         {% block cart_quick_inspection %}
-                            {% render "VespolinaOrderBundle:Cart/Partials:quickInspection" %}
+                            {% render "VespolinaCommerceBundle:Cart/Default:quickInspection" %}
                         {% endblock %}
                     {% endif %}
                 </ul>
@@ -29,14 +29,14 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span2">
-
+                {% block product_taxonomy %}{% endblock %}
             </div>
             <div class="span10">
                 <div id="content" class="box">
 
                     {% block navigation %}
                         <ul class="breadcrumb">
-                            <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+                            <li><a href="{{ path('v_store_home') }}">Home</a> <span class="divider">/</span></li>
                             <li class="active">You are here</li>
                         </ul>
                     {% endblock %}
