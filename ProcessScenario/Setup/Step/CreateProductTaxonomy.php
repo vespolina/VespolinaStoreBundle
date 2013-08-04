@@ -12,14 +12,13 @@ class CreateProductTaxonomy extends AbstractSetupStep
 
     public function init($firstTime = false) {
 
-        $this->taxonomyManager = $this->getContainer()->get('vespolina_taxonomy.taxonomy_manager');
+        $this->taxonomyManager = $this->getContainer()->get('vespolina.taxonomy_manager');
     }
 
     public function execute(&$context) {
 
-        $taxonomyManager = $this->getContainer()->get('vespolina_taxonomy.taxonomy_manager');
-        $productTaxonomyNode = $taxonomyManager->createTaxonomyNode('products');
-        $taxonomyManager->updateTaxonomyNode($productTaxonomyNode, true);
+        $productTaxonomyNode = $this->taxonomyManager->createTaxonomyNode('products');
+        $this->taxonomyManager->updateTaxonomyNode($productTaxonomyNode, true);
 
         $termFixtures = array();
 
@@ -52,14 +51,14 @@ class CreateProductTaxonomy extends AbstractSetupStep
         }
         foreach($termFixtures as $termFixture) {
 
-            $node = $taxonomyManager->createTaxonomyNode($termFixture['name'], $productTaxonomyNode);
-            $taxonomyManager->updateTaxonomyNode($node, true);
+            $node = $this->taxonomyManager->createTaxonomyNode($termFixture['name'], $productTaxonomyNode);
+            $this->taxonomyManager->updateTaxonomyNode($node, true);
 
             //($termFixture['path'], $termFixture['name']);
             //$aTaxonomy->addTerm($aTerm);
         }
 
-        $taxonomyManager->updateTaxonomyNode($productTaxonomyNode, true);
+        $this->taxonomyManager->updateTaxonomyNode($productTaxonomyNode, true);
         $context['productTaxonomy'] = $productTaxonomyNode;
 
         $this->getLogger()->addInfo('Product taxonomy has been setup with ' . count($termFixtures) . ' terms.' );

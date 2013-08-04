@@ -2,7 +2,7 @@
     "name": "vespolina/store-bundle",
     "type": "symfony-bundle",
     "description": "Vespolina Store bundle. Store management and more.",
-    "keywords": ["shop", "ecommerce", "store", "item"],
+    "keywords": ["vespolina", "shop", "ecommerce", "store"],
     "homepage": "http://vespolina-project.org",
     "license": "MIT",
     "authors": [
@@ -14,14 +14,8 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.1.*",
-        "vespolina/order-bundle": "dev-master",
-        "vespolina/partner-bundle": "dev-master",
-        "vespolina/product-bundle": "dev-master",
-        "vespolina/taxation-bundle": "dev-master"
-    },
-    "suggest": {
-        "symfony/doctrine-bundle": "*",
-        "symfony/mongodb-odm-bundle": "*"
+        "vespolina/core": "*",
+        "vespolina/taxation-bundle": "*"
     },
     "autoload": {
         "psr-0": { "Vespolina\\StoreBundle": "" }

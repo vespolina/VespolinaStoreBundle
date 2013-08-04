@@ -2,18 +2,19 @@
 
 {% block navigation %}
     <ul class="breadcrumb">
-        <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('v_store_home') }}">Home</a> <span class="divider">/</span></li>
         <li class="active">Products Overview</li>
     </ul>
 {% endblock %}
 
 {% block product_taxonomy %}
-{% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
-                                                          'taxonomyName': taxonomyName,
-                                                          'renderType': taxonomyRenderType } %}
+    {% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
+    'taxonomyName': taxonomyName,
+    'renderType': taxonomyRenderType,
+    'routeName' : 'v_store_home'} %}
 {% endblock %}
 
 {% block content %}
-    {% include "VespolinaProductBundle:Default:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
+    {% include "VespolinaCommerceBundle:Default:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
 {% endblock %}
 

@@ -11,9 +11,8 @@ namespace Vespolina\StoreBundle\Handler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
-use Vespolina\StoreBundle\Handler\StoreHandlerInterface;
+use Vespolina\Product\Specification\ProductSpecification;
 use Vespolina\StoreBundle\Model\StoreInterface;
-use Vespolina\StoreBundle\Model\StoreZoneInterface;
 use Vespolina\StoreBundle\Model\StoreZone;
 
 
@@ -42,9 +41,11 @@ abstract class AbstractStoreHandler extends ContainerAware
     protected function findProducts($taxonomyTerm)
     {
         $criteria = array();
-        //Todo: products query should come in through the product manager and work for both ORM and ODM
+
         $productManager = $this->container->get('vespolina.product_manager');
 
+        //Build the product specification object
+        $specification = new ProductSpecification();
 
         //Add product categorisation as criteria if different from '_all'
         if (null !== $taxonomyTerm && $taxonomyTerm != '_all') {
@@ -52,7 +53,7 @@ abstract class AbstractStoreHandler extends ContainerAware
             //$qb->field('terms.slug')->equals($taxonomyTerm);
         }
 
-        return $productManager->findProductsBy($criteria, array('asc'), 1, 10, true);
+        return $productManager->findAll($specification);//, $criteria, array('asc'), 1, 10, true);
     }
 
 

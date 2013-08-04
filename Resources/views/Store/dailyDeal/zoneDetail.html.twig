@@ -2,7 +2,7 @@
 
 {% block navigation %}
 <ul class="breadcrumb">
-    <li><a href="{{ path('homepage') }}">Home</a> <span class="divider">/</span></li>
+    <li><a href="{{ path('v_store_home') }}">Home</a> <span class="divider">/</span></li>
     <li class="active">Deal of the Day</li>
 </ul>
 {% endblock %}
@@ -14,18 +14,18 @@
 <div class="row">
     <div class="span8 offset2 v-daily-deal-product">
             <div class="thumbnail">
-                {% include 'VespolinaProductBundle:Default:_product_primary_media.html.twig' with {'product': product } %}
+                {% include 'VespolinaCommerceBundle:Default:_product_primary_media.html.twig' with {'product': product } %}
             </div>
             <div class="caption">
                 <span class="v-product-name">
-                    <a href="{{ path('vespolina_product_detail', { 'slug': product.slug }) }}">
+                    <a href="{{ path('v_product_detail', { 'slug': product.slug }) }}">
                         {{ product.name }}
                     </a>
                 </span>
                 <div>
-                    <a class="btn btn-large" href="{{ path('vespolina_cart_add_product', {'productId': product.id}) }}">I'll take one!</a>
+                    <a class="btn btn-large" href="{{ path('v_cart_add_product', {'productId': product.id}) }}">I'll take one!</a>
                         <span class="v-product-price">
-                            {% include 'VespolinaProductBundle:Default:_product_prices.html.twig' with {'product': product } %}
+                            {% include 'VespolinaCommerceBundle:Default:_product_prices.html.twig' with {'product': product } %}
                         </span>
                 </div>
             </div>

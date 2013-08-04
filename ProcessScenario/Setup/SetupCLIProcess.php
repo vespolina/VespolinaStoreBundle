@@ -8,9 +8,9 @@
 
 namespace Vespolina\StoreBundle\ProcessScenario\Setup;
 
-use Vespolina\StoreBundle\Process\AbstractProcess;
-use Vespolina\StoreBundle\Process\ProcessDefinition;
-use Vespolina\StoreBundle\Process\ProcessDefinitionInterface;
+use Vespolina\CommerceBundle\Process\AbstractProcess;
+use Vespolina\CommerceBundle\Process\ProcessDefinition;
+use Vespolina\CommerceBundle\Process\ProcessDefinitionInterface;
 
 /**
  * This process models a setup of a V store using the command line

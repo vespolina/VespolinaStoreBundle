@@ -2,10 +2,9 @@
 
 namespace Vespolina\StoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Vespolina\CommerceBundle\Controller\AbstractController as BaseAbstractController;
 
-class AbstractController extends ContainerAware
+class AbstractController extends BaseAbstractController
 {
     protected $store;
     protected $storeHandler;
@@ -34,15 +33,5 @@ class AbstractController extends ContainerAware
         }
 
         return $this->store;
-    }
-
-    public function render($view, array $parameters = array(), Response $response = null)
-    {
-       return ($this->container->get('templating')->renderResponse($view, $parameters, $response));
-    }
-
-    protected function getEngine()
-    {
-        return 'twig';
     }
 }
