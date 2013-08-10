@@ -28,13 +28,13 @@ abstract class StoreManager implements StoreManagerInterface {
 
     }
 
-    public function createStore($code, $displayName)
+    public function createStore($code, $name)
     {
 
         $baseClass = $this->storeClass;
         $store = new $baseClass;
         $store->setCode($code);
-        $store->setDisplayName($displayName);
+        $store->setName($name);
 
         return $store;
     }
@@ -46,15 +46,8 @@ abstract class StoreManager implements StoreManagerInterface {
         foreach ($this->storesConfigurations as $storeCode => $storeConfiguration) {
 
             $store = $this->createStore($storeCode, $storeConfiguration['display_name']);
-            $store->setDisplayName($storeConfiguration['display_name']);
-            $store->setDefaultProductView($storeConfiguration['default_product_view']);
-            $store->setLegalName($storeConfiguration['legal_name']);
-            $store->setOperationalMode($storeConfiguration['operational_mode']);
-            $store->setSalesChannel($storeConfiguration['sales_channel']);
-            $store->setTaxationEnabled($storeConfiguration['taxation_enabled']);
-
+            $store->getSettings()->setParameters($storeConfiguration);
             $this->stores[$storeCode] = $store;
-
         }
 
         return $this->stores;

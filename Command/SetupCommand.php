@@ -23,7 +23,7 @@ class SetupCommand extends ContainerAwareCommand
     {
         $this
             ->setName('vespolina:store-setup')
-            ->setDescription('Setup a Vespolina demo store')
+            ->setDescription('Setup a Vespolina store')
             ->addOption('country', null, InputOption::VALUE_OPTIONAL, 'Country', 'US')
             ->addOption('state', null, InputOption::VALUE_OPTIONAL, 'State', '')
             ->addOption('type', null, InputOption::VALUE_OPTIONAL, 'Store type', 'beverages')

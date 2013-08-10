@@ -38,7 +38,7 @@ abstract class AbstractStoreHandler extends ContainerAware
         return $storeZone;
     }
 
-    protected function findProducts($taxonomyTerm)
+    protected function findProducts($taxonomyNodeSlug)
     {
         $criteria = array();
 
@@ -48,9 +48,9 @@ abstract class AbstractStoreHandler extends ContainerAware
         $specification = new ProductSpecification();
 
         //Add product categorisation as criteria if different from '_all'
-        if (null !== $taxonomyTerm && $taxonomyTerm != '_all') {
+        if (null !== $taxonomyNodeSlug && $taxonomyNodeSlug != '_all') {
 
-            //$qb->field('terms.slug')->equals($taxonomyTerm);
+            $specification->withTaxonomyNodeName($taxonomyNodeSlug);
         }
 
         return $productManager->findAll($specification);//, $criteria, array('asc'), 1, 10, true);

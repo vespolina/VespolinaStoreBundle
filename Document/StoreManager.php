@@ -39,7 +39,13 @@ class StoreManager extends BaseStoreManager
      */
     public function findStoreByCode($code)
     {
-        return $this->storeRepo->findOneByCode($code);
+        $store =  $this->storeRepo->findOneByCode($code);
+
+        if (null != $store) {
+            $store->prepareLoad();
+        }
+
+        return $store;
     }
 
     /**
@@ -47,6 +53,8 @@ class StoreManager extends BaseStoreManager
      */
     public function updateStore(StoreInterface $store, $andFlush = true)
     {
+        $store->preparePersistence();
+
         $this->dm->persist($store);
         if ($andFlush) {
             $this->dm->flush();
