@@ -8,13 +8,13 @@
 {% endblock %}
 
 {% block product_taxonomy %}
-    {% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyTerm,
+    {% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyNodeSlug,
     'taxonomyName': taxonomyName,
     'renderType': taxonomyRenderType,
     'routeName' : 'v_store_home'} %}
 {% endblock %}
 
 {% block content %}
-    {% include "VespolinaCommerceBundle:Default:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyTerm, 'max': 3} %}
+    {% include "VespolinaCommerceBundle:Default:_product_list_" ~ productView|default('tiled') ~ ".html.twig" with {'taxonomyName': taxonomyName, 'taxonomyTerm': taxonomyNodeSlug, 'max': 3} %}
 {% endblock %}
 

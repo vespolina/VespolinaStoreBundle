@@ -69,9 +69,14 @@ abstract class Store extends WebStore implements StoreInterface
         return $this->settings;
     }
 
-    public function getSetting($name)
+    public function getSetting($name, $default  = '')
     {
-        return $this->name;
+        if ($this->settings->has($name)) {
+
+            return $this->settings->get($name);
+        }
+
+        return $default;
     }
 
     public function setSettings(Settings $settings)

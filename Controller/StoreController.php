@@ -18,9 +18,9 @@ class StoreController extends AbstractController
      * @param $taxonomyTerm
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function zoneDetailAction($taxonomyTerm)
+    public function zoneDetailAction($taxonomyNodeSlug)
     {
-        $context = array('taxonomyTerm' => $taxonomyTerm);
+        $context = array('taxonomyNodeSlug' => $taxonomyNodeSlug);
         $storeHandler = $this->getStoreHandler();
 
         //Resolve the store zone using the request

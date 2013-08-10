@@ -31,7 +31,8 @@ interface StoreInterface
      * Get an individual setting by it's name
      *
      * @param $name
+     * @param $default
      * @return mixed
      */
-    function getSetting($name);
+    function getSetting($name, $default = '');
 }

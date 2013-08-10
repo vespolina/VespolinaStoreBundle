@@ -6,17 +6,20 @@
 
     <route id="v_store_home" pattern="/">
         <default key="_controller">vespolina_store.store_controller:zoneDetailAction</default>
-        <default key="taxonomyTerm">_all</default>
+        <default key="taxonomyNodeSlug">_all</default>
         <requirement key="_method">GET</requirement>
     </route>
     <route id="v_store_zone_home" pattern="/zone">
         <default key="_controller">vespolina_store.store_controller:zoneDetailAction</default>
-        <default key="taxonomyTerm">_all</default>
+        <default key="taxonomyNodeSlug">_all</default>
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="v_taxonomy" pattern="/search/{taxonomyTerm}">
+    <route id="v_store_zone_products" pattern="/products/{taxonomyNodeSlug}/{page}">
         <default key="_controller">VespolinaStoreBundle:Store:zoneDetail</default>
+        <default key="taxonomyNodeSlug">_all</default>
+        <default key="page"></default>
+
         <requirement key="_method">GET</requirement>
     </route>
 
