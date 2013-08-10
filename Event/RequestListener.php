@@ -1,11 +1,11 @@
 <?php
+
 /**
- * (c) Vespolina Project http://www.vespolina-project.org
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-
 namespace Vespolina\StoreBundle\Event;
 
 use Symfony\Component\DependencyInjection\Container;
@@ -30,14 +30,15 @@ class RequestListener
         $storeResolver = $this->container->get('vespolina_store.store_resolver');
         $store = $storeResolver->resolveStore($event->getRequest());
 
+        /**
         $storeZoneManager = $this->container->get('vespolina_store.store_zone_manager');
         $storeZones = $storeZoneManager->findBy(array());
 
         foreach($storeZones as $storeZone) {
             $store->addStoreZone($storeZone);
-        }
+        }*/
 
-        //Register store as a global Twig variable
+        //Register thre current store as a global Twig variable
         $this->container->get('twig')->addGlobal('store', $store);
     }
 

@@ -27,11 +27,9 @@ abstract class StoreZoneManager implements StoreZoneManagerInterface {
 
     public function createStoreZone(StoreInterface $store, $name = 'default')
     {
-
         $baseClass = $this->storeZoneClass;
         $storeZone = new $baseClass;
-        $storeZone->setStore($store);
-        $storeZone->setDisplayName($name);
+        $storeZone->setStore($store, $name);
 
         return $storeZone;
     }

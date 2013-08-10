@@ -1,6 +1,7 @@
 <?php
+
 /**
- * (c) Vespolina Project http://www.vespolina-project.org
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -29,7 +30,7 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
     public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
     {
 
-        $defaults = array('productView' => $this->getStore()->getDefaultProductView(),
+        $defaults = array('productView' => $this->getStore()->getSettings()->get('default_product_view'),
                           'taxonomyName' => $storeZone->getTaxonomyName(),
                           'taxonomyRenderType' => 'BelowEachOther',
                           'productsPerPage' => 20);

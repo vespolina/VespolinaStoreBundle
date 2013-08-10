@@ -5,18 +5,8 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="Vespolina\StoreBundle\Document\BaseStore">
-
         <field name="code" fieldName="code" type="string" id="true"/>
-        <field name="displayName" fieldName="displayName" type="string"/>
-        <field name="legalName" fieldName="legalName" type="string"/>
-        <field name="operationalMode" fieldName="operationalMode" type="string"/>
-        <field name="defaultCountry" fieldName="defaultCountry" type="string" />
-        <field name="defaultCurrency" fieldName="defaultCurrency" type="string" />
-        <field name="defaultProductView" fieldName="defaultProductView" type="string" />
-        <field name="defaultState" fieldName="defaultState" type="string" />
-        <field name="salesChannel" fieldName="salesChannel" type="string" />
-        <field name="taxationEnabled" fieldName="taxationEnabled" type="boolean" />
-
+        <field name="name" fieldName="name" type="string"/>
+        <field name="parameters" fieldName="parameters" type="hash"/>
     </mapped-superclass>
-
 </doctrine-mongo-mapping>
