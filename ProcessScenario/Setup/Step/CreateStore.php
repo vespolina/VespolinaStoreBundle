@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Vespolina\StoreBundle\ProcessScenario\Setup\Step;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,15 +26,17 @@ class CreateStore extends AbstractSetupStep
 
         foreach($stores as $store) {
 
-            if (!$store->getDefaultCurrency()) {
+            $storeSettings = $store->getSettings();
+
+            if (!$storeSettings->has('defaultCurrency')) {
                 //Default currency
                 switch ($context['country']) {
                     case 'US': $currency = 'USD'; break;
                     default: $currency = 'EUR'; break;
                 }
-                $store->setDefaultCurrency($currency);
-                $store->setDefaultCountry($context['country']);
-                $store->setDefaultState($context['state']);
+                $storeSettings['currency'] = $currency;
+                $storeSettings['country'] = $context['country'];
+                $storeSettings['state'] = $context['state'];
             }
 
             $storeManager->updateStore($store);

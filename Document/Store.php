@@ -7,6 +7,8 @@
  */
 namespace Vespolina\StoreBundle\Document;
 
+use Vespolina\StoreBundle\Model\Settings;
+
 use Vespolina\StoreBundle\Document\BaseStore;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
@@ -14,4 +16,14 @@ use Vespolina\StoreBundle\Document\BaseStore;
 class Store extends BaseStore
 {
 
+    public function preparePersistence()
+    {
+        $this->parameters = $this->settings->getParameters();
+    }
+
+    public function prepareLoad()
+    {
+        if (null == $this->settings) $this->settings = new Settings();
+        $this->settings->setParameters($this->parameters);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * (c) Vespolina Project http://www.vespolina-project.org
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -10,6 +11,7 @@ namespace Vespolina\StoreBundle\Handler;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
 use Vespolina\StoreBundle\Handler\AbstractStoreHandler;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
@@ -23,13 +25,13 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
 
     public function getZoneProducts(StoreZoneInterface $storeZone, $query = true, array $context)
     {
-        return $this->findProducts($context['taxonomyTerm']);
+        return $this->findProducts($context['taxonomyNodeSlug']);
     }
 
     public function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array())
     {
 
-        $defaults = array('productView' => $this->getStore()->getDefaultProductView(),
+        $defaults = array('productView' => $this->getStore()->getSetting('default_product_view'),
                           'taxonomyName' => $storeZone->getTaxonomyName(),
                           'taxonomyRenderType' => 'BelowEachOther',
                           'productsPerPage' => 20);
@@ -39,6 +41,15 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
         $productsPager = $this->getZoneProducts($storeZone, true, $context);
         $context['productsPager'] = $productsPager;
 
+        $pricingManager = $this->container->get('vespolina.pricing_manager');
+
+        /**
+        foreach($productsPager as $product) {
+
+            $adjustedPricingSet = $pricingManager->process($product->getPricing());
+            $test = $adjustedPricingSet['MSRPDiscountRate']->getAmount();
+
+        } */
         /**
         $context['productsPagination'] =  $this->container->get('knp_paginator')->paginate(
         $productsQuery,

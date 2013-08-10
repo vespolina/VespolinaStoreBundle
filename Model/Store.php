@@ -1,36 +1,34 @@
 <?php
+
 /**
- * (c) Vespolina Project http://www.vespolina-project.org
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
 namespace Vespolina\StoreBundle\Model;
+
 use Doctrine\Common\Collections\ArrayCollection;
+use Vespolina\Entity\Channel\WebStore;
 use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-abstract class Store implements StoreInterface
+abstract class Store extends WebStore implements StoreInterface
 {
     protected $id;
     protected $code;
-    protected $displayName;
-    protected $defaultCountry;
-    protected $defaultState;
-    protected $defaultCurrency;
-    protected $defaultProductView;
-    protected $legalName;
-    protected $operationalMode;
-    protected $salesChannel;
+    protected $name;
+    protected $settings;
     protected $storeZones;
-    protected $taxationEnabled;
+    protected $parameters;
 
-     public function __construct()
+    public function __construct()
     {
+        $this->settings = new Settings();
     }
 
     public function getId()
@@ -43,7 +41,12 @@ abstract class Store implements StoreInterface
      */
     public function getName()
     {
-        return $this->getDisplayName();
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+
     }
 
     public function setId($id)
@@ -61,71 +64,24 @@ abstract class Store implements StoreInterface
         return $this->code;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getSalesChannel()
+    public function getSettings()
     {
-        return $this->salesChannel;
+        return $this->settings;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setSalesChannel($salesChannel)
+    public function getSetting($name, $default  = '')
     {
+        if ($this->settings->has($name)) {
 
-        $this->salesChannel = $salesChannel;
+            return $this->settings->get($name);
+        }
+
+        return $default;
     }
 
-    public function setDefaultCurrency($defaultCurrency)
+    public function setSettings(Settings $settings)
     {
-        $this->defaultCurrency = $defaultCurrency;
-    }
-
-    public function getDefaultCurrency()
-    {
-        return $this->defaultCurrency;
-    }
-
-    public function setDisplayName($displayName)
-    {
-        $this->displayName = $displayName;
-    }
-
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    public function setLegalName($legalName)
-    {
-        $this->legalName = $legalName;
-    }
-
-    public function getLegalName()
-    {
-        return $this->legalName;
-    }
-
-    public function setOperationalMode($operationalMode)
-    {
-        $this->operationalMode = $operationalMode;
-    }
-
-    public function getOperationalMode()
-    {
-        return $this->operationalMode;
-    }
-
-    public function setDefaultProductView($defaultProductView)
-    {
-        $this->defaultProductView = $defaultProductView;
-    }
-
-    public function getDefaultProductView()
-    {
-        return $this->defaultProductView;
+        $this->settings = $settings;
     }
 
     public function addStoreZone(StoreZoneInterface $storeZone)
@@ -145,36 +101,4 @@ abstract class Store implements StoreInterface
     {
         return $this->storeZones;
     }
-
-    public function setDefaultCountry($defaultCountry)
-    {
-        $this->defaultCountry = $defaultCountry;
-    }
-
-    public function getDefaultCountry()
-    {
-        return $this->defaultCountry;
-    }
-
-    public function setDefaultState($defaultState)
-    {
-        $this->defaultState = $defaultState;
-    }
-
-    public function getDefaultState()
-    {
-        return $this->defaultState;
-    }
-
-    public function setTaxationEnabled($taxationEnabled)
-    {
-        $this->taxationEnabled = $taxationEnabled;
-    }
-
-    public function getTaxationEnabled()
-    {
-        return $this->taxationEnabled;
-    }
-
-
 }
