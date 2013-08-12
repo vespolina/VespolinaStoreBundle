@@ -13,5 +13,21 @@ namespace Vespolina\StoreBundle\Model;
 interface StoreManagerInterface
 {
 
+    /**
+     * Creates a store
+     *
+     * @param $code
+     * @param $name
+     *
+     * @return StoreInterface
+     */
+    public function createStore($code, $name);
 
+    /**
+     * Updates a store, and optionally flush the persistence
+     *
+     * @param StoreInterface    $store      The store to update
+     * @param bool              $andFlush   Also flush the persistence layer
+     */
+    public function updateStore(StoreInterface $store, $andFlush = true);
 }
