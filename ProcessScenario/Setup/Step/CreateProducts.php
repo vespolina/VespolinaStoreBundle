@@ -9,6 +9,7 @@
 
 namespace Vespolina\StoreBundle\ProcessScenario\Setup\Step;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
 use Vespolina\Entity\Pricing\PricingSet;
@@ -24,21 +25,29 @@ class CreateProducts extends AbstractSetupStep
         $defaultTaxRate = $context['taxSchema']['defaultTaxRate'];
         $productCount = 10;
 
-        /* @var $productTaxonomy Vespolina\Entity\Taxonomy\TaxonomyNodeInterface */
-        $productTaxonomy = $context['productTaxonomy'];
-        $productTaxonomyNodes = $productTaxonomy->getChildren();
+        $productTaxonomy = null;
+        $productTaxonomyNodes = new ArrayCollection();
+        if (isset($context['productTaxonomy'])) {
+            /* @var $productTaxonomy \Vespolina\Entity\Taxonomy\TaxonomyNodeInterface */
+            $productTaxonomy = $context['productTaxonomy'];
+            $productTaxonomyNodes = $productTaxonomy->getChildren();
+        }
 
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
         for($i = 1; $i < $productCount; $i++) {
 
-            //Pick a random taxonomy node (= product category) to which we'll be attaching this product
-            $index = rand(0, $productTaxonomyNodes->count() - 1);
-            $aRandomTaxonomyNode = $productTaxonomyNodes->get($index);
+            if ($productTaxonomyNodes->count()) {
+                //Pick a random taxonomy node (= product category) to which we'll be attaching this product
+                $index = rand(0, $productTaxonomyNodes->count() - 1);
+                $aRandomTaxonomyNode = $productTaxonomyNodes->get($index);
 
-            //Determine the product name from the taxonomy name (eg. category "beer" -> product name is "beer 1"
-            $singularNodeName = substr($aRandomTaxonomyNode->getName(), 0, strlen($aRandomTaxonomyNode->getName())-1);
-            $productName = ucfirst($singularNodeName) . ' ' . $i;
+                //Determine the product name from the taxonomy name (eg. category "beer" -> product name is "beer 1"
+                $singularNodeName = substr($aRandomTaxonomyNode->getName(), 0, strlen($aRandomTaxonomyNode->getName())-1);
+                $productName = ucfirst($singularNodeName) . ' ' . $i;
+            } else {
+                $singularNodeName = $productName = 'Foo ' . $i;
+            }
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
             $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
@@ -81,7 +90,7 @@ class CreateProducts extends AbstractSetupStep
                 $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'];
             }
 
-            $pricingSet = $this->getPricingManager()->createPricingSet('default_product', $pricingValues);
+            $pricingSet = $this->getPricingManager()->createPricing($pricingValues);
             $aProduct->setPricing($pricingSet);
 
             //TODO: fix taxonomy
