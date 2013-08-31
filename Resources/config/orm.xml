@@ -16,12 +16,12 @@
             <argument>%vespolina_store.model.store.class%</argument>
             <argument>%vespolina_store.stores_configurations%</argument>
         </service>
-        <service id="vespolina_store_manager" alias="vespolina_store.store_manager" />
+        <service id="vespolina.store_manager" alias="vespolina_store.store_manager" />
         <service id="vespolina_store.store_zone_manager" class="%vespolina_store.store_zone_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%vespolina_store.model.store_zone.class%</argument>
         </service>
-        <service id="vespolina_store_zone_manager" alias="vespolina_store.store_zone_manager" />
+        <service id="vespolina.store_zone_manager" alias="vespolina_store.store_zone_manager" />
 
         <service id="vespolina_store.listener.request" class="Vespolina\StoreBundle\Event\RequestListener">
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />

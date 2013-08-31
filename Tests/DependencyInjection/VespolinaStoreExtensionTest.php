@@ -10,10 +10,11 @@ class VespolinaStoreExtensionTest extends \PHPUnit_Framework_TestCase
     protected $configuration;
     private $definitions = array(
         'vespolina_store.listener.request',
-        'vespolina_store.listener.request',
-        'vespolina_store_manager',
+        'vespolina_store.listener.process',
+        'vespolina_store.store_manager',
+        'vespolina.store_manager',
         'vespolina_store.store_zone_manager',
-        'vespolina_store_zone_manager'
+        'vespolina.store_zone_manager'
     );
     public function testStoreLoadConfigPass()
     {
