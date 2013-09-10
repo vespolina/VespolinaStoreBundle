@@ -45,12 +45,12 @@
     </nav>
 
     <div class="container">
-        <div class="row-fluid">
-            <div class="span2">
+        <div class="row">
+            <div class="col-md-2">
                 {% block product_taxonomy %}{% endblock %}
             </div>
-            <div class="span10">
-                <div id="content" class="box">
+            <div class="col-md-10">
+                <div id="content" class="panel">
 
                     {% block navigation %}
                         <ol class="breadcrumb">
@@ -65,9 +65,10 @@
                 </div>
             </div>
         </div>
-        <div id="footer" class="box v-footer">
-            <p class="f-right">Copyright &copy; 2011 - 2013 <span class="v-store-display-name">{{ store.settings.display_name }}</span> , All rights preserved. - Powered by <a href="http://www.vespolina.org">Vespolina</a></p>
-        </div>
-    </div>
+
+        <footer>
+            <p>Copyright &copy; 2011 - 2013 <span class="v-store-display-name">{{ store.settings.display_name }}</span> , All rights preserved. - Powered by <a href="http://www.vespolina.org">Vespolina</a></p>
+        </footer>
+    </div><!--/.container-->
 {% endblock %}
 
