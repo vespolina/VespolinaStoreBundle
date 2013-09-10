@@ -4,7 +4,7 @@
     </div>
     <div class="list-group">
         {% for node in nodes %}
-            {% if node.path == currentNode %}
+            {% if node.slug == currentNode %}
                 {% set css = 'active'%}
             {% else %}
                 {% set css = ''%}
