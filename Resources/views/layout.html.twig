@@ -1,32 +1,6 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-    {#<div class="navbar">#}
-        {#<div class="navbar-inner">#}
-            {#<div class="container">#}
-                {#<a class="brand" href="{{ path('v_store_home') }}"><img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/> {{ store ? store.name : "Undefined store" }}</a>#}
-                {#<ul class="nav">#}
-                    {#<li class="active"><a href="{{ path('v_store_home') }}">Home</a></li>#}
-                    {#{% for storeZone in store.storeZones %}#}
-                        {#<li><a href="{{ path('v_store_zone_home', { 'slug': storeZone.displayName }) }}">{{storeZone.displayName}}</a></li>#}
-                    {#{% endfor %}#}
-
-                    {#<li><a href="#about">About</a></li>#}
-                {#</ul>#}
-                {#<ul class="nav secondary-nav pull-right">#}
-                    {#{% if not is_granted('ROLE_ADMIN') %}#}
-                        {#{% block customer_info %}#}
-                            {#{% render "VespolinaStoreBundle:Customer:navBar" %}#}
-                        {#{% endblock %}#}
-                        {#{% block cart_quick_inspection %}#}
-                            {#{% render "VespolinaCommerceBundle:Cart/Default:quickInspection" %}#}
-                        {#{% endblock %}#}
-                    {#{% endif %}#}
-                {#</ul>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
-
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -37,8 +11,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ path('v_store_home') }}">
-                <img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png')}}" alt="Vespolina"/>
-                {{ store ? store.name : "Undefined store" }}
+                <img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-nav.png') }}" alt="Vespolina" />
+                {{ store.name ? store.name : "Undefined store" }}
             </a>
         </div>
 
@@ -62,16 +36,13 @@
                     {% block customer_info %}
                         {% render "VespolinaStoreBundle:Customer:navBar" %}
                     {% endblock %}
-                    {#{% block cart_quick_inspection %}#}
-                        {#{% render "VespolinaCommerceBundle:Cart/Default:quickInspection" %}#}
-                    {#{% endblock %}#}
+                    {% block cart_quick_inspection %}
+                        {% render "VespolinaCommerceBundle:Cart/Default:quickInspection" %}
+                    {% endblock %}
                 {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
-
-
-
 
     <div class="container">
         <div class="row-fluid">
@@ -82,10 +53,10 @@
                 <div id="content" class="box">
 
                     {% block navigation %}
-                        <ul class="breadcrumb">
-                            <li><a href="{{ path('v_store_home') }}">Home</a> <span class="divider">/</span></li>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ path('v_store_home') }}">Home</a></li>
                             <li class="active">You are here</li>
-                        </ul>
+                        </ol>
                     {% endblock %}
 
                     {% block content %}
