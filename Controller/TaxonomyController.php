@@ -8,19 +8,17 @@ class TaxonomyController extends AbstractController
 {
     protected $taxonomyManager;
 
-    public function listNodesAction($taxonomyName = 'products', $nodePath = '')
+    public function listNodesAction($taxonomyName = 'products', $currentTaxonomyNode = null)
     {
-        $taxonomyNodes = $this->getTaxonomy($taxonomyName, $nodePath);
-        //$taxonomyNodes = $rootTaxonomyNode->getChildren();
-        $currentTaxonomyNode = null;
+        $taxonomyNodes = $this->getTaxonomy($taxonomyName);
 
         return $this->render('VespolinaStoreBundle:Taxonomy:listNodesFlat.html.twig', array('nodes' => $taxonomyNodes, 'currentNode' => $currentTaxonomyNode));
     }
 
-    protected function getTaxonomy($taxonomyName, $nodePath)
+    protected function getTaxonomy($taxonomyName)
     {
         $this->taxonomyManager = $this->container->get('vespolina.taxonomy_manager');
-        $nodeSpecification = new TaxonomyNodeSpecification('products');
+        $nodeSpecification = new TaxonomyNodeSpecification($taxonomyName);
         //$nodeSpecification->depth(1);
 
         $taxonomyNodes = $this->taxonomyManager->matchAll($nodeSpecification);

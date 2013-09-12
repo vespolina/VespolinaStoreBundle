@@ -1,21 +1,17 @@
-<div class = "v-taxonomy-below-eachother">
-    <ul class="nav nav-list">
-        <li class="nav-header">
-            Category
-        </li>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Category</h3>
+    </div>
+    <div class="list-group">
         {% for node in nodes %}
-            {% if node.path == currentNode %}
+            {% if node.slug == currentNode %}
                 {% set css = 'active'%}
             {% else %}
                 {% set css = ''%}
             {% endif %}
-        <li class="{{ css }}">
-         <a href="{{ url('v_store_zone_products', { 'taxonomyNodeSlug': node.slug }) }}">
-            <div>{{ node.name }}</div>
+        <a class="list-group-item {{ css }}" href="{{ url('v_store_zone_products', { 'taxonomyNodeSlug': node.slug }) }}">
+            {{ node.name }}
         </a>
-        </li>
-        {% else %}
-
         {% endfor %}
-    </ul>
+    </div>
 </div>
