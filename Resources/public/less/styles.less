@@ -2,9 +2,11 @@
 @import "bootstrap.less";
 
 footer {
-  padding: 30px;
-  color: @gray-light;
+  padding-top: 100px;
+  //color: @gray-light;
   text-align: center;
+  min-height: 150px;
+  background-color: @gray-lighter;
 }
 
 img {
@@ -30,6 +32,20 @@ img {
     }
     &.box-shadow {
       .box-shadow(0px 0px 15px 3px @gray-light);
+    }
+  }
+}
+
+.v-product-detail {
+  .v-product-primary-media-item {
+    margin-bottom: 20px;
+  }
+  .nav.nav-tabs {
+    margin-bottom: 20px;
+  }
+  .v-complimentary-products {
+    li {
+      margin-bottom: 20px;
     }
   }
 }

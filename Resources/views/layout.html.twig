@@ -47,7 +47,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-2">
-                {% block product_taxonomy %}{% endblock %}
+                {% block product_taxonomy %}{% endblock product_taxonomy %}
             </div>
 
             <div class="col-md-10">
@@ -57,11 +57,11 @@
                             <li><a href="{{ path('v_store_home') }}">Home</a></li>
                             <li class="active">You are here</li>
                         </ol>
-                    {% endblock %}
+                    {% endblock navigation %}
 
                     {% block content %}
                         No content.
-                    {% endblock %}
+                    {% endblock content %}
                 </div>
             </div>
         </div>
