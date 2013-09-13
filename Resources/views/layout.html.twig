@@ -12,7 +12,7 @@
             </button>
             <a class="navbar-brand" href="{{ path('v_store_home') }}">
                 <img src="{{ asset('bundles/vespolinastore/images/vespolina-logo-new.png') }}" width="18px" alt="Vespolina" />
-                {{ store.name ? store.name : "Undefined store" }}
+                {{ store.settings.display_name ? store.settings.display_name : "Undefined store" }}
             </a>
         </div>
 

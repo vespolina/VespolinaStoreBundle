@@ -26,11 +26,40 @@ img {
     .caption {
       border-top: 1px solid darken(@gray-lighter, 10%);
       background-color: @gray-lighter;
-      .v-product-price {
+
+      .v-product-name {
+        float: left;
+        a { font-size: 1.2em; }
       }
-      .v-product-description {
+      .v-product-prices {
+        float: right;
+
+          .v-product-unit-price-total {
+            border-radius: 2px; background-color: @purple; color: #ffffff; font-size: 1.1em; padding: 2px 4px 2px 4px;}
+          .v-product-unit-price-msrp-total {
+            color: #aaaaaa; font-size: 0.9em ; float:right; padding-right: 0.2em; padding-top: 0.2em; text-decoration:line-through}
+      }
+
+      .v-product-box {
         display: none;
+
+        .v-product-box-prices {
+          float: right;
+          .v-product-msrp-discount-rate{ color: @purple;  font-size: 0.9em; text-decoration: none; padding-left: 0.5em}
+        }
+        .v-product-box-quick-details {
+          color: @gray-darker; font-size: 0.9em; padding: 0.2em; margin-top: 0.5em; width: 18em;
+        }
+        .v-product-box-actions {
+          font-size: 0.9em;
+          margin-top: 0.2em;
+        }
       }
+
+      .v-product-brief-description {
+        font-size: 0.9em; padding: 0.2em; clear: both; color: @gray-darker; width: 18em;
+      }
+
     }
     &.box-shadow {
       .box-shadow(0px 0px 15px 3px @gray-light);
