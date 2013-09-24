@@ -45,6 +45,20 @@
     </nav>
 
     <div class="container">
+        {% block flashes %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for type, flashMessages in app.session.flashbag.all() %}
+                        {% for flashMessage in flashMessages %}
+                            <div class="alert alert-{{ type }}">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>{{ type|capitalize }}!</strong> {{ flashMessage }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endblock flashes %}
         <div class="row">
             <div class="col-md-2">
                 {% block product_taxonomy %}{% endblock product_taxonomy %}
