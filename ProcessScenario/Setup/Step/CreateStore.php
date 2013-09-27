@@ -15,8 +15,8 @@ use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
 
 class CreateStore extends AbstractSetupStep
 {
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $storeManager = $this->getContainer()->get('vespolina_store.store_manager');
         $storeZoneManager = $this->getContainer()->get('vespolina_store.store_zone_manager');
         $storeZones = array();
@@ -24,7 +24,7 @@ class CreateStore extends AbstractSetupStep
         //Load stores configurations (for now get that from vespolina.yml)
         $stores = $storeManager->loadStoresConfigurations();
 
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
 
             $storeSettings = $store->getSettings();
 
@@ -62,8 +62,8 @@ class CreateStore extends AbstractSetupStep
 
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_store';
     }
 }

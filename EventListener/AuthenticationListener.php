@@ -16,14 +16,14 @@ use Vespolina\CommerceBundle\Process\ProcessManagerInterface;
 
 class AuthenticationListener
 {
-
     protected $partnerManager;
     protected $session;
 
-    public function __construct( SessionInterface $session,
-                                 PartnerManagerInterface $partnerManager = null,
-                                 ProcessManagerInterface $processManager) {
-
+    public function __construct(
+        SessionInterface $session,
+        PartnerManagerInterface $partnerManager = null,
+        ProcessManagerInterface $processManager
+    ) {
         $this->partnerManager = $partnerManager;
         $this->processManager = $processManager;
         $this->session = $session;
@@ -31,13 +31,10 @@ class AuthenticationListener
 
     /**
      * Called when an user is authenticated
-     *
      */
     function onAuthenticationSuccess(AuthenticationEvent $event)
     {
-
         $user = $event->getAuthenticationToken()->getUser();
         $this->session->set('customer', $user->getPartner());
-
     }
 }

@@ -1,10 +1,12 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -30,6 +32,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
             ->end();
         $this->addStoresSection($rootNode);
+
         return $treeBuilder;
     }
 
@@ -50,6 +53,5 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->end()
         ->end();
-
     }
 }

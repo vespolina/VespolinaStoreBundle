@@ -8,8 +8,8 @@ use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
 
 class CreateTaxation extends AbstractSetupStep
 {
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $defaultTaxRate = 0;
         $fallbackTaxRate = 0;
         $taxationManager = $this->getContainer()->get('vespolina.taxation_manager');
@@ -50,8 +50,8 @@ class CreateTaxation extends AbstractSetupStep
 
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_taxation';
     }
 }

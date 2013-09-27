@@ -9,8 +9,8 @@
 
 namespace Vespolina\StoreBundle\Event;
 
-use \Symfony\Component\HttpKernel\Event\KernelEvent;
-use \Vespolina\Entity\Order\OrderInterface;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Vespolina\Entity\Order\OrderInterface;
 
 class CheckoutEvent extends KernelEvent
 {

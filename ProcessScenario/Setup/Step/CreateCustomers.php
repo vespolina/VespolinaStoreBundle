@@ -42,8 +42,8 @@ class CreateCustomers extends AbstractSetupStep
         $this->getLogger()->addInfo('Created ' . $customerCount . ' customers.' );
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_customers';
     }
 }

@@ -6,10 +6,11 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\Event;
 
 use Symfony\Component\DependencyInjection\Container;
-use \Vespolina\Entity\Order\OrderInterface;
+use Vespolina\Entity\Order\OrderInterface;
 
 class ProcessListener
 {
@@ -24,8 +25,9 @@ class ProcessListener
     {
         $salesOrder = $event->getOrder();
 
-        if (!$salesOrder->getOwner()->getPrimaryContact()->getEmail())
+        if (!$salesOrder->getOwner()->getPrimaryContact()->getEmail()) {
             return;
+        }
 
         $customer = $salesOrder->getOwner();
 
@@ -49,7 +51,7 @@ class ProcessListener
     {
         // @TODO: Make template configurable
         $twig = $this->container->get('twig');
+
         return $twig->render('VespolinaStoreBundle:Email:checkout_complete.html.twig', array('order' => $salesOrder));
     }
-
 }

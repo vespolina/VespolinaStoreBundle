@@ -1,18 +1,20 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\Entity;
 
 use Symfony\Component\DependencyInjection\Container;
 use Doctrine\ORM\EntityManager;
 
-use Vespolina\StoreBundle\Entity\Store;
 use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreManager as BaseStoreManager;
+
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  * @author Richard Shank <develop@zestic.com>

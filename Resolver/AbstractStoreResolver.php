@@ -9,7 +9,7 @@
 
 namespace Vespolina\StoreBundle\Resolver;
 
-use \Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Vespolina\StoreBundle\Model\StoreManagerInterface;
 use Vespolina\StoreBundle\Resolver\StoreResolverInterface;
 
@@ -18,7 +18,6 @@ use Vespolina\StoreBundle\Resolver\StoreResolverInterface;
  */
 abstract class AbstractStoreResolver implements StoreResolverInterface
 {
-
     protected $storeManager;
     protected $store;
 

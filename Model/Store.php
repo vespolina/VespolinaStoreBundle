@@ -11,8 +11,6 @@ namespace Vespolina\StoreBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Vespolina\Entity\Channel\WebStore;
-use Vespolina\StoreBundle\Model\StoreInterface;
-use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>

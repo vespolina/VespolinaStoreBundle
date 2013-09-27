@@ -17,7 +17,6 @@ use \Symfony\Component\HttpFoundation\Request;
  */
 interface StoreResolverInterface
 {
-
     /**
      * Get the resolved store
      *
@@ -34,5 +33,4 @@ interface StoreResolverInterface
      * @return \Vespolina\StoreBundle\Model\StoreInterface
      */
     function resolveStore(Request $request);
-
 }

@@ -17,13 +17,13 @@ class CreateCustomerTaxonomy extends AbstractSetupStep
 {
     protected $taxonomyManager;
 
-    public function init($firstTime = false) {
-
+    public function init($firstTime = false)
+    {
         $this->taxonomyManager = $this->getContainer()->get('vespolina.taxonomy_manager');
     }
 
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $customerTaxonomyNode = $this->taxonomyManager->createTaxonomyNode('customers');
         $termFixtures = array();
 
@@ -32,19 +32,19 @@ class CreateCustomerTaxonomy extends AbstractSetupStep
         $termFixtures[] = array('path' => 'gold', 'name' => 'Gold');
 
         foreach($termFixtures as $termFixture) {
-
             $node = $this->taxonomyManager->createTaxonomyNode($termFixture['name']);
             $node->setParent($customerTaxonomyNode);
 
         }
+
         $this->taxonomyManager->updateTaxonomyNode($customerTaxonomyNode, true);
         $this->getLogger()->addInfo('Customer taxonomy has been setup with ' . count($termFixtures) . ' terms.' );
 
         $context['customerTaxonomy'] = $customerTaxonomyNode;
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_customer_taxonomy';
     }
 }

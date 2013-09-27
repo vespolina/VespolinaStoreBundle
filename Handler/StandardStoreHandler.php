@@ -12,12 +12,10 @@ namespace Vespolina\StoreBundle\Handler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Vespolina\Entity\Pricing\Element\TotalDoughValueElement;
-use Vespolina\StoreBundle\Handler\AbstractStoreHandler;
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Component\DependencyInjection\ContainerAwareInterface
 {
-
     public function getOperationalMode()
     {
         return 'standard';
@@ -57,6 +55,7 @@ class StandardStoreHandler extends AbstractStoreHandler implements \Symfony\Comp
         $context['productsPerPage']);
         $context['productsPagination']->setTemplate('VespolinaStoreBundle:Store/standard:pagination.html.twig');
          */
+
         return $templating->renderResponse('VespolinaStoreBundle:Store/standard:zoneDetail.html.twig', $context);
     }
 }

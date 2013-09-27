@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -22,7 +23,4 @@ class CheckoutProcessB2C
     {
         $this->container = $container;
     }
-
-
-
 }

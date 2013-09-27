@@ -1,11 +1,14 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\Handler;
+
 use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
@@ -30,9 +33,9 @@ interface StoreHandlerInterface
      *
      * @abstract
      * @param \Vespolina\StoreBundle\Model\StoreZoneInterface $storeZone
+     * @param $templating
      * @param array $context
      * @return mixed
      */
     function renderStoreZone(StoreZoneInterface $storeZone, $templating, array $context = array());
-
 }
