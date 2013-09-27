@@ -9,10 +9,6 @@
 
 namespace Vespolina\StoreBundle\ProcessScenario\Setup\Step;
 
-use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Vespolina\StoreBundle\Process\AbstractProcessStep;
-
 class CreateCustomerTaxonomy extends AbstractSetupStep
 {
     protected $taxonomyManager;
@@ -31,7 +27,7 @@ class CreateCustomerTaxonomy extends AbstractSetupStep
         $termFixtures[] = array('path' => 'silver', 'name' => 'Silver');
         $termFixtures[] = array('path' => 'gold', 'name' => 'Gold');
 
-        foreach($termFixtures as $termFixture) {
+        foreach ($termFixtures as $termFixture) {
             $node = $this->taxonomyManager->createTaxonomyNode($termFixture['name']);
             $node->setParent($customerTaxonomyNode);
 
