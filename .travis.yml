@@ -7,3 +7,6 @@ services: mongodb
 
 before_script:
   - composer install --dev
+
+notifications:
+  irc:   "irc.freenode.org#vespolina"

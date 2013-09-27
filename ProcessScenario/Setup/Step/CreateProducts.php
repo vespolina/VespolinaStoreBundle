@@ -50,7 +50,7 @@ class CreateProducts extends AbstractSetupStep
             }
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
-            $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
+            $aProduct->setSlug($this->productManager->slugify($aProduct->getName()));
             $aProduct->setType(Product::PHYSICAL);
             //Set up a nice primary media item
             /**$imageBasePath = 'bundles' . DIRECTORY_SEPARATOR .
