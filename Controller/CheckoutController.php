@@ -16,7 +16,6 @@ use Vespolina\CommerceBundle\Process\ProcessInterface;
 /**
  * @author Richard D Shank <develop@zestic.com>
  */
-
 class CheckoutController extends AbstractController
 {
     public function checkoutAction()
@@ -39,12 +38,12 @@ class CheckoutController extends AbstractController
             return $processResult;
         }
 
-        //If we get here then there was a serious error
+        // If we get here then there was a serious error
         throw new \Exception('Checkout failed - internal error - could not find process step to execute for current state ' . $checkoutProcess->getState());
     }
 
-    public function executeAction($processId, $processStepName) {
-
+    public function executeAction($processId, $processStepName)
+    {
         $processManager = $this->container->get('vespolina.process_manager');
         $process =  $processManager->findProcessById($processId);
 
@@ -70,8 +69,8 @@ class CheckoutController extends AbstractController
         return $processStep->getProcess()->execute();
     }
 
-    public function gotoProcessStepAction($processId, $processStepName) {
-
+    public function gotoProcessStepAction($processId, $processStepName)
+    {
         $processManager = $this->container->get('vespolina.process_manager');
         $process = $processManager->findProcessById($processId);
         $processStep = $process->getProcessStepByName($processStepName);
