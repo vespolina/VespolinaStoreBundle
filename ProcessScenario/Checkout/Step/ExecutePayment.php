@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -41,11 +42,8 @@ class ExecutePayment extends AbstractProcessStep
 
     }
 
-
     public function getName()
     {
         return 'execute_payment';
     }
-
-
 }

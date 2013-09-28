@@ -6,6 +6,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\ProcessScenario\Setup\Step;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -13,8 +14,8 @@ use Vespolina\Entity\Partner\Partner;
 
 class CreateEmployees extends AbstractSetupStep
 {
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $partnerManager = $this->getContainer()->get('vespolina.partner_manager');
         $partnerManipulator = $this->getContainer()->get('vespolina.partner_manipulator');
         $userManager = $this->getContainer()->get('fos_user.user_manager');
@@ -31,7 +32,7 @@ class CreateEmployees extends AbstractSetupStep
                 'username' => 'sales_clerk',
                 'email' => 'simple_assistant@example.org' ));
 
-        foreach($employeeFixtures as $employeeFixture) {
+        foreach ($employeeFixtures as $employeeFixture) {
 
             //Create and initialize a partner
             $employee = $partnerManager->createPartner(Partner::ROLE_EMPLOYEE);
@@ -47,11 +48,12 @@ class CreateEmployees extends AbstractSetupStep
             $userManager->updateUser($user);
             $employees[] = $employee;
         }
+
         $this->getLogger()->addInfo('Setup ' . count($employees) . ' employees.' );
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_employees';
     }
 }

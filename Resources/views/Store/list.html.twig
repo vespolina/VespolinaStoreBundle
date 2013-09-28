@@ -2,30 +2,30 @@
     <div class="span12">
         <h4>List of Products</h4>
         <div class="row">
-        {% for product in products %}
-            <div class="span3 v-product-tile">
-                <div class="thumbnail">
-                    <a href="{{ path('v_product_detail', { 'slug': product.slug }) }}">
-                    <img class="thumbs" src="/images/no-product-image.jpg"/>
-                    </a>
-                </div>
-                <div class="caption">
-                    <span class="v-product-name">
+            {% for product in products %}
+                <div class="span3 v-product-tile">
+                    <div class="thumbnail">
                         <a href="{{ path('v_product_detail', { 'slug': product.slug }) }}">
-                            {{ product.name }}
+                        <img class="thumbs" src="/images/no-product-image.jpg"/>
                         </a>
-                    </span>
-                    <div>
-                        <a class="btn" href="{{ path('v_cart_add_product', {'productId': product.id}) }}">Add to Cart</a>
-                        <span class="v-product-price">
-                            {% include 'VespolinaCommerceBundle:Default:_product_prices.html.twig' with {'product': product } %}
+                    </div>
+                    <div class="caption">
+                        <span class="v-product-name">
+                            <a href="{{ path('v_product_detail', { 'slug': product.slug }) }}">
+                                {{ product.name }}
+                            </a>
                         </span>
+                        <div>
+                            <a class="btn" href="{{ path('v_cart_add_product', {'productId': product.id}) }}">Add to Cart</a>
+                            <span class="v-product-price">
+                                {% include 'VespolinaCommerceBundle:Default:_product_prices.html.twig' with {'product': product } %}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% else %}
-            No products loaded.
-        {% endfor %}
+            {% else %}
+                No products loaded.
+            {% endfor %}
         </div>
     </div>
 </div>

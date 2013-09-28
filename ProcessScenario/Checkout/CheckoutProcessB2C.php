@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -44,6 +45,7 @@ class CheckoutProcessB2C extends AbstractProcess
 
         return $definition;
     }
+
     public function completeProcessStep(ProcessStepInterface $processStep)
     {
         $nextStepConfig = $this->definition->getNextStepConfig($processStep->getName());
@@ -74,5 +76,4 @@ class CheckoutProcessB2C extends AbstractProcess
     {
         return 'checkout_b2c';
     }
-
 }

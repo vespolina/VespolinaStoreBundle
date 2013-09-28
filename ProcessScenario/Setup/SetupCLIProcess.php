@@ -11,7 +11,6 @@ namespace Vespolina\StoreBundle\ProcessScenario\Setup;
 
 use Vespolina\CommerceBundle\Process\AbstractProcess;
 use Vespolina\CommerceBundle\Process\ProcessDefinition;
-use Vespolina\CommerceBundle\Process\ProcessDefinitionInterface;
 
 /**
  * This process models a setup of a V store using the command line
@@ -20,11 +19,10 @@ use Vespolina\CommerceBundle\Process\ProcessDefinitionInterface;
  */
 class SetupCLIProcess extends AbstractProcess
 {
-
     protected $currentStepIndex;
 
-    public function build() {
-
+    public function build()
+    {
         $definition = new ProcessDefinition();
         $definition->addProcessStep('create_customer_taxonomy',
                                     'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateCustomerTaxonomy');
@@ -58,5 +56,4 @@ class SetupCLIProcess extends AbstractProcess
     {
         return 'setup_cli_process';
     }
-
 }

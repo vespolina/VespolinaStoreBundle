@@ -1,13 +1,13 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Vespolina\StoreBundle\Model;
 
-use Vespolina\StoreBundle\Model\StoreInterface;
+namespace Vespolina\StoreBundle\Model;
 
 /**
  * A store zone represents a way to group related products together with associated news, CMS content, you name it.
@@ -40,5 +40,4 @@ interface StoreZoneInterface
     function setTaxonomyName($taxonomyName);
 
     function setStore(StoreInterface $store);
-
 }

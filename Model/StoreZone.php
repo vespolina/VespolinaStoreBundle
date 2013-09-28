@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -7,9 +8,6 @@
  */
 
 namespace Vespolina\StoreBundle\Model;
-
-use Vespolina\StoreBundle\Model\StoreInterface;
-use Vespolina\StoreBundle\Model\StoreZoneInterface;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>

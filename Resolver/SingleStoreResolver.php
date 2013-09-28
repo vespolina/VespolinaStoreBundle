@@ -9,7 +9,7 @@
 
 namespace Vespolina\StoreBundle\Resolver;
 
-use \Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Vespolina\StoreBundle\Resolver\AbstractStoreResolver;
 
 /**

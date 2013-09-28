@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
@@ -7,6 +8,7 @@
  */
 
 namespace Vespolina\StoreBundle\Form\Type;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Validator\Constraint\UserPassword;
@@ -21,9 +23,7 @@ class CustomerLoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('username');
-        $builder->add('password', 'password', array(
-        ));
-
+        $builder->add('password', 'password', array());
     }
 
     public function getName()

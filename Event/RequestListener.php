@@ -6,6 +6,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\Event;
 
 use Symfony\Component\DependencyInjection\Container;
@@ -26,7 +27,6 @@ class RequestListener
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-
         $storeResolver = $this->container->get('vespolina_store.store_resolver');
         $store = $storeResolver->resolveStore($event->getRequest());
 
@@ -38,8 +38,7 @@ class RequestListener
             $store->addStoreZone($storeZone);
         }*/
 
-        //Register thre current store as a global Twig variable
+        // Register the current store as a global Twig variable
         $this->container->get('twig')->addGlobal('store', $store);
     }
-
 }

@@ -1,12 +1,16 @@
 <?php
 
-namespace Vespolina\StoreBundle\Controller;
+/**
+ * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
-use Vespolina\StoreBundle\Controller\AbstractController;
+namespace Vespolina\StoreBundle\Controller;
 
 class StoreController extends AbstractController
 {
-
     public function indexAction($taxonomyTerm)
     {
         return $this->render('VespolinaStoreBundle:Store:index.html.twig', array('taxonomyTerm' => $taxonomyTerm));
@@ -15,7 +19,7 @@ class StoreController extends AbstractController
     /**
      * Displays a store zone which typically consists of a product list, taxonomy terms and some CMS content
      *
-     * @param $taxonomyTerm
+     * @param $taxonomyNodeSlug
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function zoneDetailAction($taxonomyNodeSlug)
@@ -28,5 +32,4 @@ class StoreController extends AbstractController
 
         return $storeHandler->renderStoreZone($storeZone, $this->container->get('templating'), $context);
     }
-
 }
