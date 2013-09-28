@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
@@ -7,8 +8,10 @@
  */
 
 namespace Vespolina\StoreBundle\Form\Type\Process;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+
 /**
  * Quickly create a customer
  *
@@ -22,12 +25,10 @@ class PaymentFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
     }
 
     public function getName()
     {
         return 'vespolina_store_payment';
     }
-
 }

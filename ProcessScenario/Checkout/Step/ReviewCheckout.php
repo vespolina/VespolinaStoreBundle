@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -35,17 +36,13 @@ class ReviewCheckout extends AbstractProcessStep
 
             return $controller->executeAction();
         } else {
-
             return true;    //Todo encapsulate return value
         }
 
     }
 
-
     public function getName()
     {
         return 'review_checkout';
     }
-
-
 }

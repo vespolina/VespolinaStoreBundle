@@ -17,13 +17,13 @@ class CreateProductTaxonomy extends AbstractSetupStep
 {
     protected $taxonomyManager;
 
-    public function init($firstTime = false) {
-
+    public function init($firstTime = false)
+    {
         $this->taxonomyManager = $this->getContainer()->get('vespolina.taxonomy_manager');
     }
 
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $productTaxonomyNode = $this->taxonomyManager->createTaxonomyNode('products');
         $this->taxonomyManager->updateTaxonomyNode($productTaxonomyNode, true);
 
@@ -56,7 +56,7 @@ class CreateProductTaxonomy extends AbstractSetupStep
                 return;
 
         }
-        foreach($termFixtures as $termFixture) {
+        foreach ($termFixtures as $termFixture) {
 
             $node = $this->taxonomyManager->createTaxonomyNode($termFixture['name'], $productTaxonomyNode);
             $this->taxonomyManager->updateTaxonomyNode($node, true);
@@ -72,8 +72,8 @@ class CreateProductTaxonomy extends AbstractSetupStep
 
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_product_taxonomy';
     }
 }

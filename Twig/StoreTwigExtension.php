@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) 2011 Vespolina Project http://www.vespolina-project.org
  *
@@ -10,16 +11,16 @@ namespace Vespolina\StoreBundle\Twig;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class StoreTwigExtension extends \Twig_Extension {
-
+class StoreTwigExtension extends \Twig_Extension
+{
     public function getFilters() {
         return array(
             'price_format'   => new \Twig_Filter_Method($this, 'priceFormat'),
         );
     }
 
-    public function priceFormat($amount, $currency = null) {
-
+    public function priceFormat($amount, $currency = null)
+    {
         $left = '';
         $right = '';
 

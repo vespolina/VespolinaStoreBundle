@@ -15,7 +15,5 @@ use Vespolina\CommerceBundle\Process\AbstractProcessStep;
 abstract class AbstractSetupStep extends AbstractProcessStep
 {
     public function init($firstTime = false) {
-
     }
-
 }

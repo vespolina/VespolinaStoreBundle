@@ -1,21 +1,21 @@
 <?php
+
 /**
  * (c) 2011 - ∞ Vespolina Project http://www.vespolina-project.org
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace Vespolina\StoreBundle\Controller;
 
-use Vespolina\StoreBundle\Controller\AbstractController;
-use Vespolina\StoreBundle\Process\ProcessInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Vespolina\CommerceBundle\Process\ProcessInterface;
 
 /**
  * @author Richard D Shank <develop@zestic.com>
  */
-
 class CheckoutController extends AbstractController
 {
     public function checkoutAction()
@@ -38,12 +38,12 @@ class CheckoutController extends AbstractController
             return $processResult;
         }
 
-        //If we get here then there was a serious error
+        // If we get here then there was a serious error
         throw new \Exception('Checkout failed - internal error - could not find process step to execute for current state ' . $checkoutProcess->getState());
     }
 
-    public function executeAction($processId, $processStepName) {
-
+    public function executeAction($processId, $processStepName)
+    {
         $processManager = $this->container->get('vespolina.process_manager');
         $process =  $processManager->findProcessById($processId);
 
@@ -69,8 +69,8 @@ class CheckoutController extends AbstractController
         return $processStep->getProcess()->execute();
     }
 
-    public function gotoProcessStepAction($processId, $processStepName) {
-
+    public function gotoProcessStepAction($processId, $processStepName)
+    {
         $processManager = $this->container->get('vespolina.process_manager');
         $process = $processManager->findProcessById($processId);
         $processStep = $process->getProcessStepByName($processStepName);

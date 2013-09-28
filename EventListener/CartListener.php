@@ -40,6 +40,5 @@ class CartListener
 
         //Track the sales channel (the current store) which initially created the cart
         $cart->setChannel($store);
-
     }
 }

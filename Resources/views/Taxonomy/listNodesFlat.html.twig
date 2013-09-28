@@ -9,9 +9,9 @@
             {% else %}
                 {% set css = ''%}
             {% endif %}
-        <a class="list-group-item {{ css }}" href="{{ url('v_store_zone_products', { 'taxonomyNodeSlug': node.slug }) }}">
-            {{ node.name }}
-        </a>
+            <a class="list-group-item {{ css }}" href="{{ url('v_store_zone_products', { 'taxonomyNodeSlug': node.slug }) }}">
+                {{ node.name }}
+            </a>
         {% endfor %}
     </div>
 </div>

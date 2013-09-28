@@ -20,8 +20,8 @@ class CreateProducts extends AbstractSetupStep
 {
     protected $pricingManager;
 
-    public function execute(&$context) {
-
+    public function execute(&$context)
+    {
         $defaultTaxRate = $context['taxSchema']['defaultTaxRate'];
         $productCount = 10;
 
@@ -35,7 +35,7 @@ class CreateProducts extends AbstractSetupStep
 
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
-        for($i = 1; $i < $productCount; $i++) {
+        for ($i = 1; $i < $productCount; $i++) {
 
             if ($productTaxonomyNodes->count()) {
                 //Pick a random taxonomy node (= product category) to which we'll be attaching this product
@@ -50,7 +50,7 @@ class CreateProducts extends AbstractSetupStep
             }
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
-            $aProduct->setSlug($this->slugify($aProduct->getName()));   //Todo: move to manager
+            $aProduct->setSlug($this->productManager->slugify($aProduct->getName()));
             $aProduct->setType(Product::PHYSICAL);
             //Set up a nice primary media item
             /**$imageBasePath = 'bundles' . DIRECTORY_SEPARATOR .
@@ -123,8 +123,8 @@ class CreateProducts extends AbstractSetupStep
         $this->getLogger()->addInfo('Created ' . $productCount . ' sample products.' );
     }
 
-    public function getName() {
-
+    public function getName()
+    {
         return 'create_products';
     }
 
@@ -136,8 +136,8 @@ class CreateProducts extends AbstractSetupStep
             //Register the 'default_product' configuration
             $this->pricingManager->addConfiguration('default_product', 'Vespolina\Entity\Pricing\PricingSet', array());
         }
-new TotalDoughValueElement;
 
+        // new TotalDoughValueElement; @todo!!! not sure why this was here :)
 
         return $this->pricingManager;
     }

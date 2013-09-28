@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) Vespolina Project http://www.vespolina-project.org
  *
@@ -14,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Vespolina\Product\Specification\ProductSpecification;
 use Vespolina\StoreBundle\Model\StoreInterface;
 use Vespolina\StoreBundle\Model\StoreZone;
-
 
 abstract class AbstractStoreHandler extends ContainerAware
 {
@@ -40,21 +40,17 @@ abstract class AbstractStoreHandler extends ContainerAware
 
     protected function findProducts($taxonomyNodeSlug)
     {
-        $criteria = array();
-
         $productManager = $this->container->get('vespolina.product_manager');
 
-        //Build the product specification object
+        // Build the product specification object
         $specification = new ProductSpecification();
 
-        //Add product categorisation as criteria if different from '_all'
+        // Add product categorisation as criteria if different from '_all'
         if (null !== $taxonomyNodeSlug && $taxonomyNodeSlug != '_all') {
 
             $specification->withTaxonomyNodeName($taxonomyNodeSlug);
         }
 
-        return $productManager->findAll($specification);//, $criteria, array('asc'), 1, 10, true);
+        return $productManager->findAll($specification);
     }
-
-
 }
