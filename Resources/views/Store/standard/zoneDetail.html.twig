@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block product_taxonomy %}
-    {% render "VespolinaStoreBundle:Taxonomy:listNodes" with {'currentTaxonomyNode': taxonomyNodeSlug,
+    {% render(controller('VespolinaStoreBundle:Taxonomy:listNodes', {'currentTaxonomyNode': taxonomyNodeSlug,
     'taxonomyName': taxonomyName,
     'renderType': taxonomyRenderType,
-    'routeName' : 'v_store_home'} %}
+    'routeName' : 'v_store_home'})) %}
 {% endblock %}
 
 {% block content %}

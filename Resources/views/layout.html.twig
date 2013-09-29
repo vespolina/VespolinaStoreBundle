@@ -34,10 +34,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if not is_granted('ROLE_ADMIN') %}
                     {% block customer_info %}
-                        {% render "VespolinaStoreBundle:Customer:navBar" %}
+                        {% render(controller('VespolinaStoreBundle:Customer:navBar')) %}
                     {% endblock %}
                     {% block cart_quick_inspection %}
-                        {% render "VespolinaCommerceBundle:Cart/Default:quickInspection" %}
+                        {% render(controller('VespolinaCommerceBundle:Cart/Default:quickInspection')) %}
                     {% endblock %}
                 {% endif %}
             </ul>
