@@ -9,7 +9,7 @@
 
 namespace Vespolina\StoreBundle\ProcessScenario\Checkout\Step;
 
-use Vespolina\StoreBundle\Process\AbstractProcessStep;
+use Vespolina\CommerceBundle\Process\AbstractProcessStep;
 
 /**
  * @author Daniel Kucharski <daniel@xerias.be>

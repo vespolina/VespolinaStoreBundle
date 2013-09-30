@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 /**
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class CheckoutProcessB2C
+class OneClickCheckoutProcessB2C
 {
     protected $container;
 
