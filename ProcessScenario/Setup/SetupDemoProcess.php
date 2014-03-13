@@ -17,15 +17,25 @@ use Vespolina\CommerceBundle\Process\ProcessDefinition;
  *
  * @author Daniel Kucharski <daniel@xerias.be>
  */
-class SetupCLIProcess extends AbstractProcess
+class SetupDemoProcess extends AbstractProcess
 {
     protected $currentStepIndex;
 
     public function build()
     {
         $definition = new ProcessDefinition();
+        $definition->addProcessStep('create_customer_taxonomy',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateCustomerTaxonomy');
+        $definition->addProcessStep('create_customers',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateCustomers');
+        $definition->addProcessStep('create_employees',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateEmployees');
         $definition->addProcessStep('create_taxation',
                                     'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateTaxation');
+        $definition->addProcessStep('create_product_taxonomy',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateProductTaxonomy');
+        $definition->addProcessStep('create_products',
+                                    'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateProducts');
         $definition->addProcessStep('create_store',
                                     'Vespolina\StoreBundle\ProcessScenario\Setup\Step\CreateStore');
 
