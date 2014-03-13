@@ -33,6 +33,7 @@ class CreateProducts extends AbstractSetupStep
             $productTaxonomyNodes = $productTaxonomy->getChildren();
         }
 
+        /** @var \Vespolina\Product\Manager\ProductManager $productManager */
         $productManager = $this->getContainer()->get('vespolina.product_manager');
 
         for ($i = 1; $i < $productCount; $i++) {
@@ -50,7 +51,7 @@ class CreateProducts extends AbstractSetupStep
             }
             $aProduct = $productManager->createProduct();
             $aProduct->setName($productName);
-            $aProduct->setSlug($this->productManager->slugify($aProduct->getName()));
+            $aProduct->setSlug($productManager->slugify($aProduct->getName()));
             $aProduct->setType(Product::PHYSICAL);
             //Set up a nice primary media item
             /**$imageBasePath = 'bundles' . DIRECTORY_SEPARATOR .
@@ -62,36 +63,29 @@ class CreateProducts extends AbstractSetupStep
             //TODO: move into a pricing set builder
 
             /** Set up for each product following pricing elements
-             *  - netValue : unit price without tax
+             *  - unit : unit price without tax
              *  - unitPriceMSRP: manufacturer suggested retail price without tax
              *  - unitPriceTax : tax over the net unit price (based on the default tax rate)
              *  - unitPriceTotal: final price a customer pays ( net unit price + tax )
              *  - unitMSRPTotal: manufacturer suggested retail price with tax
              **/
-
-
             $pricingValues = array();
-            $pricingValues['netValue'] = rand(2,80);
+            $pricingValues['unit'] = rand(2,80);
 
             //Set Manufacturer Suggested Retail Price to +(random) % of the net unit price
             $pricingValues['MSRPDiscountRate'] = rand(10,35);
-            $pricingValues['unitPriceMSRP'] = $pricingValues['netValue'] * ( 1 + $pricingValues['MSRPDiscountRate'] / 100);
-
+            $pricingValues['unitPriceMSRP'] = $pricingValues['unit'] * ( 1 + $pricingValues['MSRPDiscountRate'] / 100);
 
             if ($defaultTaxRate) {
-
-                $pricingValues['unitPriceTax'] = $pricingValues['netValue'] / 100 * $defaultTaxRate;
+                $pricingValues['unitPriceTax'] = $pricingValues['unit'] / 100 * $defaultTaxRate;
                 $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'] * (1 + $defaultTaxRate / 100);
-                $pricingValues['unitPriceTotal'] = $pricingValues['netValue'] + $pricingValues['unitPriceTax'];
-
+                $pricingValues['unitPriceTotal'] = $pricingValues['unit'] + $pricingValues['unitPriceTax'];
             } else {
-
-                $pricingValues['unitPriceTotal'] = $pricingValues['netValue'];
+                $pricingValues['unitPriceTotal'] = $pricingValues['unit'];
                 $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'];
             }
 
-            $pricingSet = $this->getPricingManager()->createPricing($pricingValues);
-            $aProduct->setPricing($pricingSet);
+            $aProduct->setPrices($pricingValues);
 
             //TODO: fix taxonomy
             //$aProduct->addTerm($aRandomTerm);
