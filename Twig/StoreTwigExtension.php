@@ -28,9 +28,23 @@ class StoreTwigExtension extends \Twig_Extension
 
             case 'EUR':  $right = ' €'; break;
             case 'USD' :  $left = '$ '; break;
+            case '%' : $right = ' %'; break;
         }
 
-        return $left . money_format('%i', $amount) . $right;
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            /********************************* money_format not available on windows systems */
+            //This is a server using Windows : money_format replacement.
+            setlocale(LC_ALL, ''); // Locale will be different on each system.
+            $locale = localeconv();
+            //$amount = 1000000.97;
+            //echo $locale['currency_symbol'],
+            // number_format($amount, 2, $locale['decimal_point'], $locale['thousands_sep']);
+            return $left . number_format($amount, 2, $locale['decimal_point'], $locale['thousands_sep']) . $right;
+        } else {
+            //This is a server not using Windows
+            return $left . my_money_format('%i', $amount) . $right;
+        }
+
     }
 
     public function getName()
