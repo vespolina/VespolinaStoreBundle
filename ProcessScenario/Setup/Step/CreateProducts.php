@@ -60,7 +60,6 @@ class CreateProducts extends AbstractSetupStep
                 $this->type . DIRECTORY_SEPARATOR . $singularTermName . '-' . $i ;
             ;*/
 
-            //TODO: move into a pricing set builder
 
             /** Set up for each product following pricing elements
              *  - unit : unit price without tax
@@ -69,26 +68,28 @@ class CreateProducts extends AbstractSetupStep
              *  - unitPriceTotal: final price a customer pays ( net unit price + tax )
              *  - unitMSRPTotal: manufacturer suggested retail price with tax
              **/
-            $pricingValues = array();
-            $pricingValues['unit'] = rand(2,80);
+            $unitPrice = rand(2,80);
 
             //Set Manufacturer Suggested Retail Price to +(random) % of the net unit price
-            $pricingValues['MSRPDiscountRate'] = rand(10,35);
-            $pricingValues['unitPriceMSRP'] = $pricingValues['unit'] * ( 1 + $pricingValues['MSRPDiscountRate'] / 100);
+            $MSRPDiscountRate = rand(10,35);
+            $unitPriceMSRP = $unitPrice * ( 1 + $MSRPDiscountRate / 100);
 
             if ($defaultTaxRate) {
-                $pricingValues['unitPriceTax'] = $pricingValues['unit'] / 100 * $defaultTaxRate;
-                $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'] * (1 + $defaultTaxRate / 100);
-                $pricingValues['unitPriceTotal'] = $pricingValues['unit'] + $pricingValues['unitPriceTax'];
+                $unitPriceTax = $unitPrice / 100 * $defaultTaxRate;
+                $unitPriceMSRPTotal = $unitPriceMSRP * (1 + $defaultTaxRate / 100);
+                $unitPriceTotal = $unitPrice + $unitPriceTax;
             } else {
-                $pricingValues['unitPriceTotal'] = $pricingValues['unit'];
-                $pricingValues['unitPriceMSRPTotal'] = $pricingValues['unitPriceMSRP'];
+                $unitPriceTotal = $unitPrice;
+                $unitPriceMSRPTotal = $unitPriceMSRP;
             }
 
-            $aProduct->setPrices($pricingValues);
-
-            //TODO: fix taxonomy
-            //$aProduct->addTerm($aRandomTerm);
+            $aProduct->setPrice($unitPrice);
+            $aProduct->setPrice($MSRPDiscountRate, 'MSRPDiscountRate');
+            $aProduct->setPrice($unitPriceMSRP, 'unitPriceMSRP');
+            $aProduct->setPrice($unitPriceTax, 'unitPriceTax');
+            $aProduct->setPrice($unitPriceMSRPTotal, 'unitPriceMSRPTotal');
+            $aProduct->setPrice($unitPriceTotal, 'unitPriceTotal');
+            $aProduct->setPrice($unitPriceMSRPTotal, 'unitPriceMSRPTotal');
 
             $productManager->updateProduct($aProduct, true);
             /**
